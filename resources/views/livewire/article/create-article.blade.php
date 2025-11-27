@@ -10,19 +10,24 @@
 
                 <div class="card-content">
                     <div class="card-body">
-                        <form wire:submit.prevent="save" class="form">
+                        <form wire:submit.prevent="save" class="form" enctype="multipart/form-data">
                             <div class="row">
 
                                 <div class="col-12">
                                     <div class="mb-3">
                                         <label for="formFileSm" class="form-label">Gambar sampul</label>
                                         <input class="form-control form-control-sm" id="formFileSm" type="file"
-                                            wire:model="image">
-                                        @if ($image)
-                                            <div class="mt-3">
-                                                <img src="{{ $image->temporaryUrl() }}" alt="Preview"
-                                                    class="img-thumbnail" style="max-height: 200px;">
-                                            </div>
+                                            wire:model="image"
+                                            accept="image/png, image/jpeg, image/jpg, image/webp, image/gif">
+                                        @if ($image && !$errors->has('image'))
+                                            @try
+                                                <div class="mt-3">
+                                                    <img src="{{ $image->temporaryUrl() }}" alt="Preview"
+                                                        class="img-thumbnail" style="max-height: 200px;">
+                                                </div>
+                                                @catch(\Exception $e)
+                                                <div class="mt-2 text-muted"><small>Preview tidak tersedia</small></div>
+                                            @endtry
                                         @endif
                                         @error('image')
                                             <span class="text-danger">{{ $message }}</span>
@@ -69,7 +74,8 @@
                                     <button type="submit" wire:loading.attr="disabled"
                                         class="btn btn-primary me-1 mb-1">
                                         <span wire:loading.remove wire:target="save">Terbitkan</span>
-                                        <span wire:loading wire:target="save"><i class="fas fa-spinner fa-spin me-2"></i>Menerbitkan</span>
+                                        <span wire:loading wire:target="save"><i
+                                                class="fas fa-spinner fa-spin me-2"></i>Menerbitkan</span>
                                     </button>
                                 </div>
 

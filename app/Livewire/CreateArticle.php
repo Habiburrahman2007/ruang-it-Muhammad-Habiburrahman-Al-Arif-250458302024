@@ -28,8 +28,15 @@ class CreateArticle extends Component
         'title' => 'required|string|max:255',
         'content' => 'required|string',
         'category_id' => 'required|exists:categories,id',
-        'image' => 'nullable|image|max:2048',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:2048',
     ];
+
+    public function updatedImage()
+    {
+        $this->validate([
+            'image' => 'image|max:2048',
+        ]);
+    }
 
     public function mount()
     {
