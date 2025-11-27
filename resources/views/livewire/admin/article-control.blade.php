@@ -130,16 +130,20 @@
         </div>
         <div class="text-center mt-4">
             @if ($totalArticles > count($articles))
-                <button wire:click="loadMore" class="btn btn-outline-primary" wire:loading.attr="disabled">
-                    <span wire:loading.remove wire:target="loadMore">
-                        Load More
-                    </span>
-                    <span wire:loading wire:target="loadMore" class="hidden">
-                        <i class="fa fa-spinner fa-spin me-1"></i> Loading...
-                    </span>
-                </button>
+                <div x-intersect.full="$wire.loadMore()" class="d-flex justify-content-center py-4">
+                    <div wire:loading wire:target="loadMore" class="text-primary">
+                        <i class="fa fa-spinner fa-spin fa-2x"></i>
+                        <span class="ms-2 fw-bold">Sedang memuat artikel lainnya...</span>
+                    </div>
+
+                    <div wire:loading.remove wire:target="loadMore" class="text-muted small">
+                        Scroll untuk memuat lebih banyak...
+                    </div>
+                </div>
             @else
-                <p class="text-muted">No more articles</p>
+                <div class="text-center py-4 text-muted">
+                    <p>Semua artikel sudah ditampilkan.</p>
+                </div>
             @endif
         </div>
     @endif

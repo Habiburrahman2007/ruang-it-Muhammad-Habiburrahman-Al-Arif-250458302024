@@ -128,7 +128,7 @@
                                 <img class="card-img-top img-fluid rounded-top-3 object-cover"
                                     style="height: 200px; width: 100%; object-fit: cover;"
                                     src="{{ !empty($article->image) && file_exists(storage_path('app/public/' . $article->image))
-                                        ? asset('storage/' . $article->image) 
+                                        ? asset('storage/' . $article->image)
                                         : asset('img/Login.jpg') }}"
                                     alt="{{ $article->title }}">
                                 <div class="card-body">
@@ -193,17 +193,21 @@
                 @endforeach
             </div>
             <div class="text-center mt-4">
-                @if ($articles && $totalFiltered > count($articles))
-                    <button wire:click="loadMore" class="btn btn-outline-primary" wire:loading.attr="disabled">
-                        <span wire:loading.remove wire:target="loadMore">
-                            Load More
-                        </span>
-                        <span wire:loading wire:target="loadMore">
-                            <i class="fa fa-spinner fa-spin me-1"></i> Loading...
-                        </span>
-                    </button>
+                @if ($totalArticles > count($articles))
+                    <div x-intersect.full="$wire.loadMore()" class="d-flex justify-content-center py-4">
+                        <div wire:loading wire:target="loadMore" class="text-primary">
+                            <i class="fa fa-spinner fa-spin fa-2x"></i>
+                            <span class="ms-2 fw-bold">Sedang memuat artikel lainnya...</span>
+                        </div>
+
+                        <div wire:loading.remove wire:target="loadMore" class="text-muted small">
+                            Scroll untuk memuat lebih banyak...
+                        </div>
+                    </div>
                 @else
-                    <p class="text-muted">No more articles</p>
+                    <div class="text-center py-4 text-muted">
+                        <p>Semua artikel sudah ditampilkan.</p>
+                    </div>
                 @endif
             </div>
             @endif
