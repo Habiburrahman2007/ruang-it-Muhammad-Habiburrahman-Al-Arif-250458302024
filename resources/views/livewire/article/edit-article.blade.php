@@ -3,9 +3,10 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">
-                        <i class="fa-solid fa-pen"></i> Edit artikel
-                    </h4>
+                    <h2 class="card-title">
+                        Edit artikel
+                    </h2>
+                    <span class="text-center">Silahkan mengikuti panduan penulisan artikel <a href="{{ route('guidelines') }}" class="text-primary">disini</a></span>
                 </div>
 
                 <div class="card-content">

@@ -95,11 +95,13 @@
             </div>
 
             @if ($article->status === 'banned')
-                <div class="text-center my-3 text-danger">
+                <div class="text-center my-3">
                     <h6>
-                        Artikel ini sedang diblokir sehingga tidak bisa diakses oleh para pembaca.
-                        Silahkan hubungi <a href="https://wa.link/zjo1b2" class="text-primary" target="blank">admin</a> untuk
-                        konsultasi
+                        <span class="text-danger">Artikel ini sedang diblokir sehingga tidak bisa diakses oleh para pembaca.</span> <br>
+                        Silahkan mengikuti panduan penulisan artikel <a href="{{ route('guidelines') }}" class="text-primary">disini</a>
+                        dan kembali mengedit artikel ini agar statusnya kembali aktif. <br>
+                        Hubungi <a href="https://wa.link/zjo1b2" class="text-primary" target="blank">admin</a> untuk
+                        konsultasi.
                     </h6>
                 </div>
             @endif

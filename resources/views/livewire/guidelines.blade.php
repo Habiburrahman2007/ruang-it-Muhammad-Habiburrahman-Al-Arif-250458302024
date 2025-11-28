@@ -6,6 +6,8 @@
                     Syarat & Ketentuan
                 </h3>
 
+                <hr class="mb-3">    
+
                 <div class="card-text mt-4" style="font-size: 1.1rem; line-height: 1.8;">
                     <h4 class="mb-3">Standar Penulisan Artikel</h4>
                     <h5 class="mb-3">1. Struktur Artikel</h5>
