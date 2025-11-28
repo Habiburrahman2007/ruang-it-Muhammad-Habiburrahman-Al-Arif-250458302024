@@ -97,8 +97,11 @@
             @if ($article->status === 'banned')
                 <div class="text-center my-3">
                     <h6>
-                        <span class="text-danger">Artikel ini sedang diblokir sehingga tidak bisa diakses oleh para pembaca.</span> <br>
-                        Silahkan mengikuti panduan penulisan artikel <a href="{{ route('guidelines') }}" class="text-primary">disini</a>
+                        <span class="text-danger">Artikel ini sedang diblokir sehingga tidak bisa diakses oleh para
+                            pembaca.</span> <br>
+                        Silahkan mengikuti panduan penulisan artikel <a
+                            href="{{ route('guidelines', ['from' => request('from')]) }}"
+                            class="text-primary">disini</a>
                         dan kembali mengedit artikel ini agar statusnya kembali aktif. <br>
                         Hubungi <a href="https://wa.link/zjo1b2" class="text-primary" target="blank">admin</a> untuk
                         konsultasi.
@@ -204,7 +207,18 @@
                                         </small>
 
                                         @if ($comment->is_hidden)
-                                            <p class="mb-0 fst-italic text-muted">Komentar disembunyikan</p>
+                                            <p class="mb-0 fst-italic text-muted">
+                                                Komentar disembunyikan. <br>
+                                                @if (auth()->id() === $comment->user_id)
+                                                    Silahkan mengikuti panduan penulisan komentar <a
+                                                        href="{{ route('guidelines', ['from' => request('from')]) }}"
+                                                        class="text-primary">disini</a>
+                                                    dan kembali mengedit komentar ini agar bisa kembali muncul. <br>
+                                                    Hubungi <a href="https://wa.link/zjo1b2" class="text-primary"
+                                                        target="blank">admin</a> untuk
+                                                    konsultasi.
+                                                @endif
+                                            </p>
                                         @else
                                             <p class="mb-0">{{ $comment->content }}</p>
                                         @endif
@@ -242,15 +256,19 @@
                 @endforeach
 
                 @if (\App\Models\Comment::where('article_id', $article->id)->count() > $comments->count())
-                    <div class="text-center mt-3">
-                        <button wire:click="loadMore" class="btn btn-outline-primary">
-                            <span wire:loading.remove wire:target="loadMore">
-                                Load More
-                            </span>
-                            <span wire:loading wire:target="loadMore" class="hidden">
-                                <i class="fa fa-spinner fa-spin me-1"></i> Loading...
-                            </span>
-                        </button>
+                    <div x-intersect.full="$wire.loadMore()" class="d-flex justify-content-center py-4">
+                        <div wire:loading wire:target="loadMore" class="text-primary">
+                            <i class="fa fa-spinner fa-spin fa-2x"></i>
+                            <span class="ms-2 fw-bold">Sedang memuat komentar lainnya...</span>
+                        </div>
+
+                        <div wire:loading.remove wire:target="loadMore" class="text-muted small">
+                            Scroll untuk memuat lebih banyak...
+                        </div>
+                    </div>
+                @else
+                    <div class="text-center py-4 text-muted">
+                        <p>Semua komentar sudah ditampilkan.</p>
                     </div>
                 @endif
 

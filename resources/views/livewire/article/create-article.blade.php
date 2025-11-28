@@ -6,7 +6,9 @@
                     <h2 class="card-title mt-3">
                         Tulis artikel baru
                     </h2>
-                    <span class="text-center">Silahkan mengikuti panduan penulisan artikel <a href="{{ route('guidelines') }}" class="text-primary">disini</a></span>
+                    <span class="text-center">Silahkan mengikuti panduan penulisan artikel <a
+                            href="{{ route('guidelines', ['from' => 'create-article']) }}"
+                            class="text-primary">disini</a></span>
                 </div>
 
                 <div class="card-content">

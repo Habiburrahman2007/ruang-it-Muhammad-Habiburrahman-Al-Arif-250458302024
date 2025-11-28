@@ -6,7 +6,9 @@
                     <h2 class="card-title">
                         Edit artikel
                     </h2>
-                    <span class="text-center">Silahkan mengikuti panduan penulisan artikel <a href="{{ route('guidelines') }}" class="text-primary">disini</a></span>
+                    <span class="text-center">Silahkan mengikuti panduan penulisan artikel <a
+                            href="{{ route('guidelines', ['from' => 'edit-article']) }}"
+                            class="text-primary">disini</a></span>
                 </div>
 
                 <div class="card-content">
@@ -66,7 +68,7 @@
                                     <label class="form-label">Isi artikel</label>
                                     <input id="content" name="content" type="hidden" wire:model="content"
                                         value="{{ old('content', $content) }}">
-                                        <trix-editor input="content"></trix-editor>
+                                    <trix-editor input="content"></trix-editor>
                                 </div>
 
                                 @error('content')
