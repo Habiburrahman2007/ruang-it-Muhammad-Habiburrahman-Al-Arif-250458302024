@@ -123,7 +123,7 @@
                 @foreach ($articles as $article)
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="card blog-card rounded-3 overflow-hidden shadow-sm h-100">
-                            <a href="{{ route('detail-article', $article->slug) }}"
+                            <a href="{{ route('detail-article', ['slug' => $article->slug, 'from' => 'profile']) }}"
                                 class="text-decoration-none text-dark">
                                 <img class="card-img-top img-fluid rounded-top-3 object-cover"
                                     style="height: 200px; width: 100%; object-fit: cover;"

@@ -100,7 +100,7 @@
                                     </thead>
                                     <tbody>
                                         @forelse ($popularArticles as $index => $article)
-                                            <tr onclick="window.location='{{ route('detail-article', $article->slug) }}'"
+                                            <tr onclick="window.location='{{ route('detail-article', ['slug' => $article->slug, 'from' => 'statistic']) }}'"
                                                 style="cursor: pointer;">
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ Str::limit($article->title, 20, '...') }}</td>
