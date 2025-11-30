@@ -41,7 +41,7 @@ class Guess extends Component
 
     public function loadCategories()
     {
-        $this->categories = \App\Models\Category::pluck('name')->toArray();
+        $this->categories = \App\Models\Category::all();
     }
 
     public function loadArticles()
@@ -49,11 +49,16 @@ class Guess extends Component
         $query = Article::with(['user', 'category', 'likes', 'comments'])
             ->where('status', 'active')
             ->whereHas('user', fn($q) => $q->where('banned', false))
-            ->when($this->category !== 'All', fn($query) =>
+            ->when(
+                $this->category !== 'All',
+                fn($query) =>
                 $query->whereHas('category', fn($q) => $q->where('name', $this->category))
             )
-            ->when($this->search, fn($query) =>
-                $query->where(fn($q) =>
+            ->when(
+                $this->search,
+                fn($query) =>
+                $query->where(
+                    fn($q) =>
                     $q->where('title', 'like', '%' . $this->search . '%')
                         ->orWhereHas('user', fn($q2) => $q2->where('name', 'like', '%' . $this->search . '%'))
                 )
@@ -73,15 +78,15 @@ class Guess extends Component
     public function loadMore()
     {
         if ($this->perPage < $this->totalArticles) {
-        $this->isLoadingMore = true;
+            $this->isLoadingMore = true;
 
-        usleep(500000); 
+            usleep(500000);
 
-        $this->perPage += 9;
-        $this->loadArticles();
+            $this->perPage += 9;
+            $this->loadArticles();
 
-        $this->isLoadingMore = false;
-    }
+            $this->isLoadingMore = false;
+        }
     }
 
     public function setCategory($category)

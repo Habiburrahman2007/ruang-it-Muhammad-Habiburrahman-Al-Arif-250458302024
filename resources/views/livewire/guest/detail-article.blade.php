@@ -181,10 +181,19 @@
                 </div>
             @endforeach
             @if (\App\Models\Comment::where('article_id', $article->id)->count() > $comments->count())
-                <div class="text-center mt-3">
-                    <button wire:click="loadMore" class="btn btn-outline-primary">
-                        Load More
-                    </button>
+                <div x-intersect.full="$wire.loadMore()" class="d-flex justify-content-center py-4">
+                    <div wire:loading wire:target="loadMore" class="text-primary">
+                        <i class="fa fa-spinner fa-spin fa-2x"></i>
+                        <span class="ms-2 fw-bold">Sedang memuat komentar lainnya...</span>
+                    </div>
+
+                    <div wire:loading.remove wire:target="loadMore" class="text-muted small">
+                        Scroll untuk memuat lebih banyak...
+                    </div>
+                </div>
+            @else
+                <div class="text-center py-4 text-muted">
+                    <p>Semua komentar sudah ditampilkan.</p>
                 </div>
             @endif
 

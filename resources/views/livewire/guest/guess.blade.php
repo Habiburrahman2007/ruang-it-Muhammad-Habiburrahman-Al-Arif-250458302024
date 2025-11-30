@@ -8,25 +8,26 @@
 
     <div class="p-3 mb-3">
         <div class="input-group w-100 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center">
-            <input type="text" class="form-control me-2 w-100 w-md-50" placeholder="Cari judul artikel atau penulis..."
-                wire:model.live="search" style="height: 38px;" />
-            <div class="btn-group my-1 mt-md-3">
-                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <i class="fas fa-filter"></i> {{ $category }}
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#" wire:click.prevent="setCategory('All')">All</a></li>
+            <input type="text" class="form-control me-2 w-100 w-md-50 mb-3"
+                placeholder="Cari judul artikel atau penulis..." wire:model.live="search" style="height: 38px;" />
+            <nav class="w-100 mt-2 overflow-x-auto pb-2">
+                <div class="d-flex flex-nowrap gap-2" role="group" aria-label="Filter category">
+                    <button type="button" wire:click.prevent="setCategory('All')"
+                        class="btn btn-sm {{ $category === 'All' ? 'btn-dark' : 'btn-outline-dark' }}">
+                        All
+                    </button>
                     @foreach ($categories as $cat)
-                        <li>
-                            <a class="dropdown-item" href="#"
-                                wire:click.prevent="setCategory('{{ $cat }}')">
-                                {{ $cat }}
-                            </a>
-                        </li>
+                        @php
+                            $color = str_replace('bg-', '', $cat->color);
+                            $btnClass = $category === $cat->name ? "btn-$color" : "btn-outline-$color";
+                        @endphp
+                        <button type="button" wire:click.prevent="setCategory('{{ $cat->name }}')"
+                            class="btn btn-sm {{ $btnClass }}">
+                            {{ $cat->name }}
+                        </button>
                     @endforeach
-                </ul>
-            </div>
+                </div>
+            </nav>
         </div>
 
         @if ($articles->isEmpty())
@@ -109,18 +110,23 @@
                 @endforeach
             </div>
         @endif
-    </div>'<div class="text-center mt-4">
+    </div>
+    <div class="text-center mt-4">
         @if ($totalArticles > count($articles))
-            <button wire:click="loadMore" class="btn btn-outline-primary" wire:loading.attr="disabled">
-                <span wire:loading.remove wire:target="loadMore">
-                    Load More
-                </span>
-                <span wire:loading wire:target="loadMore" class="hidden">
-                    <i class="fa fa-spinner fa-spin me-1"></i> Loading...
-                </span>
-            </button>
+            <div x-intersect.full="$wire.loadMore()" class="d-flex justify-content-center py-4">
+                <div wire:loading wire:target="loadMore" class="text-primary">
+                    <i class="fa fa-spinner fa-spin fa-2x"></i>
+                    <span class="ms-2 fw-bold">Sedang memuat artikel lainnya...</span>
+                </div>
+
+                <div wire:loading.remove wire:target="loadMore" class="text-muted small">
+                    Scroll untuk memuat lebih banyak...
+                </div>
+            </div>
         @else
-            <p class="text-muted">No more articles</p>
+            <div class="text-center py-4 text-muted">
+                <p>Semua artikel sudah ditampilkan.</p>
+            </div>
         @endif
-    </div>'
+    </div>
 </div>

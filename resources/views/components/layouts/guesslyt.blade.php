@@ -34,9 +34,6 @@
             left: 0;
             width: 100%;
             z-index: 999;
-            background-color: rgba(31, 41, 55, 0.95) !important;
-            backdrop-filter: blur(8px);
-            box-shadow: none;
             transition: all 0.3s ease;
         }
 
@@ -49,6 +46,7 @@
         .logo {
             width: 5%;
         }
+
         @media (max-width: 768px) {
             .logo {
                 width: 15%;
@@ -73,32 +71,35 @@
         <div id="main" class="layout-horizontal">
             <header class="mb-5">
                 <div id="navbar" class="header-top">
-                    <div class="container d-flex justify-content-between align-items-center py-2">
+                    <div class="container-fluid px-3 px-md-5 d-flex justify-content-between align-items-center py-2">
                         <a href="{{ route('landing-page') }}">
                             <h6 class="d-flex align-items-center mb-0">
-                                <img src="{{ asset('img/logo_fp-removebg-preview.png') }}" alt="Logo Ruang IT" class="logo">
+                                <img src="{{ asset('img/logo_fp-removebg-preview.png') }}" alt="Logo Ruang IT"
+                                    class="logo">
                                 <p class="text-2xl ms-3 mb-0">Ruang IT</p>
                             </h6>
                         </a>
                         <div class="header-top-right">
-                            <div class="dropdown">
-                                <a href="#" id="topbarUserDropdown"
-                                    class="user-dropdown d-flex align-items-center dropend dropdown-toggle"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <div class="avatar" style="width: 32px; height: 32px;">
-                                        <img src="{{ asset('img/pemaaf.webp') }}" alt="Avatar"
-                                            style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
-                                    </div>
-                                    <div class="text ms-2">
-                                        <h6 class="user-dropdown-name mb-0">Tamu</h6>
-                                    </div>
+                            <!-- Desktop Buttons -->
+                            <div class="d-none d-md-flex gap-3">
+                                <a href="{{ route('login') }}" wire:navigate
+                                    class="btn btn-primary hover:!bg-transparent hover:!border-[var(--bs-primary)]">Masuk</a>
+                                <a href="{{ route('register') }}" wire:navigate
+                                    class="btn btn-outline-primary">Daftar</a>
+                            </div>
+
+                            <!-- Mobile Menu -->
+                            <div class="d-md-none dropdown">
+                                <a href="#" id="mobileMenuDropdown" data-bs-toggle="dropdown"
+                                    aria-expanded="false" class="text-white">
+                                    <i class="fa-solid fa-bars fs-2"></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end shadow-lg"
-                                    aria-labelledby="topbarUserDropdown">
+                                    aria-labelledby="mobileMenuDropdown">
                                     <li><a class="dropdown-item" wire:navigate href="{{ route('login') }}">Login</a>
                                     </li>
                                     <li><a class="dropdown-item" wire:navigate
-                                            href="{{ route('register') }}">Daftar</a></li>
+                                            href="{{ route('register') }}">Register</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -113,7 +114,6 @@
         </div>
     </div>
     <script src="{{ asset('dist/assets/static/js/components/dark.js') }}"></script>
-    <script src="{{ asset('dist/assets/static/js/pages/horizontal-layout.js') }}"></script>
     <script src="{{ asset('dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('dist/assets/compiled/js/app.js') }}"></script>
     <script src="{{ asset('dist/assets/extensions/apexcharts/apexcharts.min.js') }}"></script>
@@ -121,36 +121,20 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const navbar = document.getElementById("navbar");
-            let theme = localStorage.getItem("theme");
 
-            if (!theme) {
-                theme = window.matchMedia("(prefers-color-scheme: dark)").matches ?
-                    "dark" :
-                    "light";
-            }
-
-            const isDark = theme === "dark";
-
-
-            applyTheme(isDark);
-            window.addEventListener("theme-changed", (e) => {
-                applyTheme(e.detail === "dark");
-            });
-
-            function applyTheme(dark) {
-                navbar.style.backgroundColor = "var(--bs-navbar-bg)";
-            }
-
-            window.addEventListener("scroll", () => {
+            function updateNavbar() {
                 if (window.scrollY > 10) {
-                    navbar.style.backgroundColor =
-                        "color-mix(in srgb, var(--bs-navbar-bg) 50%, transparent)";
-                    navbar.classList.add("backdrop-blur-md");
+                    navbar.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
+                    navbar.style.backdropFilter = "blur(10px)";
+                    navbar.style.webkitBackdropFilter = "blur(10px)";
                 } else {
-                    navbar.style.backgroundColor = "var(--bs-navbar-bg)";
-                    navbar.classList.remove("backdrop-blur-md");
+                    navbar.style.backgroundColor = "transparent";
+                    navbar.style.backdropFilter = "none";
+                    navbar.style.boxShadow = "none";
                 }
-            });
+            }
+            updateNavbar();
+            window.addEventListener("scroll", updateNavbar);
         });
     </script>
 
