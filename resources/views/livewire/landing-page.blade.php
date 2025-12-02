@@ -80,8 +80,6 @@
                         <div
                             class="absolute z-10 w-8 h-8 rounded-full bg-blue-500 transition-all duration-500 ease-in-out group-hover:scale-150">
                         </div>
-
-                        <!-- Teks tombol -->
                         <a href="{{ route('login') }}" class="z-10">Masuk disini</a>
                     </button>
                 </div>
@@ -92,9 +90,6 @@
             </div>
         </div>
     </section>
-
-
-
 
     <section class="py-24 relative xl:mr-0 lg:mr-5 mr-0 bg-gray-900" id="about">
         <div class="w-full max-w-7xl px-4 md:px-5 lg:px-5 mx-auto">
@@ -116,11 +111,11 @@
                                     perkembangan teknologi yang membentuk masa depan.</p>
                             </div>
                         </div>
-                        <div class="w-full flex-col justify-center items-start gap-6 flex">
-                            <div class="w-full justify-start items-center gap-8 grid md:grid-cols-2 grid-cols-1">
-                                @foreach ($stats as $index => $stat)
+                        <div class="w-full flex flex-col justify-center items-start gap-6">
+                            <div class="w-full grid gap-8 grid-cols-1 md:grid-cols-2">
+                                @foreach ($stats as $stat)
                                     <div
-                                        class="w-full h-full p-3.5 rounded-xl border border-gray-200 hover:border-gray-400 transition-all duration-700 ease-in-out flex-col justify-start items-start gap-2.5 inline-flex">
+                                        class="w-full h-full p-3.5 rounded-xl border border-gray-200 hover:border-gray-400 transition-all duration-700 ease-in-out flex flex-col justify-start items-start gap-2.5">
                                         <h4 class="text-white text-2xl font-bold font-manrope leading-9">
                                             {{ $stat['title'] }}
                                         </h4>
@@ -128,11 +123,6 @@
                                             {{ $stat['desc'] }}
                                         </p>
                                     </div>
-
-                                    @if (($index + 1) % 2 == 0)
-                            </div>
-                            <div class="w-full h-full justify-start items-center gap-8 grid md:grid-cols-2 grid-cols-1">
-                                @endif
                                 @endforeach
                             </div>
                         </div>
@@ -157,8 +147,6 @@
                             <div
                                 class="absolute z-10 w-8 h-8 rounded-full bg-blue-500 transition-all duration-500 ease-in-out group-hover:scale-150">
                             </div>
-
-                            <!-- Teks tombol -->
                             <a href="{{ route('guest') }}" class="z-10">Baca disini</a>
                         </button>
                     </div>
@@ -268,9 +256,25 @@
                                 </div>
 
                                 <h3 class="text-lg font-semibold mb-2">{{ $article->title }}</h3>
-                                <p class="text-sm text-gray-300 line-clamp-3">
-                                    {{ Str::limit(strip_tags($article->content), 120) }}
-                                </p>
+                                @php
+                                    $clean = $article->content;
+                                    $clean = preg_replace_callback(
+                                        '/<ol>(.*?)<\/ol>/s',
+                                        function ($matches) {
+                                            preg_match_all('/<li>(.*?)<\/li>/s', $matches[1], $items);
+                                            $result = '';
+                                            foreach ($items[1] as $i => $text) {
+                                                $result .= $i + 1 . '. ' . strip_tags($text) . ' ';
+                                            }
+                                            return $result;
+                                        },
+                                        $clean,
+                                    );
+                                    $clean = preg_replace('/<ul>(.*?)<\/ul>/s', '', $clean);
+                                    $clean = preg_replace('/<li>(.*?)<\/li>/s', '• $1 ', $clean);
+                                    $preview = \Illuminate\Support\Str::limit(strip_tags($clean), 120);
+                                @endphp
+                                <p class="card-text text-secondary">{{ $preview }}</p>
 
                                 <div class="flex items-center mt-4 gap-x-3">
                                     <img src="{{ $article->user->photo_profile ?? 'https://via.placeholder.com/40' }}"

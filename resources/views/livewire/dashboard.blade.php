@@ -1,4 +1,4 @@
-<div id="dashboard-{{ uniqid() }}">
+<div id="dashboard">
     <div class="p-3">
         <div class="input-group w-100 mb-3 d-flex flex-column flex-md-row align-items-start align-items-md-center">
             <input type="text" class="form-control me-2 w-100 w-md-50" placeholder="Cari judul atau penulis..."
@@ -46,7 +46,7 @@
                             <img class="card-img-top img-fluid rounded-top-3 object-cover"
                                 style="height: 200px; width: 100%; object-fit: cover;"
                                 src="{{ !empty($article->image) && file_exists(storage_path('app/public/' . $article->image))
-                                    ? asset('storage/' . $article->image)
+                                    ? asset('storage/' . $article->image) //Laravel membangun URL publik untuk gambar
                                     : asset('img/Login.jpg') }}"
                                 alt="{{ $article->title }}">
                             <div class="card-body" wire:key="article-{{ $article->id }}">
