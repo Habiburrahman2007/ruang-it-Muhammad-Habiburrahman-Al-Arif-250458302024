@@ -22,3 +22,32 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Laravel Logs
+/storage/logs/*.log
+/storage/logs/laravel.log
+
+# Laravel Cache
+/bootstrap/cache/*
+!/bootstrap/cache/.gitkeep
+
+# Test Coverage
+/coverage/
+
+# IDE
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+
+# Large media files (if any)
+/public/storage/articles/*
+!/public/storage/articles/.gitkeep
