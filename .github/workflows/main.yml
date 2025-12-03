@@ -1,34 +1,30 @@
-name: Deploy Laravel Project via SFTP (Stable)
-
+name: Deploy Laravel (Plain FTP)
 on:
   push:
     branches:
       - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout latest code
-        uses: actions/checkout@v3
-
-      - name: Set directory permissions
-        run: chmod -R 775 storage bootstrap/cache
-
-      - name: 📂 Sync Laravel files via SFTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
+      
+      - name: 📂 Sync files (Insecure Mode)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
+          server: vibedev.my.id      # Pastikan ini host yang benar
+          username: ${{ secrets.FTP_USERNAME }} # Pakai user Ruang-IT ok
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}   # 22 untuk SFTP
-          local-dir: ./                   # root repo
-          server-dir: /public_html/       # target folder
+          port: 21                   # Wajib 21
+          protocol: ftp              # Wajib 'ftp' (huruf kecil)
+          # Hapus baris 'security' agar otomatis mendeteksi yang paling longgar
+          local-dir: ./
+          server-dir: /public_html/
           exclude: |
             **/.git*
+            **/.git*/**
+            **/node_modules/**
             **/tests/**
             **/.env
-            **/node_modules/
-            **/.github/
-            **/vendor/node_modules/
+            **/storage/*.key
