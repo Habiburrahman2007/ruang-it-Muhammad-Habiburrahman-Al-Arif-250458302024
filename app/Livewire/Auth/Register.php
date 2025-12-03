@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 class Register extends Component
 {
-    #[Layout('components.layouts.auth')]
+    #[Layout('layouts.auth')]
     #[Title('Register Page')]
 
     public $name;

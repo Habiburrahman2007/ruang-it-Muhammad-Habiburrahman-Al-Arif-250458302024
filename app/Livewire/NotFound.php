@@ -8,7 +8,7 @@ use Livewire\Attributes\Layout;
 
 class NotFound extends Component
 {
-    #[Layout('components.layouts.auth')]
+    #[Layout('layouts.auth')]
     #[Title('Not Found')]
     public function render()
     {

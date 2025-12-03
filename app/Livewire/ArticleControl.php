@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ArticleControl extends Component
 {
-    #[Layout('components.layouts.app')]
+    #[Layout('layouts.app')]
     #[Title('Admin | Kontrol artikel')]
     public $articles;
     public $user;

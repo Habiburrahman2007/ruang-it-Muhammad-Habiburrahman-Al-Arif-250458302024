@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class DetailProfile extends Component
 {
-    #[Layout('components.layouts.app')]
+    #[Layout('layouts.app')]
     #[Title('Detail Profil')]
 
     public $user;

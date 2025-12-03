@@ -13,7 +13,7 @@ class Comments extends Component
 {
     use WithPagination;
 
-    #[Layout('components.layouts.app')]
+    #[Layout('layouts.app')]
     #[Title('Admin | Kelola komentar')]
 
     public $search = '';

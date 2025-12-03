@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Login extends Component
 {
-    #[Layout('components.layouts.auth')]
+    #[Layout('layouts.auth')]
     #[Title('Login Page')]
 
     public $email;
@@ -33,7 +33,7 @@ class Login extends Component
             return redirect()->intended('/dashboard');
         } else {
             $this->addError('email', 'Email atau password salah.');
-            $this->dispatch('loginFailed'); 
+            $this->dispatch('loginFailed');
         }
     }
 

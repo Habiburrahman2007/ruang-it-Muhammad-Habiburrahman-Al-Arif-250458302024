@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Guess extends Component
 {
-    #[Layout('components.layouts.guesslyt')]
+    #[Layout('layouts.guesslyt')]
     #[Title('Halaman tamu')]
     public $articles;
     public $user;

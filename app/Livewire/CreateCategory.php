@@ -13,7 +13,7 @@ class CreateCategory extends Component
     public $name;
     public $color;
 
-    #[Layout('components.layouts.app')]
+    #[Layout('layouts.app')]
     #[Title('Admin | Tambah Kategori')]
     public function render()
     {

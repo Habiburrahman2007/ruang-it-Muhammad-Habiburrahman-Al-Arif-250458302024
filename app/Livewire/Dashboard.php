@@ -14,7 +14,7 @@ use Livewire\Attributes\Url;
 
 class Dashboard extends Component
 {
-    #[Layout('components.layouts.app')]
+    #[Layout('layouts.app')]
     #[Title('Dashboard')]
 
     #[Url(history: true)]

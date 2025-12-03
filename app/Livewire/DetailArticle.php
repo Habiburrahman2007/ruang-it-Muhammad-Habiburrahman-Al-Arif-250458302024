@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 
 class DetailArticle extends Component
 {
-    #[Layout('components.layouts.app')]
+    #[Layout('layouts.app')]
     #[Title('Detail Artikel')]
 
     public $article;

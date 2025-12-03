@@ -25,7 +25,7 @@ class EditArticle extends Component
     public $oldImage;
     public $categories;
 
-    #[Layout('components.layouts.app')]
+    #[Layout('layouts.app')]
     #[Title('Edit artikel')]
 
     public function mount($slug)

@@ -16,7 +16,7 @@ class CreateArticle extends Component
 {
     use WithFileUploads;
 
-    #[Layout('components.layouts.app')]
+    #[Layout('layouts.app')]
     #[Title('Tambah artikel')]
 
     public $title;

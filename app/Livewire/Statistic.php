@@ -13,7 +13,7 @@ use Livewire\Attributes\Layout;
 
 class Statistic extends Component
 {
-    #[Layout('components.layouts.app')]
+    #[Layout('layouts.app')]
     #[Title('Admin | Statistik')]
 
     public $totalUsers;

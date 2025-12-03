@@ -14,7 +14,7 @@ use Livewire\Attributes\On;
 
 class Profile extends Component
 {
-    #[Layout('components.layouts.app')]
+    #[Layout('layouts.app')]
     #[Title('Halaman Profil')]
 
     public $user;

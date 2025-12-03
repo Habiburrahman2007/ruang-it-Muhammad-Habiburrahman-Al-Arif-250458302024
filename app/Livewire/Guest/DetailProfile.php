@@ -10,7 +10,7 @@ use Livewire\Attributes\Layout;
 
 class DetailProfile extends Component
 {
-    #[Layout('components.layouts.guesslyt')]
+    #[Layout('layouts.guesslyt')]
     #[Title('Detail profil')]
 
     public $user;
@@ -39,25 +39,25 @@ class DetailProfile extends Component
 
     // 🔹 Fungsi untuk memuat artikel berdasarkan kategori dan pencarian
     public function loadArticles()
-{
-    $query = $this->user->articles()->with(['category', 'likes', 'comments']);
+    {
+        $query = $this->user->articles()->with(['category', 'likes', 'comments']);
 
-    if ($this->category !== 'All') {
-        $query->whereHas('category', fn($q) => $q->where('name', $this->category));
+        if ($this->category !== 'All') {
+            $query->whereHas('category', fn($q) => $q->where('name', $this->category));
+        }
+
+        if ($this->search) {
+            $query->where('title', 'like', '%' . $this->search . '%');
+        }
+
+        // hasilnya Collection, bukan array
+        $this->articles = $query->latest()->get();
+
+        // bisa pakai count() dan sum()
+        $this->articleCount = $this->articles->count();
+        $this->likeCount = $this->articles->sum(fn($a) => $a->likes->count());
+        $this->commentCount = $this->articles->sum(fn($a) => $a->comments->count());
     }
-
-    if ($this->search) {
-        $query->where('title', 'like', '%' . $this->search . '%');
-    }
-
-    // hasilnya Collection, bukan array
-    $this->articles = $query->latest()->get();
-
-    // bisa pakai count() dan sum()
-    $this->articleCount = $this->articles->count();
-    $this->likeCount = $this->articles->sum(fn($a) => $a->likes->count());
-    $this->commentCount = $this->articles->sum(fn($a) => $a->comments->count());
-}
 
 
     // 🔹 Ketika kategori diganti

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 class DetailArticle extends Component
 {
-    #[Layout('components.layouts.guesslyt')]
+    #[Layout('layouts.guesslyt')]
     #[Title('Detail profil')]
 
     public $article;
@@ -43,7 +43,7 @@ class DetailArticle extends Component
 
     public function loadMore()
     {
-        $this->perPage += 3; 
+        $this->perPage += 3;
         $this->loadComments();
     }
 

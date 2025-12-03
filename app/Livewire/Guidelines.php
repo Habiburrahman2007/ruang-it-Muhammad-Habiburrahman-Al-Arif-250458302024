@@ -8,7 +8,7 @@ use Livewire\Attributes\Layout;
 
 class Guidelines extends Component
 {
-    #[Layout('components.layouts.app')]
+    #[Layout('layouts.app')]
     #[Title('Halaman Profil')]
     public function render()
     {

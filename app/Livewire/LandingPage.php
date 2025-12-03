@@ -11,7 +11,7 @@ use Livewire\Attributes\Layout;
 
 class LandingPage extends Component
 {
-    #[Layout('components.layouts.lp')]
+    #[Layout('layouts.lp')]
     #[Title('Ruang IT | Landing Page')]
 
     public $articles;
