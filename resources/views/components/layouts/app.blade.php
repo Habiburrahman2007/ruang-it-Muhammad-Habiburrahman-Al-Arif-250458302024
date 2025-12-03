@@ -128,9 +128,6 @@
             </div>
 
         </div>
-
-        {{-- Toast Notifications --}}
-        <x-toast />
     </div>
 
 

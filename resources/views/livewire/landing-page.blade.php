@@ -257,22 +257,7 @@
 
                                 <h3 class="text-lg font-semibold mb-2">{{ $article->title }}</h3>
                                 @php
-                                    $clean = $article->content;
-                                    $clean = preg_replace_callback(
-                                        '/<ol>(.*?)<\/ol>/s',
-                                        function ($matches) {
-                                            preg_match_all('/<li>(.*?)<\/li>/s', $matches[1], $items);
-                                            $result = '';
-                                            foreach ($items[1] as $i => $text) {
-                                                $result .= $i + 1 . '. ' . strip_tags($text) . ' ';
-                                            }
-                                            return $result;
-                                        },
-                                        $clean,
-                                    );
-                                    $clean = preg_replace('/<ul>(.*?)<\/ul>/s', '', $clean);
-                                    $clean = preg_replace('/<li>(.*?)<\/li>/s', '• $1 ', $clean);
-                                    $preview = \Illuminate\Support\Str::limit(strip_tags($clean), 120);
+                                    $preview = \App\Helpers\ContentHelper::preview($article->content, 120);
                                 @endphp
                                 <p class="card-text text-secondary">{{ $preview }}</p>
 
