@@ -40,7 +40,7 @@ class HtmlSanitizer
                 'code',
                 'pre',
                 'hr',
-                'iframe' // For YouTube embeds
+                'iframe'
             ],
             'allowed_attributes' => [
                 'a' => ['href', 'title', 'target', 'rel'],

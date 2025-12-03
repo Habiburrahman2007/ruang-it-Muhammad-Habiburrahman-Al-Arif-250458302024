@@ -35,7 +35,7 @@
                             </div>
                             <div
                                 class="d-flex flex-row flex-md-column gap-2 justify-content-start justify-content-md-end w-md-auto">
-                                <a href="{{ route('profile.edit') }}" class="btn btn-outline-primary px-4">
+                                <a href="{{ route('profile-edit') }}" class="btn btn-outline-primary px-4">
                                     <i class="fa-solid fa-user-pen me-1"></i> Edit
                                 </a>
                                 <button type="button" onclick="window.confirmLogout()"

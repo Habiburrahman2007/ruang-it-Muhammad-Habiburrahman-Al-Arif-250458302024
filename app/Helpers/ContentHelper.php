@@ -4,11 +4,6 @@ namespace App\Helpers;
 
 use Illuminate\Support\Str;
 
-/**
- * Content Helper
- * 
- * Provides utility methods for content processing and manipulation
- */
 class ContentHelper
 {
     /**
@@ -33,8 +28,6 @@ class ContentHelper
     public static function preview(string $content, int $limit = 120): string
     {
         $clean = $content;
-
-        // Process ordered lists - convert to numbered text
         $clean = preg_replace_callback(
             '/<ol>(.*?)<\/ol>/s',
             function ($matches) {
@@ -48,13 +41,8 @@ class ContentHelper
             $clean
         );
 
-        // Remove unordered lists entirely (or convert to bullets)
         $clean = preg_replace('/<ul>(.*?)<\/ul>/s', '', $clean);
-
-        // Convert remaining list items to bullets
         $clean = preg_replace('/<li>(.*?)<\/li>/s', '• $1 ', $clean);
-
-        // Strip all remaining HTML tags and limit length
         return Str::limit(strip_tags($clean), $limit);
     }
 

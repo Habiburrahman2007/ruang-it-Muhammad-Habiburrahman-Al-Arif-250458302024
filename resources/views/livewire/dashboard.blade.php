@@ -7,7 +7,7 @@
                 <div class="d-flex flex-nowrap gap-2" role="group" aria-label="Filter category">
                     <button type="button" wire:click.prevent="setCategory('All')"
                         class="btn btn-sm {{ $category === 'All' ? 'btn-primary' : 'btn-outline-primary' }}">
-                        Semua
+                        SEMUA
                     </button>
                     @foreach ($categories as $cat)
                         @php
