@@ -11,24 +11,33 @@ jobs:
 
     steps:
       - name: Checkout latest code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # Update ke v4 lebih baik
 
-      - name: Set directory permissions
-        run: chmod -R 775 storage bootstrap/cache
+      # Note: Step chmod di sini TIDAK BERPENGARUH ke server hosting.
+      # Step ini hanya mengubah permission di komputer GitHub (Runner).
+      # Permission harus diatur manual di File Manager/SSH Hosting.
 
       - name: 📂 Sync Laravel files via SFTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5 # Update ke versi stabil terbaru
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}   # 22 untuk SFTP
-          local-dir: ./                   # root repo
-          server-dir: /public_html/       # target folder
+          port: ${{ secrets.FTP_PORT }} 
+          protocol: sftp              # <--- WAJIB ADA jika pakai Port 22
+          local-dir: ./
+          server-dir: /public_html/   # Pastikan path ini benar di hosting
+          
+          # Exclude file sampah agar tidak berat & kena timeout
           exclude: |
             **/.git*
+            **/.git*/**
+            **/node_modules/**
             **/tests/**
             **/.env
-            **/node_modules/
-            **/.github/
-            **/vendor/node_modules/
+            **/.github/**
+            **/storage/*.key
+            
+            # PENTING: Jika upload sering gagal (FIN Packet),
+            # uncomment (hilangkan tanda #) baris di bawah ini:
+            # **/vendor/** ```
