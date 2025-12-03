@@ -2,70 +2,59 @@
 
 use Illuminate\Support\Facades\Route;
 
-// ============================================
+// General Pages
+use App\Livewire\Dashboard;
+use App\Livewire\Guidelines;
+use App\Livewire\LandingPage;
+use App\Livewire\NotFound;
+
+// Admin Components
+use App\Livewire\Admin\ArticleControl;
+use App\Livewire\Admin\Categories;
+use App\Livewire\Admin\Comments;
+use App\Livewire\Admin\CreateCategory;
+use App\Livewire\Admin\Statistic;
+use App\Livewire\Admin\UserControl;
+
+// Article Components
+use App\Livewire\Article\Create as CreateArticle;
+use App\Livewire\Article\Detail as DetailArticle;
+use App\Livewire\Article\Edit as EditArticle;
+
 // Auth Components
-// ============================================
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 
-// ============================================
 // Guest Components
-// ============================================
-use App\Livewire\Guess;
 use App\Livewire\Guest\DetailArticle as GuestDetailArticle;
 use App\Livewire\Guest\DetailProfile as GuestDetailProfile;
+use App\Livewire\Guest\Index as GuestIndex;
 
-// ============================================
-// User Components
-// ============================================
-use App\Livewire\CreateArticle;
-use App\Livewire\Dashboard;
-use App\Livewire\DetailArticle;
-use App\Livewire\DetailProfile;
-use App\Livewire\EditArticle;
-use App\Livewire\Guidelines;
-use App\Livewire\LandingPage;
-use App\Livewire\Profile;
-use App\Livewire\Profile\EditProfile;
+// Profile Components
+use App\Livewire\Profile\Detail as DetailProfile;
+use App\Livewire\Profile\Edit as EditProfile;
+use App\Livewire\Profile\Index as ProfileIndex;
 
-// ============================================
-// Admin Components
-// ============================================
-use App\Livewire\Admin\Comments;
-use App\Livewire\ArticleControl;
-use App\Livewire\Categories;
-use App\Livewire\CreateCategory;
-use App\Livewire\Statistic;
-use App\Livewire\UserControl;
-
-// ============================================
 // PUBLIC ROUTES
-// ============================================
 
 Route::get('/', LandingPage::class)->name('landing-page');
 
-// ============================================
 // GUEST ROUTES (Unauthenticated Users)
-// ============================================
 
 Route::prefix('guest')->group(function () {
-    Route::get('/', Guess::class)->name('guest');
+    Route::get('/', GuestIndex::class)->name('guest');
     Route::get('/article/{slug}', GuestDetailArticle::class)->name('detail-article-guest');
     Route::get('/profile/{slug}', GuestDetailProfile::class)->name('detail-profile-guest');
 });
 
-// ============================================
 // AUTHENTICATION ROUTES
-// ============================================
 
 Route::prefix('auth')->middleware('guest')->group(function () {
     Route::get('/login', Login::class)->name('login');
     Route::get('/register', Register::class)->name('register');
 });
 
-// ============================================
 // AUTHENTICATED USER ROUTES
-// ============================================
 
 Route::middleware(['auth', 'banned'])->group(function () {
 
@@ -74,7 +63,7 @@ Route::middleware(['auth', 'banned'])->group(function () {
     Route::get('/guidelines', Guidelines::class)->name('guidelines');
 
     // Profile Routes
-    Route::get('/profile', Profile::class)->name('profile');
+    Route::get('/profile', ProfileIndex::class)->name('profile');
     Route::get('/profile/edit', EditProfile::class)->name('profile-edit');
     Route::get('/detail-profile/{slug}', DetailProfile::class)->name('detail-profile');
 
@@ -85,9 +74,7 @@ Route::middleware(['auth', 'banned'])->group(function () {
     Route::get('/edit-article/{slug}', EditArticle::class)->name('edit-article');
     Route::get('/detail-article/{slug}', DetailArticle::class)->name('detail-article');
 
-    // ============================================
     // ADMIN ROUTES
-    // ============================================
 
     Route::prefix('admin')->middleware('is_admin')->group(function () {
         // Statistics & Overview
@@ -106,9 +93,7 @@ Route::middleware(['auth', 'banned'])->group(function () {
     });
 });
 
-// ============================================
 // FALLBACK ROUTE (404 Not Found)
-// ============================================
 
 Route::fallback(function () {
     return view('livewire.not-found');

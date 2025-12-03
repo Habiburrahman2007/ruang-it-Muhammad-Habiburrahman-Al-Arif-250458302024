@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Article;
 
 use App\Models\Article;
 use App\Models\Category;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
-class CreateArticle extends Component
+class Create extends Component
 {
     use WithFileUploads;
 

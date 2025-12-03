@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Guest;
 
 use App\Models\Article;
 use Livewire\Component;
@@ -9,7 +9,7 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
 
-class Guess extends Component
+class Index extends Component
 {
     #[Layout('layouts.guesslyt')]
     #[Title('Halaman tamu')]

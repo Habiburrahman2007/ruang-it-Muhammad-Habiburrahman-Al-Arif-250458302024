@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Article;
 
 use App\Models\Like;
 use App\Models\Article;
@@ -12,7 +12,7 @@ use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-class DetailArticle extends Component
+class Detail extends Component
 {
     #[Layout('layouts.app')]
     #[Title('Detail Artikel')]

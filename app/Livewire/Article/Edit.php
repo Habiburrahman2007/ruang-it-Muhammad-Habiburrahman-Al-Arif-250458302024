@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Article;
 
 use App\Models\Article;
 use App\Models\Category;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 
-class EditArticle extends Component
+class Edit extends Component
 {
     use WithFileUploads;
 
