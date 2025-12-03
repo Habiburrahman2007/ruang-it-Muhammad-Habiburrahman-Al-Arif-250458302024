@@ -1,34 +1,36 @@
-name: Deploy Laravel (Plain FTP)
-
+name: Deploy Laravel Project on push to cpanel
 on:
   push:
     branches:
       - main
-
 jobs:
-  deploy:
+  web-deploy:
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: 🚚 Pull latest source
-        uses: actions/checkout@v4
-
-      - name: 📂 Sync files to hosting (Safe Mode)
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Get the latest code
+        uses: actions/checkout@v2.3.2
+      - uses: actions/setup-node@master
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
-          server: vibedev.my.id
+          server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: 21
-          protocol: ftp
-          local-dir: ./
-          server-dir: /public_html/
+          server-dir: /
           exclude: |
-            **/vendor/**
-            **/node_modules/**
             **/.git*
-            **/.env
+            **/.git*/**
+            **/node_modules/**
+            **/bootstrap/**
+            **/database/**
+            **/public/**
+            **/storage/**
+            **/stubs/**
             **/tests/**
-            **/storage/*.key
-            **/storage/app/**
-            **/storage/framework/**
-            **/storage/logs/**
+            **/vendor/**
+            **.env
