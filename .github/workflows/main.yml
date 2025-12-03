@@ -10,20 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📂 Sync Laravel files via FTP (Fixed)
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: 📂 Sync via SFTP (Library Baru)
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4   # <--- BEDA LIBRARY
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: 21                 
-          protocol: ftp            
-          local-dir: ./
-          server-dir: /public_html/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/tests/**
-            **/.env
-            **/storage/*.key
+          port: 22                   # Port SSH/SFTP
+          local_path: './'           # Perhatikan nama variabel beda (local_path)
+          remote_path: '/public_html/' # Perhatikan nama variabel beda (remote_path)
+          sftp_only: true
