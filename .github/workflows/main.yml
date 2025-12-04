@@ -8,43 +8,32 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: Setup PHP 8.3
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          extensions: mbstring, intl, bcmath
-          tools: composer
-
-      - name: Install Dependencies (Production)
-        run: composer install --no-dev --optimize-autoloader
-
-      - name: Create env
+      # --- GANTI STEP FTP LAMA DENGAN INI ---
+      
+      - name: 📂 Deploy via LFTP (Robut & Auto-Retry)
         run: |
-          cp .env.example .env
-          php artisan key:generate
+          # 1. Install LFTP
+          sudo apt-get update
+          sudo apt-get install -y lftp
 
-      - name: Build Laravel (cache)
-        run: |
-          php artisan config:cache
-          php artisan route:cache
-          php artisan view:cache
-
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /public_html/
-          local-dir: ./
-          exclude: |
-            **/.git*
-            **/.github*
-            node_modules/
-            vendor/bin/
-            storage/logs/*
-            storage/framework/cache/*
-            storage/framework/views/*
+          # 2. Jalankan Sync dengan LFTP
+          # Perintah ini akan mencoba upload, dan auto-reconnect jika diputus server
+          lftp -e "
+            set ftp:ssl-allow no;           # Paksa FTP biasa (hindari error SSL handshake)
+            set net:max-retries 3;          # Coba lagi 3x kalau gagal
+            set net:timeout 60;             # Timeout toleransi
+            open ${{ secrets.FTP_SERVER }}; 
+            user ${{ secrets.FTP_USERNAME }} ${{ secrets.FTP_PASSWORD }}; 
+            mirror -R -v \
+              --parallel=2 \
+              --exclude .git/ \
+              --exclude .github/ \
+              --exclude node_modules/ \
+              --exclude tests/ \
+              --exclude .env \
+              --exclude .vendor \
+              --exclude .env.example \
+              --exclude .editorconfig \
+              ./ /public_html/;             
+            bye
+          "
