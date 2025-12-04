@@ -1,42 +1,52 @@
-name: Deploy Laravel to Hosting
+name: Deploy Laravel via FTP
 
 on:
   push:
-    branches:
-      - main  # Ganti dengan nama branch utama kamu (misal: master)
+    branches: [ main ]
 
 jobs:
-  web-deploy:
-    name: 🎉 Deploy to FTP
+  deploy:
+    name: Deploy to Hosting
     runs-on: ubuntu-latest
+
     steps:
-      - name: 📂 Sync files via FTP
+      - name: Get latest code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, intl, bcmath
+          tools: composer
+
+      - name: Install dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Create env file
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Build Laravel
+        run: |
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+
+      - name: Upload to Hosting via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /public_html/  # Pastikan diakhiri garis miring /
-          
-          # Paksa protokol standar (lebih stabil untuk shared hosting)
-          protocol: ftp
-          port: 21
-          
-          # Matikan fitur state file yang bikin error di gambar kamu
-          log-level: verbose
-          security: strict
-          state-name: '' # Mengosongkan ini akan men-disable sync state file
-          
-          # Masalah utama ECONNRESET biasanya karena upload terlalu ngebut
-          # Kita batasi jadi 1 file per detik agar firewall hosting tidak marah
-          args: --parallel=1
-          
+          server-dir: /public_html/
+          local-dir: ./
           exclude: |
             **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/tests/**
-            .editorconfig
-            .env.example
-            README.md
-            README.md
+            **/.github*
+            vendor/bin/
+            node_modules/
+            storage/logs/*
+            storage/framework/cache/*
+            storage/framework/views/*
