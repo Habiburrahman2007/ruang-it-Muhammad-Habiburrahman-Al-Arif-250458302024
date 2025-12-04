@@ -20,11 +20,10 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ./     # Pakai titik slash
-          log-level: verbose # Biar log-nya cerewet dan kelihatan errornya
-          
-          # Kita HANYA exclude git dan vendor (karena mau manual)
-          # Hapus .env dari exclude dulu biar kita yakin koneksi jalan
+          server-dir: ./     
+          protocol: ftp            
+          port: 21                   
+          strict: false
           exclude: |
             **/.git*
             **/.git*/**
