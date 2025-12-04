@@ -21,16 +21,12 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /
+          local-dir: ./  
+          server-dir: /public_html/
           exclude: |
             **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/bootstrap/**
-            **/database/**
-            **/public/**
-            **/storage/**
-            **/stubs/**
             **/tests/**
-            **/vendor/**
-            **.env
+            **/.env
+            **/node_modules/
+            **/.github/
+            **/vendor/node_modules/
