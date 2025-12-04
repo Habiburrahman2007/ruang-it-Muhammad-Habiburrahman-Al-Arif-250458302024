@@ -15,17 +15,23 @@ jobs:
         run: chmod -R 777 storage bootstrap/cache
 
       - name: 📂 Sync files
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        uses: SamKirkland/FTP-Deploy-Action@4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ./     
-          protocol: ftp            
-          port: 21                   
-          strict: false
+          server-dir: ./
+          
+          # PENGATURAN "ANTI-PUTUS":
+          protocol: ftp          # Kita pakai FTP biasa (tanpa SSL) agar ringan
+          port: 21               # Port standar
+          strict: false          # Jangan cek sertifikat
+          timeout: 30000         # Tambah waktu tunggu biar gak gampang timeout
+          
           exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
             **/vendor/**
+            **.env
+            **/storage/*.key
