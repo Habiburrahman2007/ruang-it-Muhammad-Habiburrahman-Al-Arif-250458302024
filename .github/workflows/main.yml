@@ -10,11 +10,15 @@ jobs:
     steps:
       - name: Get the latest code
         uses: actions/checkout@v2.3.2
-      - uses: actions/setup-node@master
+
+      # Kita skip step "Composer Install" karena vendor diurus manual
+      
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
+
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
@@ -22,15 +26,12 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /
+          # DAFTAR EXCLUDE YANG BENAR:
+          # Kita exclude vendor (biar manual), tapi folder lain tetap jalan.
           exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
-            **/bootstrap/**
-            **/database/**
-            **/public/**
-            **/storage/**
-            **/stubs/**
             **/tests/**
             **/vendor/**
             **.env
