@@ -1,39 +1,49 @@
-name: Deploy Laravel Project on push to cpanel
+name: Deploy Laravel to Hosting
+
 on:
   push:
     branches:
-      - main
+      - main  # Ganti dengan nama branch utama kamu (misal: master)
+
 jobs:
   web-deploy:
-    name: Deploy
+    name: 🎉 Deploy to FTP
     runs-on: ubuntu-latest
     steps:
-      - name: Get the latest code
-        uses: actions/checkout@v2.3.2
+      # 1. Mengambil kode terbaru dari repo
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
 
-      - name: Directory Permissions
-        run: chmod -R 777 storage bootstrap/cache
+      # 2. Setup PHP (sesuaikan versinya dengan server hosting kamu)
+      - name: 🟢 Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, bcmath, ctype, fileinfo, openssl, pdo, pdo_mysql, tokenizer, xml
 
-      - name: 📂 Sync files
-        # PERBAIKAN: Tambah huruf 'v' di depan versi
+      # 3. Install dependency Composer (tanpa dev dependencies agar ringan)
+      - name: 📦 Install Composer Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --no-dev
+
+      # 4. Install & Build Frontend Assets (Vite/NPM)
+      - name: 🎨 Build Frontend Assets
+        run: |
+          npm install
+          npm run build
+
+      # 5. Proses Upload ke Hosting via FTP
+      - name: 📂 Sync files via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ./
-          
-          # PENGATURAN KONEKSI (Anti-Putus):
-          protocol: ftp          # Pakai FTP biasa (ringan)
-          port: 21
-          strict: false          # Abaikan sertifikat SSL
-          timeout: 30000         # Waktu tunggu lebih lama
-          
-          # EXCLUDE (Vendor & Git tidak di-upload):
+          server-dir: /public_html/  # Folder tujuan di hosting (sesuaikan!)
           exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
-            **/vendor/**
-            **.env
-            **/storage/*.key
+            **/tests/**
+            .editorconfig
+            .env.example
+            README.md
