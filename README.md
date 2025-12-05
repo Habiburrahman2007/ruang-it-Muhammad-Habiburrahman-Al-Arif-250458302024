@@ -26,7 +26,7 @@ Aplikasi ini adalah platform manajemen konten dan blogging berbasis web yang mod
 
 ### Backend
 - **Laravel 12**: Framework PHP modern yang kuat dan ekspresif.
-- **PHP 8.2+**: Bahasa pemrograman server-side.
+- **PHP 8.3+**: Bahasa pemrograman server-side.
 - **MySQL**: Sistem manajemen basis data.
 
 ### Frontend
