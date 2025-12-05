@@ -1,39 +1,61 @@
-name: Deploy Laravel via FTP
+name: Deploy Laravel to cPanel
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  deploy:
+  web-deploy:
+    name: Deploy
     runs-on: ubuntu-latest
+    
     steps:
-      # --- GANTI STEP FTP LAMA DENGAN INI ---
-      
-      - name: 📂 Deploy via LFTP (Robut & Auto-Retry)
-        run: |
-          # 1. Install LFTP
-          sudo apt-get update
-          sudo apt-get install -y lftp
+      - name: Get latest code
+        uses: actions/checkout@v3
 
-          # 2. Jalankan Sync dengan LFTP
-          # Perintah ini akan mencoba upload, dan auto-reconnect jika diputus server
-          lftp -e "
-            set ftp:ssl-allow no;           # Paksa FTP biasa (hindari error SSL handshake)
-            set net:max-retries 3;          # Coba lagi 3x kalau gagal
-            set net:timeout 60;             # Timeout toleransi
-            open ${{ secrets.FTP_SERVER }}; 
-            user ${{ secrets.FTP_USERNAME }} ${{ secrets.FTP_PASSWORD }}; 
-            mirror -R -v \
-              --parallel=2 \
-              --exclude .git/ \
-              --exclude .github/ \
-              --exclude node_modules/ \
-              --exclude tests/ \
-              --exclude .env \
-              --exclude .vendor \
-              --exclude .env.example \
-              --exclude .editorconfig \
-              ./ /public_html/;             
-            bye
-          "
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install NPM dependencies & Build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Create .env from example
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Set directory permissions
+        run: chmod -R 777 storage bootstrap/cache
+
+      - name: Sync files via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          protocol: ftp
+          port: 21
+          timeout: 300000
+          log-level: verbose
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/tests/**
+            **/vendor/**
+            **/.env
+            **/.env.example
+            **/phpunit.xml
+            **/README.md
