@@ -1,10 +1,5 @@
 import isDesktop from '../helper/isDesktop'
 
-
-/**
- * Calculate nested children height in sidebar menu
-* @param {HTMLElement} el 
-*/
 const calculateChildrenHeight = (el, deep = false) => {
   const children = el.children
 
@@ -13,7 +8,6 @@ const calculateChildrenHeight = (el, deep = false) => {
     const child = children[i]
     height += child.querySelector('.submenu-link').clientHeight
 
-    // 2-level menu
     if (deep && child.classList.contains('has-sub')) {
       const subsubmenu = child.querySelector('.submenu')
 
@@ -28,14 +22,8 @@ const calculateChildrenHeight = (el, deep = false) => {
   return height
 }
 
-// Global flag to track if event delegation is set up
 let globalEventDelegationSetup = false;
 
-/**
- * a Sidebar component
- * @param  {HTMLElement} el - sidebar element
- * @param  {object} options={} - options
- */
 class Sidebar {
   constructor(el, options = {}) {
     this.sidebarEL = el instanceof HTMLElement ? el : document.querySelector(el)
@@ -43,20 +31,14 @@ class Sidebar {
     this.init()
   }
 
-  /**
-   * initialize the sidebar
-   */
   init() {
     console.log('Sidebar init() called');
     console.log('Sidebar element:', this.sidebarEL);
     console.log('Global delegation setup:', globalEventDelegationSetup);
 
-    // Setup event delegation only once globally
     if (!globalEventDelegationSetup) {
       console.log('Setting up global event delegation for burger buttons');
 
-      // Use event delegation for burger button and sidebar-hide
-      // This way events will work even after Livewire navigation
       document.addEventListener('click', (e) => {
         const burgerBtn = e.target.closest('.burger-btn');
         const sidebarHide = e.target.closest('.sidebar-hide');
@@ -64,7 +46,6 @@ class Sidebar {
         if (burgerBtn) {
           console.log('Burger button clicked via delegation');
           e.preventDefault();
-          // Find the sidebar instance
           const sidebar = document.getElementById('sidebar');
           if (sidebar && window.sidebarInstance) {
             window.sidebarInstance.toggle();
@@ -72,7 +53,6 @@ class Sidebar {
         } else if (sidebarHide) {
           console.log('Sidebar hide clicked via delegation');
           e.preventDefault();
-          // Find the sidebar instance
           const sidebar = document.getElementById('sidebar');
           if (sidebar && window.sidebarInstance) {
             window.sidebarInstance.toggle();
@@ -109,21 +89,18 @@ class Sidebar {
         })
 
 
-      // If submenu has submenu
       const submenuItems = sidebarItem.querySelectorAll('.submenu-item.has-sub')
       submenuItems.forEach(item => {
         item.addEventListener('click', () => {
           const submenuLevelTwo = item.querySelector('.submenu')
           toggleSubmenu(submenuLevelTwo)
 
-          // Pass second .submenu
           const height = calculateChildrenHeight(item.parentElement, true)
 
         })
       })
     }
 
-    // Perfect Scrollbar Init
     if (typeof PerfectScrollbar == "function") {
       const container = document.querySelector(".sidebar-wrapper")
       const ps = new PerfectScrollbar(container, {
@@ -131,7 +108,6 @@ class Sidebar {
       })
     }
 
-    // Scroll into active sidebar
     setTimeout(() => {
       const activeSidebarItem = document.querySelector(".sidebar-item.active");
       if (activeSidebarItem) {
@@ -146,9 +122,6 @@ class Sidebar {
 
   }
 
-  /**
-   * On Sidebar Rezise Event
-   */
   onResize() {
     if (isDesktop(window)) {
       this.sidebarEL.classList.add("active")
@@ -157,14 +130,10 @@ class Sidebar {
       this.sidebarEL.classList.remove("active")
     }
 
-    // reset
     this.deleteBackdrop()
     this.toggleOverflowBody(true)
   }
 
-  /**
-   * Toggle Sidebar
-   */
   toggle() {
     const sidebarState = this.sidebarEL.classList.contains("active")
     if (sidebarState) {
@@ -174,9 +143,6 @@ class Sidebar {
     }
   }
 
-  /**
-   * Show Sidebar
-   */
   show() {
     this.sidebarEL.classList.add("active")
     this.sidebarEL.classList.remove("inactive")
@@ -184,9 +150,6 @@ class Sidebar {
     this.toggleOverflowBody()
   }
 
-  /**
-   * Hide Sidebar
-   */
   hide() {
     this.sidebarEL.classList.remove("active")
     this.sidebarEL.classList.add("inactive")
@@ -194,9 +157,6 @@ class Sidebar {
     this.toggleOverflowBody()
   }
 
-  /**
-   * Create Sidebar Backdrop
-   */
   createBackdrop() {
     if (isDesktop(window)) return
     this.deleteBackdrop()
@@ -206,9 +166,6 @@ class Sidebar {
     document.body.appendChild(backdrop)
   }
 
-  /**
-   * Delete Sidebar Backdrop
-   */
   deleteBackdrop() {
     const backdrop = document.querySelector(".sidebar-backdrop")
     if (backdrop) {
@@ -216,9 +173,6 @@ class Sidebar {
     }
   }
 
-  /**
-   * Toggle Overflow Body
-   */
   toggleOverflowBody(active) {
     if (isDesktop(window)) return;
     const sidebarState = this.sidebarEL.classList.contains("active")
@@ -253,9 +207,6 @@ class Sidebar {
 
 let sidebarEl = document.getElementById("sidebar")
 
-/**
-   * On First Load
-   */
 const onFirstLoad = (sidebarEL) => {
   if (!sidebarEl) return
   if (isDesktop(window)) {
@@ -263,7 +214,6 @@ const onFirstLoad = (sidebarEL) => {
     sidebarEL.classList.add('sidebar-desktop')
   }
 
-  // Get submenus size
   let submenus = document.querySelectorAll(".sidebar-item.has-sub .submenu")
   for (var i = 0; i < submenus.length; i++) {
     let submenu = submenus[i]
@@ -281,7 +231,6 @@ const onFirstLoad = (sidebarEL) => {
 const reInit_SubMenuHeight = (sidebarEl) => {
   if (!sidebarEl) return
 
-  // Get submenus size
   let submenus = document.querySelectorAll(".sidebar-item.has-sub .submenu")
   for (var i = 0; i < submenus.length; i++) {
     let submenu = submenus[i]
@@ -303,21 +252,15 @@ if (document.readyState !== 'loading') {
 else {
   window.addEventListener('DOMContentLoaded', () => onFirstLoad(sidebarEl))
 }
-/**
- * Create Sidebar Wrapper
- */
 
-// NOTE make Sidebar method as a global function
 window.Sidebar = Sidebar
 
-// Initialize sidebar
 const initializeSidebar = () => {
   console.log('initializeSidebar() called');
   sidebarEl = document.getElementById("sidebar")
   if (sidebarEl) {
     console.log('Sidebar element found, initializing...');
     onFirstLoad(sidebarEl)
-    // Store instance globally so event delegation can access it
     window.sidebarInstance = new window.Sidebar(sidebarEl)
     console.log('Sidebar instance created:', window.sidebarInstance);
   } else {
@@ -325,18 +268,8 @@ const initializeSidebar = () => {
   }
 }
 
-// Initial load
 initializeSidebar()
 
-// Reinitialize sidebar after Livewire navigation
 document.addEventListener('livewire:navigated', () => {
   initializeSidebar()
 })
-
-// NOTE use this to reinitialize sidebar with recalculate height
-// NOTE fixed dropdown smooth animation
-/*
-const sidebar = new window.Sidebar(document.getElementById("sidebar"), {
-  recalculateHeight: true
-}) 
-*/

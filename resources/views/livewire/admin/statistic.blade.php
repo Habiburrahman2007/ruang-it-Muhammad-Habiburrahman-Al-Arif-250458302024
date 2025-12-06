@@ -150,12 +150,10 @@
         referrerpolicy="no-referrer"></script>
 
     <script>
-        // 1. Variabel Global untuk menyimpan instance chart
-        // Disimpan di luar fungsi agar bisa di-destroy saat navigasi
-
-        let pieChart = null;
-
-
+        // Use window property to avoid duplicate declaration on livewire:navigated
+        if (typeof window.pieChart === 'undefined') {
+            window.pieChart = null;
+        }
 
         function createPieChart() {
             // A. Ambil Elemen Pie Chart
@@ -167,8 +165,9 @@
             }
 
             // C. Bersihkan chart lama
-            if (pieChart) {
-                pieChart.destroy();
+            if (window.pieChart) {
+                window.pieChart.destroy();
+                window.pieChart = null;
             }
 
             // D. Ambil data dari PHP
@@ -209,13 +208,12 @@
             };
 
             // F. Render Chart Baru
-            pieChart = new ApexCharts(chartElement, pieOptions);
-            pieChart.render();
+            window.pieChart = new ApexCharts(chartElement, pieOptions);
+            window.pieChart.render();
         }
 
         // Fungsi Wrapper untuk inisialisasi semua chart
         function initCharts() {
-
             createPieChart();
         }
 

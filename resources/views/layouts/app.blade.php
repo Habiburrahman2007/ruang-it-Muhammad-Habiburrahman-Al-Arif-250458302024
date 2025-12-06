@@ -71,7 +71,7 @@
         }
 
 
-        #sidebar.active~#main header .fixed-hamburger {
+        #sidebar.active~#main header .burger-btn {
             display: none !important;
         }
 
@@ -116,14 +116,11 @@
         @include('layouts.sidebar')
 
         <div id="main">
-            @persist('header')
-                <header class="mb-3">
-                    <a href="#" class="burger-btn d-block d-xl-none fixed-hamburger"
-                        style="position: fixed; top: 20px; left: 20px; z-index: 1000; background: var(--bs-body-bg); padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                        <i class="bi bi-justify fs-3"></i>
-                    </a>
-                </header>
-            @endpersist
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
 
             <div class="content-wrapper container">
                 {{ $slot }}
@@ -134,6 +131,66 @@
 
 
     @stack('scripts')
+    {{-- Hamburger Menu Script --}}
+    <script>
+        function initializeHamburger() {
+            const burgerBtn = document.querySelector('.burger-btn');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarHide = document.querySelector('.sidebar-hide');
+
+            if (burgerBtn && sidebar) {
+                // Remove old event listeners by cloning
+                const newBurgerBtn = burgerBtn.cloneNode(true);
+                burgerBtn.parentNode.replaceChild(newBurgerBtn, burgerBtn);
+
+                // Add new event listener
+                newBurgerBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sidebar.classList.toggle('active');
+
+                    // Create or remove backdrop
+                    let backdrop = document.querySelector('.sidebar-backdrop');
+                    if (sidebar.classList.contains('active')) {
+                        if (!backdrop) {
+                            backdrop = document.createElement('div');
+                            backdrop.classList.add('sidebar-backdrop');
+                            backdrop.addEventListener('click', function() {
+                                sidebar.classList.remove('active');
+                                this.remove();
+                            });
+                            document.body.appendChild(backdrop);
+                        }
+                    } else {
+                        if (backdrop) {
+                            backdrop.remove();
+                        }
+                    }
+                });
+            }
+
+            if (sidebarHide && sidebar) {
+                // Remove old event listeners by cloning
+                const newSidebarHide = sidebarHide.cloneNode(true);
+                sidebarHide.parentNode.replaceChild(newSidebarHide, sidebarHide);
+
+                // Add new event listener
+                newSidebarHide.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sidebar.classList.remove('active');
+                    const backdrop = document.querySelector('.sidebar-backdrop');
+                    if (backdrop) {
+                        backdrop.remove();
+                    }
+                });
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeHamburger);
+
+        // Reinitialize after Livewire navigation
+        document.addEventListener('livewire:navigated', initializeHamburger);
+    </script>
     {{-- navigate --}}
     <script>
         document.addEventListener('livewire:navigated', () => {

@@ -5,30 +5,29 @@
                 <div class="d-flex align-items-center gap-2">
                     <a href="{{ route('landing-page') }}" class="d-flex justify-around items-center">
                         <img src="{{ asset('img/logo_fp-removebg-preview.png') }}" alt="Logo"
-                            class="w-10 h-auto me-1" />
+                            class="w-10 h-auto me-2" />
                         <h3 class="mb-0">Ruang IT</h3>
                     </a>
                 </div>
 
-                <div class="theme-toggle d-flex align-items-center gap-2 ms-4 mt-2">
-                    <div class="form-check form-switch fs-6 d-flex align-items-center gap-2">
-                        <input class="form-check-input me-0" type="checkbox" id="toggle-dark" style="cursor: pointer">
-                        <label class="form-check-label" for="toggle-dark"></label>
-                        <i id="theme-icon" class="fas fa-sun" style="width: 20px; text-align: center;"></i>
+                <div class="d-flex align-items-center justify-content-start ms-4 mt-2 w-100 pe-3"
+                    style="gap: 0.25rem;">
+                    <div class="theme-toggle d-flex align-items-center me-2" style="gap: 0.25rem;">
+                        <div class="form-check form-switch fs-6 d-flex align-items-center" style="gap: 0.25rem;">
+                            <input class="form-check-input me-0" type="checkbox" id="toggle-dark"
+                                style="cursor: pointer">
+                            <label class="form-check-label" for="toggle-dark"></label>
+                            <i id="theme-icon" class="fas fa-sun" style="width: 20px; text-align: center;"></i>
+                        </div>
                     </div>
 
+                    <button onclick="window.confirmLogout()"
+                        class="btn btn-sm btn-outline-danger d-flex align-items-center"
+                        style="cursor: pointer; font-size: 0.875rem; gap: 0.25rem; padding: 0.25rem 0.5rem;">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </button>
                 </div>
-
-                <ul class="menu">
-                    <li>
-                        <button onclick="window.confirmLogout()"
-                            class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2 w-100"
-                            style="cursor: pointer; font-size: 0.875rem;">
-                            <i class="fa-solid fa-right-from-bracket"></i>
-                            <span>Logout</span>
-                        </button>
-                    </li>
-                </ul>
 
             </div>
             <div class="sidebar-toggler position-absolute top-0 end-0 me-3 mt-2">
