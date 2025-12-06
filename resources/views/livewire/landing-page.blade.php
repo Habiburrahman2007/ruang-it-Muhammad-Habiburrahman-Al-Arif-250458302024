@@ -8,11 +8,15 @@
             </a>
 
             <!-- Desktop Menu -->
-            <ul class="hidden md:flex space-x-8 font-medium text-white gap-10 mx-3">
-                <li><a href="#about" class="hover:text-blue-500 transition">Tentang</a></li>
-                <li><a href="#categories" class="hover:text-blue-500 transition">Kategori</a></li>
-                <li><a href="#blogs" class="hover:text-blue-500 transition">Blog</a></li>
-                <li><a href="#footer" class="hover:text-blue-500 transition">Kontak</a></li>
+            <ul class="hidden md:flex space-x-8 font-medium text-white gap-10 mx-3" id="desktopMenu">
+                <li><a href="#about" data-section="about" class="nav-link hover:text-blue-500 transition">Tentang</a>
+                </li>
+                <li><a href="#categories" data-section="categories"
+                        class="nav-link hover:text-blue-500 transition">Kategori</a></li>
+                <li><a href="#blogs" data-section="blogs" class="nav-link hover:text-blue-500 transition">Artikel</a>
+                </li>
+                <li><a href="#footer" data-section="footer" class="nav-link hover:text-blue-500 transition">Kontak</a>
+                </li>
             </ul>
 
             <!-- Hamburger untuk mobile -->
@@ -30,14 +34,18 @@
                 <!-- Dropdown Menu Mobile -->
                 <ul id="dropdownMenu"
                     class="absolute right-0 mt-2 w-40 bg-gray-800 border border-gray-700 rounded-lg shadow-lg py-2 hidden">
-                    <li><a href="#about"
-                            class="block px-4 py-2 text-white hover:bg-gray-700 hover:text-blue-500">Tentang</a></li>
-                    <li><a href="#categories"
-                            class="block px-4 py-2 text-white hover:bg-gray-700 hover:text-blue-500">Kategori</a></li>
-                    <li><a href="#blogs"
-                            class="block px-4 py-2 text-white hover:bg-gray-700 hover:text-blue-500">Blog</a></li>
-                    <li><a href="#footer"
-                            class="block px-4 py-2 text-white hover:bg-gray-700 hover:text-blue-500">Kontak</a></li>
+                    <li><a href="#about" data-section="about"
+                            class="nav-link block px-4 py-2 text-white hover:bg-gray-700 hover:text-blue-500">Tentang</a>
+                    </li>
+                    <li><a href="#categories" data-section="categories"
+                            class="nav-link block px-4 py-2 text-white hover:bg-gray-700 hover:text-blue-500">Kategori</a>
+                    </li>
+                    <li><a href="#blogs" data-section="blogs"
+                            class="nav-link block px-4 py-2 text-white hover:bg-gray-700 hover:text-blue-500">Artikel</a>
+                    </li>
+                    <li><a href="#footer" data-section="footer"
+                            class="nav-link block px-4 py-2 text-white hover:bg-gray-700 hover:text-blue-500">Kontak</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -275,61 +283,73 @@
                     @endforeach
                     <!-- Duplicate untuk loop halus -->
                     @foreach ($articles as $article)
-                        <article class="flex-none w-80 bg-gray-800 rounded-xl p-5 text-white shadow-lg">
-                            <div class="flex items-center gap-x-4 text-xs mb-3">
-                                <time datetime="{{ $article->created_at->toDateString() }}" class="text-gray-400">
-                                    {{ $article->created_at->format('M d, Y') }}
-                                </time>
-                                @if ($article->category->name)
-                                    <span class="rounded-full bg-gray-700 px-2 py-1 text-gray-300 text-xs font-medium">
-                                        {{ $article->category->name }}
-                                    </span>
-                                @endif
-                            </div>
-
-                            <h3 class="text-lg font-semibold mb-2">{{ $article->title }}</h3>
-                            <p class="text-sm text-gray-300 line-clamp-3">
-                                {{ Str::limit(strip_tags($article->content), 120) }}
-                            </p>
-
-                            <div class="flex items-center mt-4 gap-x-3">
-                                <img src="{{ $article->user->photo_profile ?? 'https://via.placeholder.com/40' }}"
-                                    alt="Penulis" class="w-10 h-10 rounded-full object-cover" />
-                                <div class="text-sm">
-                                    <p class="font-semibold">{{ $article->user->name ?? 'Penulis Tidak Dikenal' }}</p>
-                                    <p class="text-gray-400">{{ $article->user->profession ?? 'Kontributor' }}</p>
+                        <a href="{{ auth()->check() ? route('detail-article', $article->slug) : route('detail-article-guest', $article->slug) }}"
+                            class="block cursor-pointer">
+                            <article class="flex-none w-80 bg-gray-800 rounded-xl p-5 text-white shadow-lg">
+                                <div class="flex items-center gap-x-4 text-xs mb-3">
+                                    <time datetime="{{ $article->created_at->toDateString() }}"
+                                        class="text-gray-400">
+                                        {{ $article->created_at->format('M d, Y') }}
+                                    </time>
+                                    @if ($article->category->name)
+                                        <span
+                                            class="rounded-full bg-gray-700 px-2 py-1 text-gray-300 text-xs font-medium">
+                                            {{ $article->category->name }}
+                                        </span>
+                                    @endif
                                 </div>
-                            </div>
-                        </article>
+
+                                <h3 class="text-lg font-semibold mb-2">{{ $article->title }}</h3>
+                                <p class="text-sm text-gray-300 line-clamp-3">
+                                    {{ Str::limit(strip_tags($article->content), 120) }}
+                                </p>
+
+                                <div class="flex items-center mt-4 gap-x-3">
+                                    <img src="{{ $article->user->photo_profile ?? 'https://via.placeholder.com/40' }}"
+                                        alt="Penulis" class="w-10 h-10 rounded-full object-cover" />
+                                    <div class="text-sm">
+                                        <p class="font-semibold">{{ $article->user->name ?? 'Penulis Tidak Dikenal' }}
+                                        </p>
+                                        <p class="text-gray-400">{{ $article->user->profession ?? 'Kontributor' }}</p>
+                                    </div>
+                                </div>
+                            </article>
+                        </a>
                     @endforeach
                     <!-- Duplicate ketiga untuk loop yang lebih smooth -->
                     @foreach ($articles as $article)
-                        <article class="flex-none w-80 bg-gray-800 rounded-xl p-5 text-white shadow-lg">
-                            <div class="flex items-center gap-x-4 text-xs mb-3">
-                                <time datetime="{{ $article->created_at->toDateString() }}" class="text-gray-400">
-                                    {{ $article->created_at->format('M d, Y') }}
-                                </time>
-                                @if ($article->category->name)
-                                    <span class="rounded-full bg-gray-700 px-2 py-1 text-gray-300 text-xs font-medium">
-                                        {{ $article->category->name }}
-                                    </span>
-                                @endif
-                            </div>
-
-                            <h3 class="text-lg font-semibold mb-2">{{ $article->title }}</h3>
-                            <p class="text-sm text-gray-300 line-clamp-3">
-                                {{ Str::limit(strip_tags($article->content), 120) }}
-                            </p>
-
-                            <div class="flex items-center mt-4 gap-x-3">
-                                <img src="{{ $article->user->photo_profile ?? 'https://via.placeholder.com/40' }}"
-                                    alt="Penulis" class="w-10 h-10 rounded-full object-cover" />
-                                <div class="text-sm">
-                                    <p class="font-semibold">{{ $article->user->name ?? 'Penulis Tidak Dikenal' }}</p>
-                                    <p class="text-gray-400">{{ $article->user->profession ?? 'Kontributor' }}</p>
+                        <a href="{{ auth()->check() ? route('detail-article', $article->slug) : route('detail-article-guest', $article->slug) }}"
+                            class="block cursor-pointer">
+                            <article class="flex-none w-80 bg-gray-800 rounded-xl p-5 text-white shadow-lg">
+                                <div class="flex items-center gap-x-4 text-xs mb-3">
+                                    <time datetime="{{ $article->created_at->toDateString() }}"
+                                        class="text-gray-400">
+                                        {{ $article->created_at->format('M d, Y') }}
+                                    </time>
+                                    @if ($article->category->name)
+                                        <span
+                                            class="rounded-full bg-gray-700 px-2 py-1 text-gray-300 text-xs font-medium">
+                                            {{ $article->category->name }}
+                                        </span>
+                                    @endif
                                 </div>
-                            </div>
-                        </article>
+
+                                <h3 class="text-lg font-semibold mb-2">{{ $article->title }}</h3>
+                                <p class="text-sm text-gray-300 line-clamp-3">
+                                    {{ Str::limit(strip_tags($article->content), 120) }}
+                                </p>
+
+                                <div class="flex items-center mt-4 gap-x-3">
+                                    <img src="{{ $article->user->photo_profile ?? 'https://via.placeholder.com/40' }}"
+                                        alt="Penulis" class="w-10 h-10 rounded-full object-cover" />
+                                    <div class="text-sm">
+                                        <p class="font-semibold">{{ $article->user->name ?? 'Penulis Tidak Dikenal' }}
+                                        </p>
+                                        <p class="text-gray-400">{{ $article->user->profession ?? 'Kontributor' }}</p>
+                                    </div>
+                                </div>
+                            </article>
+                        </a>
                     @endforeach
                 </div>
             </div>
@@ -438,4 +458,77 @@
             </p>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Select all elements with id (section, div, footer, etc.)
+            const sections = document.querySelectorAll('[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            function setActiveLink() {
+                let currentSection = '';
+                const scrollPosition = window.scrollY + 150; // Offset untuk navbar
+
+                // Check if we're at the bottom of the page
+                const isBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight -
+                    100;
+
+                sections.forEach((section, index) => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    const sectionId = section.getAttribute('id');
+
+                    // Skip elements without proper ids or that aren't navigation targets
+                    if (!sectionId || !['home', 'about', 'categories', 'blogs', 'footer'].includes(
+                            sectionId)) {
+                        return;
+                    }
+
+                    // If at bottom, highlight footer
+                    if (isBottom && sectionId === 'footer') {
+                        currentSection = 'footer';
+                        return;
+                    }
+
+                    // Normal scroll detection
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        currentSection = sectionId;
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('text-blue-500');
+                    const section = link.getAttribute('data-section');
+
+                    if (section === currentSection) {
+                        link.classList.add('text-blue-500');
+                    }
+                });
+            }
+
+            // Run on scroll
+            window.addEventListener('scroll', setActiveLink);
+
+            // Run on page load
+            setActiveLink();
+
+            // Hamburger menu toggle
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+
+            if (hamburgerBtn && dropdownMenu) {
+                hamburgerBtn.addEventListener('click', function() {
+                    dropdownMenu.classList.toggle('hidden');
+                });
+
+                // Close dropdown when clicking a link
+                const dropdownLinks = dropdownMenu.querySelectorAll('a');
+                dropdownLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        dropdownMenu.classList.add('hidden');
+                    });
+                });
+            }
+        });
+    </script>
 </div>

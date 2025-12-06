@@ -109,6 +109,15 @@
                                 window.addEventListener("scroll", updateNavbar);
                             });
                         </script>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper container">
+                {{ $slot }}
+            </div>
+        </div>
+    </div>
 
 </body>
 
