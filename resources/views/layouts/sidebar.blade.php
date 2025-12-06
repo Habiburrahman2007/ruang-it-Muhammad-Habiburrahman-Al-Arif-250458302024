@@ -1,16 +1,16 @@
 <div id="sidebar">
     <div class="sidebar-wrapper active">
         <div class="sidebar-header position-relative">
-            <div class="d-flex flex-column align-items-start gap-2">
+            <div class="d-flex flex-column align-items-start gap-0">
                 <div class="d-flex align-items-center gap-2">
                     <a href="{{ route('landing-page') }}" class="d-flex justify-around items-center">
                         <img src="{{ asset('img/logo_fp-removebg-preview.png') }}" alt="Logo"
-                            class="w-12 h-auto me-3" />
+                            class="w-10 h-auto me-1" />
                         <h3 class="mb-0">Ruang IT</h3>
                     </a>
                 </div>
 
-                <div class="theme-toggle d-flex align-items-center gap-2 mt-2 ms-4">
+                <div class="theme-toggle d-flex align-items-center gap-2 ms-4 mt-2">
                     <div class="form-check form-switch fs-6 d-flex align-items-center gap-2">
                         <input class="form-check-input me-0" type="checkbox" id="toggle-dark" style="cursor: pointer">
                         <label class="form-check-label" for="toggle-dark"></label>
@@ -18,8 +18,20 @@
                     </div>
 
                 </div>
+
+                <ul class="menu">
+                    <li>
+                        <button onclick="window.confirmLogout()"
+                            class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2 w-100"
+                            style="cursor: pointer; font-size: 0.875rem;">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>Logout</span>
+                        </button>
+                    </li>
+                </ul>
+
             </div>
-            <div class="sidebar-toggler position-absolute top-0 end-0 me-3 mt-3">
+            <div class="sidebar-toggler position-absolute top-0 end-0 me-3 mt-2">
                 <a href="#" class="sidebar-hide d-xl-none d-block">
                     <span class="badge bg-primary p-0">
                         <i class="bi bi-x text-white"></i>
@@ -32,7 +44,7 @@
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
                 <li
-                    class="sidebar-item {{ request()->routeIs('dashboard') || ((request()->routeIs('detail-article') || request()->routeIs('guidelines')) && request('from') === 'dashboard') ? 'active bg-primary text-white rounded' : '' }}">
+                    class="sidebar-item {{ request()->routeIs('dashboard') || ((request()->routeIs('detail-article') || request()->routeIs('detail-profile') || request()->routeIs('guidelines')) && request('from') === 'dashboard') ? 'active bg-primary text-white rounded' : '' }}">
                     <a wire:navigate href="{{ route('dashboard') }}"
                         class="sidebar-link d-flex align-items-center gap-2">
                         <i class="bi bi-grid-fill"></i>

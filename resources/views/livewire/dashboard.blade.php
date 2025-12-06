@@ -77,7 +77,7 @@
                             </div>
 
                             <div class="d-flex align-items-center">
-                                <a href="{{ route('detail-profile', $article->user->slug) }}"
+                                <a href="{{ route('detail-profile', ['slug' => $article->user->slug, 'from' => 'dashboard']) }}"
                                     class="d-flex align-items-center text-decoration-none">
                                     <img src="{{ $article->user->photo_profile ? asset('storage/' . $article->user->photo_profile) : asset('img/default-avatar.jpeg') }}"
                                         class="rounded-circle me-2"

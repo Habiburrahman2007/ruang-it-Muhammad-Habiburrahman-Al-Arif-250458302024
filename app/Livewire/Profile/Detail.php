@@ -32,7 +32,7 @@ class Detail extends Component
         // ambil semua kategori yang digunakan user ini
         $this->categories = Category::whereHas('articles', function ($q) {
             $q->where('user_id', $this->user->id);
-        })->pluck('name')->toArray();
+        })->get();
 
         $this->loadArticles();
     }

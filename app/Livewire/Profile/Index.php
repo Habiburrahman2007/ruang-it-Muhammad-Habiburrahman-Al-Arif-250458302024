@@ -33,7 +33,7 @@ class Index extends Component
         // Get all categories used by this user
         $this->categories = Category::whereHas('articles', function ($q) {
             $q->where('user_id', $this->user->id);
-        })->pluck('name')->toArray();
+        })->get();
 
         $this->loadArticles();
     }

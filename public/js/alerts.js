@@ -21,8 +21,20 @@ window.confirmLogout = function () {
         cancelButtonText: 'Batal'
     }).then(result => {
         if (result.isConfirmed) {
-            console.log('Dispatching logoutConfirmed event');
-            Livewire.dispatch('logoutConfirmed');
+            // Create and submit logout form
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/logout';
+
+            // Add CSRF token
+            const csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = '_token';
+            csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            form.appendChild(csrfInput);
+
+            document.body.appendChild(form);
+            form.submit();
         }
     });
 }

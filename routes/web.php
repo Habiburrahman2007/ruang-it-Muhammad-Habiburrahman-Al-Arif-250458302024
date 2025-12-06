@@ -58,6 +58,9 @@ Route::prefix('auth')->middleware('guest')->group(function () {
 
 Route::middleware(['auth', 'banned'])->group(function () {
 
+    // Logout route
+    Route::post('/logout', \App\Http\Controllers\LogoutController::class)->name('logout');
+
     // Dashboard & Guidelines
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/guidelines', Guidelines::class)->name('guidelines');
