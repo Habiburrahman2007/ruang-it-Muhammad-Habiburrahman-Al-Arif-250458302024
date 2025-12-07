@@ -7,6 +7,7 @@ use App\Models\Article;
 use Livewire\Component;
 use App\Models\Category;
 use Livewire\Attributes\Title;
+use Illuminate\Database\QueryException;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -129,7 +130,7 @@ class Dashboard extends Component
             }
 
             $this->loadArticles();
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (QueryException $e) {
             Log::error('Failed to toggle like', [
                 'user_id' => $user->id,
                 'article_id' => $articleId,

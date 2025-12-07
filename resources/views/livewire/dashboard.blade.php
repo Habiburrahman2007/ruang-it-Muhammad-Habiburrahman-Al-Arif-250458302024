@@ -39,25 +39,34 @@
     @else
         <div class="row g-4">
             @foreach ($articles as $article)
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="card blog-card rounded-3 overflow-hidden shadow-sm h-100">
+                <div class="col-12 col-sm-6 col-lg-4" wire:key="article-{{ $article->id }}">
+                    <div class="card blog-card rounded-3 overflow-hidden shadow-sm h-100 d-flex flex-column">
                         <a href="{{ route('detail-article', ['slug' => $article->slug, 'from' => 'dashboard']) }}"
-                            class="text-decoration-none text-dark">
+                            class="text-decoration-none text-dark d-flex flex-column flex-grow-1">
                             <img class="card-img-top img-fluid rounded-top-3 object-cover"
-                                style="height: 200px; width: 100%; object-fit: cover;"
+                                style="height: 200px; width: 100%; object-fit: cover; background-color: #f0f0f0;"
                                 src="{{ !empty($article->image) && file_exists(storage_path('app/public/' . $article->image))
-                                    ? asset('storage/' . $article->image) //Laravel membangun URL publik untuk gambar
+                                    ? asset('storage/' . $article->image)
                                     : asset('img/Login.jpg') }}"
-                                alt="{{ $article->title }}">
-                            <div class="card-body" wire:key="article-{{ $article->id }}">
-                                <h4 class="card-title text-secondary">{{ $article->title }}</h4>
+                                alt="{{ $article->title }}"
+                                onerror="this.src='{{ asset('img/Login.jpg') }}'; this.style.backgroundColor='#e9ecef';">
+                            <div class="card-body d-flex flex-column flex-grow-1">
+                                <h4 class="card-title text-secondary"
+                                    style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 3.6rem;">
+                                    {{ $article->title }}
+                                </h4>
                                 @php
                                     $preview = \App\Helpers\ContentHelper::preview($article->content, 120);
                                 @endphp
-                                <p class="card-text text-secondary">{!! $preview !!}</p>
-                                <span class="badge {{ $article->category->color }}">
-                                    {{ $article->category->name }}
-                                </span>
+                                <p class="card-text text-secondary flex-grow-1"
+                                    style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                                    {!! $preview !!}
+                                </p>
+                                <div class="mt-auto">
+                                    <span class="badge {{ $article->category->color }}">
+                                        {{ $article->category->name }}
+                                    </span>
+                                </div>
                             </div>
                         </a>
 
