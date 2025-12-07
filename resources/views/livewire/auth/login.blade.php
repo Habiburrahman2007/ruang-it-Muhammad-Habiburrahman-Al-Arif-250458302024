@@ -1,4 +1,10 @@
-<div class="flex max-w-2xl bg-gray-800/50 backdrop-blur-md rounded-xl shadow-lg overflow-hidden my-5 mx-auto">
+<div
+    class="flex max-w-md bg-gray-800/50 backdrop-blur-md rounded-3xl shadow-lg overflow-hidden my-5 mx-auto relative border border-blue-700">
+    <a href="{{ url('/') }}"
+        class="absolute top-0 left-0 z-10 flex items-center gap-2 px-6 py-3 text-sm font-medium text-blue-400 transition-colors bg-gray-800/50 border-r border-b border-blue-700 rounded-br-3xl hover:bg-gray-800 hover:text-blue-300">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Beranda</span>
+    </a>
     <div class="w-full p-6">
         <!-- Header -->
         <div class="text-center mb-5">
@@ -70,12 +76,12 @@
 
         </form>
 
-        <p class="mt-6 text-center text-gray-400 text-sm">
+        <p class="mt-6 text-center text-white text-sm">
             Belum punya akun?
-            <a href="{{ route('register') }}" class="text-indigo-400 font-semibold hover:text-indigo-300">Daftar
-                disini</a>
-            dan silahkan hubungi <a href="https://wa.link/zjo1b2" target="blank"
-                class="text-indigo-400 font-semibold hover:text-indigo-300">admin</a> jika punya pertanyaan.
+            <a href="{{ route('register') }}" class="text-blue-600 font-semibold hover:text-blue-300">Daftar
+                disini.</a><br>
+            Hubungi <a href="https://wa.link/zjo1b2" target="blank"
+                class="text-blue-600 font-semibold hover:text-blue-300">admin</a> jika punya pertanyaan.
         </p>
     </div>
 </div>

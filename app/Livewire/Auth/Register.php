@@ -18,13 +18,12 @@ class Register extends Component
     public $name;
     public $email;
     public $password;
-    public $password_confirmation;
     public $profession;
 
     protected $rules = [
         'name' => 'required|min:3',
         'email' => 'required|email|unique:users,email',
-        'password' => 'required|min:8|confirmed',
+        'password' => 'required|min:8',
         'profession' => 'required|max:50'
     ];
 
