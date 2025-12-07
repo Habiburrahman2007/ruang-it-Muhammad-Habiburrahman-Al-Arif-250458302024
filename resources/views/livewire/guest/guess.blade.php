@@ -13,8 +13,8 @@
             <nav class="w-100 mt-2 overflow-x-auto pb-2">
                 <div class="d-flex flex-nowrap gap-2" role="group" aria-label="Filter category">
                     <button type="button" wire:click.prevent="setCategory('All')"
-                        class="btn btn-sm {{ $category === 'All' ? 'btn-dark' : 'btn-outline-dark' }}">
-                        All
+                        class="btn btn-sm {{ $category === 'All' ? 'btn-primary' : 'btn-outline-primary' }}">
+                        SEMUA
                     </button>
                     @foreach ($categories as $cat)
                         @php
@@ -60,7 +60,7 @@
                                     @php
                                         $preview = \App\Helpers\ContentHelper::preview($article->content, 120);
                                     @endphp
-                                    <p class="card-text text-secondary">{{ $preview }}</p>
+                                    <p class="card-text text-secondary">{!! $preview !!}</p>
                                     <span class="badge {{ $article->category->color }}">
                                         {{ $article->category->name }}
                                     </span>

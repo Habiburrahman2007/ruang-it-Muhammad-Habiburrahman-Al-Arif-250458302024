@@ -105,7 +105,7 @@
                                 @php
                                     $preview = \App\Helpers\ContentHelper::preview($article->content, 120);
                                 @endphp
-                                <p class="card-text text-secondary">{{ $preview }}</p>
+                                <p class="card-text text-secondary">{!! $preview !!}</p>
                                 <span class="badge {{ $article->category->color }}">
                                     {{ $article->category->name }}
                                 </span>

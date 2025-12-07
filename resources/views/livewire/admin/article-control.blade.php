@@ -70,7 +70,7 @@
                             <div class="card-body">
                                 <h4 class="card-title text-secondary">{{ $article->title }}</h4>
                                 <p class="card-text text-secondary">
-                                    {{ Str::limit(strip_tags($article->content), 120) }}
+                                    {!! \App\Helpers\ContentHelper::preview($article->content, 120) !!}
                                 </p>
                                 <span class="badge {{ $article->category->color }}">
                                     {{ $article->category->name }}

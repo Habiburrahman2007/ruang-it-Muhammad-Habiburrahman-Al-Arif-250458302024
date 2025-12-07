@@ -43,7 +43,7 @@ class ContentHelper
 
         $clean = preg_replace('/<ul>(.*?)<\/ul>/s', '', $clean);
         $clean = preg_replace('/<li>(.*?)<\/li>/s', '• $1 ', $clean);
-        return Str::limit(strip_tags($clean), $limit);
+        return Str::limit(strip_tags($clean, '<b><strong><i><em><s><strike><del>'), $limit);
     }
 
     /**

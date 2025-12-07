@@ -267,7 +267,7 @@
                                 @php
                                     $preview = \App\Helpers\ContentHelper::preview($article->content, 120);
                                 @endphp
-                                <p class="card-text text-secondary">{{ $preview }}</p>
+                                <p class="card-text text-secondary mb-4">{!! $preview !!}</p>
 
                                 <div class="flex items-center mt-4 gap-x-3">
                                     <img src="{{ $article->user->photo_profile ?? 'https://via.placeholder.com/40' }}"

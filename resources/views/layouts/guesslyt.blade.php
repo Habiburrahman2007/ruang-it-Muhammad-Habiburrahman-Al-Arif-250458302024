@@ -14,6 +14,7 @@
     <link rel="stylesheet" crossorigin href="{{ asset('dist/assets/compiled/css/app.css') }}">
     <link rel="stylesheet" crossorigin href="{{ asset('dist/assets/compiled/css/app-dark.css') }}">
     <link rel="stylesheet" crossorigin href="{{ asset('dist/assets/compiled/css/iconly.css') }}">
+    @livewireStyles
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const root = document.documentElement;
@@ -87,6 +88,20 @@
                                 <a href="{{ route('register') }}" wire:navigate
                                     class="btn btn-outline-primary">Daftar</a>
                             </div>
+
+                            <!-- Mobile Dropdown -->
+                            <div class="d-md-none dropdown">
+                                <button class="btn btn-link text-white p-0" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="fa-solid fa-ellipsis-vertical fa-lg"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="{{ route('login') }}" wire:navigate>Masuk</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="{{ route('register') }}"
+                                            wire:navigate>Daftar</a></li>
+                                </ul>
+                            </div>
                         </div>
                         <script src="{{ asset('dist/assets/extensions/apexcharts/apexcharts.min.js') }}"></script>
                         <script src="{{ asset('dist/assets/static/js/pages/dashboard.js') }}"></script>
@@ -119,6 +134,10 @@
         </div>
     </div>
 
+    <script src="{{ asset('dist/assets/static/js/components/dark.js') }}"></script>
+    <script src="{{ asset('dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('dist/assets/compiled/js/app.js') }}"></script>
+    @livewireScripts
 </body>
 
 </html>
