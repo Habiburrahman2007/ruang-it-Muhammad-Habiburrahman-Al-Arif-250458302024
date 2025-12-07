@@ -1,36 +1,45 @@
-name: Deploy Laravel Project on push to cpanel
+name: Deploy Laravel ZIP Upload
+
 on:
   push:
     branches:
       - main
+
 jobs:
-  web-deploy:
-    name: Deploy
+  deploy:
+    name: Deploy to FTP as ZIP
     runs-on: ubuntu-latest
+
     steps:
-      - name: Get the latest code
-        uses: actions/checkout@v2.3.2
-      - uses: actions/setup-node@master
-      - name: Copy .env
-        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-      - name: Directory Permissions
-        run: chmod -R 777 storage bootstrap/cache
-      - name: 📂 Sync files
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 1. Buat ZIP dari semua file kecuali vendor
+      - name: Create ZIP File
+        run: |
+          zip -r deploy.zip . -x "vendor/*" ".git/*" ".github/*" "node_modules/*"
+
+      # 2. Upload ZIP ke server hosting
+      - name: Upload ZIP via FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /
+          local-dir: ./
           exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/bootstrap/**
-            **/database/**
-            **/public/**
-            **/storage/**
-            **/stubs/**
-            **/tests/**
-            **/vendor/**
-            **.env
+            **/*
+          include: |
+            deploy.zip
+
+      # 3. Ekstrak ZIP langsung di hosting
+      # (Tanpa SSH — pakai perintah "unzip" via script PHP di hosting)
+      - name: Extract ZIP remotely
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: .github/extract-helper/
+          exclude: |
+            **/*
