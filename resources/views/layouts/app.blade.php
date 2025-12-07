@@ -261,8 +261,6 @@
         });
     </script>
 
-    {{-- Confirm alert --}}
-
     <script>
         window.article_created = @json(session('article_created'));
         window.category_created = @json(session('category_created'));

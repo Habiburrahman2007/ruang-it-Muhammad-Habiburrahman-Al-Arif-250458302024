@@ -63,7 +63,6 @@ class Create extends Component
         $this->validate();
 
         try {
-            // Secure file upload with random filename
             if ($this->image) {
                 $extension = $this->image->getClientOriginalExtension();
                 $filename = uniqid('article_', true) . '_' . bin2hex(random_bytes(8)) . '.' . $extension;

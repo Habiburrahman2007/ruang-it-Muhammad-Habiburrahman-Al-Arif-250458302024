@@ -68,9 +68,9 @@ class Statistic extends Component
         $categories = Category::withCount(['articles' => function ($query) {
             $query->where('status', 'active');
         }])
-            ->having('articles_count', '>', 0) // Hanya kategori dengan artikel
+            ->having('articles_count', '>', 0)
             ->orderBy('articles_count', 'desc')
-            ->limit(10) // Batasi 10 kategori teratas
+            ->limit(10)
             ->get();
 
         $this->categoryNames = $categories->pluck('name')->toArray();
