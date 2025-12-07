@@ -1,4 +1,4 @@
-name: Deploy Laravel Project via SFTP (Stable)
+name: Deploy Laravel ZIP Upload
 
 on:
   push:
@@ -7,28 +7,39 @@ on:
 
 jobs:
   deploy:
+    name: Deploy to FTP as ZIP
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout latest code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set directory permissions
-        run: chmod -R 775 storage bootstrap/cache
+      # 1. Buat ZIP dari semua file kecuali vendor
+      - name: Create ZIP File
+        run: |
+          zip -r deploy.zip . -x "vendor/*" ".git/*" ".github/*" "node_modules/*"
 
-      - name: 📂 Sync Laravel files via SFTP
+      # 2. Upload ZIP ke server hosting
+      - name: Upload ZIP via FTP
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}   # 22 untuk SFTP
-          local-dir: ./                   # root repo
-          server-dir: /public_html/       # target folder
+          local-dir: ./
           exclude: |
-            **/.git*
-            **/tests/**
-            **/.env
-            **/node_modules/
-            **/.github/
-            **/vendor/node_modules/
+            **/*
+          include: |
+            deploy.zip
+
+      # 3. Ekstrak ZIP langsung di hosting
+      # (Tanpa SSH — pakai perintah "unzip" via script PHP di hosting)
+      - name: Extract ZIP remotely
+        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: .github/extract-helper/
+          exclude: |
+            **/*
