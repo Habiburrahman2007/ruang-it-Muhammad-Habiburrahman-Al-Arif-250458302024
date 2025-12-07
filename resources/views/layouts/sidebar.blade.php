@@ -1,34 +1,17 @@
 <div id="sidebar">
     <div class="sidebar-wrapper active">
         <div class="sidebar-header position-relative">
-            <div class="d-flex flex-column align-items-start gap-0">
-                <div class="d-flex align-items-center gap-2">
-                    <a href="{{ route('landing-page') }}" class="d-flex justify-around items-center">
-                        <img src="{{ asset('img/logo_fp-removebg-preview.png') }}" alt="Logo"
-                            class="w-10 h-auto me-2" />
-                        <h3 class="mb-0">Ruang IT</h3>
-                    </a>
-                </div>
+            <div class="d-flex justify-content-evenly align-items-center w-100">
+                <a href="{{ route('landing-page') }}" class="d-flex align-items-center gap-2 text-decoration-none">
+                    <img src="{{ asset('img/logo_fp-removebg-preview.png') }}" alt="Logo" class="w-10 h-auto" />
+                    <h3 class="mb-0">Ruang IT</h3>
+                </a>
 
-                <div class="d-flex align-items-center justify-content-start ms-4 mt-2 w-100 pe-3"
-                    style="gap: 0.25rem;">
-                    <div class="theme-toggle d-flex align-items-center me-2" style="gap: 0.25rem;">
-                        <div class="form-check form-switch fs-6 d-flex align-items-center" style="gap: 0.25rem;">
-                            <input class="form-check-input me-0" type="checkbox" id="toggle-dark"
-                                style="cursor: pointer">
-                            <label class="form-check-label" for="toggle-dark"></label>
-                            <i id="theme-icon" class="fas fa-sun" style="width: 20px; text-align: center;"></i>
-                        </div>
-                    </div>
-
-                    <button onclick="window.confirmLogout()"
-                        class="btn btn-sm btn-outline-danger d-flex align-items-center"
-                        style="cursor: pointer; font-size: 0.875rem; gap: 0.25rem; padding: 0.25rem 0.5rem;">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span>Logout</span>
-                    </button>
-                </div>
-
+                <button id="toggle-dark-btn"
+                    class="btn d-flex align-items-center justify-content-center border-0 bg-transparent text-secondary"
+                    style="width: 35px; height: 35px;">
+                    <i id="theme-icon" class="fas fa-sun fs-5"></i>
+                </button>
             </div>
             <div class="sidebar-toggler position-absolute top-0 end-0 me-3 mt-2">
                 <a href="#" class="sidebar-hide d-xl-none d-block">
@@ -60,11 +43,18 @@
                     </a>
                 </li>
 
+                <li class="sidebar-title">Akun</li>
                 <li
                     class="sidebar-item {{ request()->routeIs('profile', 'profile-edit') || ((request()->routeIs('detail-article') || request()->routeIs('guidelines')) && request('from') === 'profile') ? 'active bg-primary text-white rounded' : '' }}">
                     <a wire:navigate href="{{ route('profile') }}" class="sidebar-link d-flex align-items-center gap-2">
                         <i class="bi bi-person-fill"></i>
                         <span>Profil</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a onclick="window.confirmLogout()" class="sidebar-link d-flex align-items-center gap-2">
+                        <i class="bi bi-box-arrow-right text-danger"></i>
+                        <span class="text-danger">Logout</span>
                     </a>
                 </li>
 

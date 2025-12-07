@@ -56,7 +56,7 @@
                                     {{ $article->title }}
                                 </h4>
                                 @php
-                                    $preview = \App\Helpers\ContentHelper::preview($article->content, 120);
+                                    $preview = \App\Helpers\ContentHelper::excerpt($article->content, 120);
                                 @endphp
                                 <p class="card-text text-secondary flex-grow-1"
                                     style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">

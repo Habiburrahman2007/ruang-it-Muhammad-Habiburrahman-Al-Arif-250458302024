@@ -21,6 +21,7 @@ class ArticleControl extends Component
     public $categories = [];
     public $search = '';
     public $status = 'All';
+    public $dateFilter = 'All';
 
     public $perPage = 9;
     public $totalArticles = 0;
@@ -65,6 +66,15 @@ class ArticleControl extends Component
             ->when($this->status !== 'All', function ($query) {
                 $query->where('status', $this->status);
             })
+            ->when($this->dateFilter !== 'All', function ($query) {
+                if ($this->dateFilter === 'day') {
+                    $query->where('created_at', '>=', now()->subDay());
+                } elseif ($this->dateFilter === 'week') {
+                    $query->where('created_at', '>=', now()->subWeek());
+                } elseif ($this->dateFilter === 'month') {
+                    $query->where('created_at', '>=', now()->subMonth());
+                }
+            })
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
                     $q->where('title', 'like', '%' . $this->search . '%')
@@ -87,6 +97,15 @@ class ArticleControl extends Component
             })
             ->when($this->status !== 'All', function ($query) {
                 $query->where('status', $this->status);
+            })
+            ->when($this->dateFilter !== 'All', function ($query) {
+                if ($this->dateFilter === 'day') {
+                    $query->where('created_at', '>=', now()->subDay());
+                } elseif ($this->dateFilter === 'week') {
+                    $query->where('created_at', '>=', now()->subWeek());
+                } elseif ($this->dateFilter === 'month') {
+                    $query->where('created_at', '>=', now()->subMonth());
+                }
             })
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
@@ -158,6 +177,12 @@ class ArticleControl extends Component
     public function setStatus($status)
     {
         $this->status = $status;
+        $this->resetPageData();
+    }
+
+    public function setDateFilter($filter)
+    {
+        $this->dateFilter = $filter;
         $this->resetPageData();
     }
 

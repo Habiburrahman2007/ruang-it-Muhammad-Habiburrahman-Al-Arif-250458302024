@@ -9,7 +9,7 @@
             <div class="d-flex flex-nowrap gap-2" role="group" aria-label="Filter category">
                 <button type="button" wire:click.prevent="setCategory('All')"
                     class="btn btn-sm {{ $category === 'All' ? 'btn-primary' : 'btn-outline-primary' }}">
-                    SEMUA
+                    Semua
                 </button>
                 @foreach ($categories as $cat)
                     @php
@@ -25,19 +25,42 @@
         </nav>
 
         <nav class="w-100 mt-2">
-            <div class="d-flex flex-wrap gap-2" role="group" aria-label="Filter status">
-                <button type="button" wire:click="setStatus('All')"
-                    class="btn btn-sm {{ $status === 'All' ? 'btn-primary' : 'btn-outline-primary' }}">
-                    Semua
-                </button>
-                <button type="button" wire:click="setStatus('active')"
-                    class="btn btn-sm {{ $status === 'active' ? 'btn-success' : 'btn-outline-success' }}">
-                    Aktif
-                </button>
-                <button type="button" wire:click="setStatus('banned')"
-                    class="btn btn-sm {{ $status === 'banned' ? 'btn-danger' : 'btn-outline-danger' }}">
-                    Terblokir
-                </button>
+            <div class="d-flex flex-wrap gap-2">
+                <div class="btn-group" role="group" aria-label="Filter status">
+                    <button type="button" wire:click="setStatus('All')"
+                        class="btn btn-sm {{ $status === 'All' ? 'btn-primary' : 'btn-outline-primary' }}">
+                        Semua
+                    </button>
+                    <button type="button" wire:click="setStatus('active')"
+                        class="btn btn-sm {{ $status === 'active' ? 'btn-success' : 'btn-outline-success' }}">
+                        Aktif
+                    </button>
+                    <button type="button" wire:click="setStatus('banned')"
+                        class="btn btn-sm {{ $status === 'banned' ? 'btn-danger' : 'btn-outline-danger' }}">
+                        Terblokir
+                    </button>
+                </div>
+
+                <div class="vr mx-2"></div>
+
+                <div class="btn-group" role="group" aria-label="Filter date">
+                    <button type="button" wire:click="setDateFilter('All')"
+                        class="btn btn-sm {{ $dateFilter === 'All' ? 'btn-primary' : 'btn-outline-primary' }}">
+                        Semua
+                    </button>
+                    <button type="button" wire:click="setDateFilter('day')"
+                        class="btn btn-sm {{ $dateFilter === 'day' ? 'btn-success' : 'btn-outline-success' }}">
+                        Sehari
+                    </button>
+                    <button type="button" wire:click="setDateFilter('week')"
+                        class="btn btn-sm {{ $dateFilter === 'week' ? 'btn-info' : 'btn-outline-info' }}">
+                        Seminggu
+                    </button>
+                    <button type="button" wire:click="setDateFilter('month')"
+                        class="btn btn-sm {{ $dateFilter === 'month' ? 'btn-warning' : 'btn-outline-warning' }}">
+                        Sebulan
+                    </button>
+                </div>
             </div>
         </nav>
     </div>
@@ -50,7 +73,7 @@
                 @elseif($search)
                     Tidak ada artikel yang sesuai dengan kata kunci "{{ $search }}".
                 @else
-                    Belum ada artikel yang ditulis.
+                    Belum ada artikel yang ditulis se.
                 @endif
             </div>
         </div>

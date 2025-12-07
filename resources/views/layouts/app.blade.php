@@ -200,12 +200,12 @@
     {{-- dark mode --}}
     <script>
         function initDarkMode() {
-            const toggle = document.getElementById('toggle-dark');
-            const icon = document.getElementById('theme-icon');
+            const toggle = document.getElementById('toggle-dark-btn');
             const html = document.documentElement;
             const body = document.body;
 
             const isDark = localStorage.getItem('theme') === 'dark';
+
             if (isDark) {
                 html.classList.add('dark');
                 body.classList.add('dark');
@@ -213,37 +213,13 @@
             } else {
                 html.classList.remove('dark');
                 body.classList.remove('dark');
-
                 html.setAttribute('data-bs-theme', 'light');
             }
-            if (toggle) {
-                toggle.checked = isDark;
 
-                const newToggle = toggle.cloneNode(true);
-                toggle.parentNode.replaceChild(newToggle, toggle);
-
-                newToggle.addEventListener('change', function() {
-                    if (this.checked) {
-                        localStorage.setItem('theme', 'dark');
-                        html.classList.add('dark');
-                        html.setAttribute('data-bs-theme', 'dark');
-
-                        if (icon) {
-                            icon.classList.remove('fa-sun');
-                            icon.classList.add('fa-moon');
-                        }
-                    } else {
-                        localStorage.setItem('theme', 'light');
-                        html.classList.remove('dark');
-                        html.setAttribute('data-bs-theme', 'light');
-
-                        if (icon) {
-                            icon.classList.remove('fa-moon');
-                            icon.classList.add('fa-sun');
-                        }
-                    }
-                });
-            }
+            // Initial Icon State
+            // Note: Since we are about to clone the toggle button (which contains the icon),
+            // we should set the initial icon state on the element that is currently in the DOM.
+            const icon = document.getElementById('theme-icon');
             if (icon) {
                 if (isDark) {
                     icon.classList.remove('fa-sun');
@@ -252,6 +228,42 @@
                     icon.classList.remove('fa-moon');
                     icon.classList.add('fa-sun');
                 }
+            }
+
+            if (toggle) {
+                const newToggle = toggle.cloneNode(true);
+                toggle.parentNode.replaceChild(newToggle, toggle);
+
+                newToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const isDarkNow = html.classList.contains('dark');
+                    const currentIcon = newToggle.querySelector('#theme-icon');
+
+                    if (!isDarkNow) {
+                        // Switch to Dark
+                        localStorage.setItem('theme', 'dark');
+                        html.classList.add('dark');
+                        body.classList.add('dark');
+                        html.setAttribute('data-bs-theme', 'dark');
+
+                        if (currentIcon) {
+                            currentIcon.classList.remove('fa-sun');
+                            currentIcon.classList.add('fa-moon');
+                        }
+                    } else {
+                        // Switch to Light
+                        localStorage.setItem('theme', 'light');
+                        html.classList.remove('dark');
+                        body.classList.remove('dark');
+                        html.setAttribute('data-bs-theme', 'light');
+
+                        if (currentIcon) {
+                            currentIcon.classList.remove('fa-moon');
+                            currentIcon.classList.add('fa-sun');
+                        }
+                    }
+                });
             }
         }
         initDarkMode();
