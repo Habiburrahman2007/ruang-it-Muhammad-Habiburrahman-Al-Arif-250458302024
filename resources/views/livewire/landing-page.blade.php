@@ -265,7 +265,7 @@
 
                                 <h3 class="text-lg font-semibold mb-2">{{ $article->title }}</h3>
                                 @php
-                                    $preview = \App\Helpers\ContentHelper::preview($article->content, 120);
+                                    $preview = \App\Helpers\ContentHelper::excerpt($article->content, 120);
                                 @endphp
                                 <p class="card-text text-secondary mb-4">{!! $preview !!}</p>
 

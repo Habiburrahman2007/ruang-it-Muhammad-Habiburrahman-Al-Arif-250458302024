@@ -98,7 +98,7 @@
                                 </h4>
                                 <p class="card-text text-secondary"
                                     style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
-                                    {!! \App\Helpers\ContentHelper::preview($article->content, 120) !!}
+                                    {!! \App\Helpers\ContentHelper::excerpt($article->content, 120) !!}
                                 </p>
                                 <div class="mt-auto">
                                     <span class="badge {{ $article->category->color }}">
