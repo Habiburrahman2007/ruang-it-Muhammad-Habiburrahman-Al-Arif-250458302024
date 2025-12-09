@@ -102,6 +102,63 @@
             background-color: #e5e7eb !important;
             /* gray-200 */
         }
+
+        /* Global Loader Styles */
+        #global-loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 99999;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s ease;
+        }
+
+        html.dark #global-loader {
+            background-color: rgba(21, 21, 33, 0.85);
+            /* Darker background for dark mode */
+        }
+
+        .loader-content {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 5rem;
+            height: 5rem;
+        }
+
+        .loader-logo {
+            width: 2.8rem;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse-logo 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse-logo {
+            0% {
+                transform: translate(-50%, -50%) scale(0.9);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.05);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(0.9);
+                opacity: 0.8;
+            }
+        }
     </style>
     @livewireStyles
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" data-navigate-once="true"></script>
@@ -112,6 +169,14 @@
 
     <script src="{{ asset('dist/assets/static/js/initTheme.js') }}" data-navigate-once="true"></script>
     <div id="app">
+        <div id="global-loader">
+            <div class="loader-content">
+                <div class="spinner-border text-primary" role="status" style="width: 5rem; height: 5rem;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <img src="{{ asset('img/logo_fp-removebg-preview.png') }}" alt="Logo" class="loader-logo">
+            </div>
+        </div>
 
         @include('layouts.sidebar')
 
@@ -195,6 +260,16 @@
     <script>
         document.addEventListener('livewire:navigated', () => {
             Livewire.dispatch('refreshComponent');
+        });
+
+        document.addEventListener('livewire:navigate', () => {
+            const loader = document.getElementById('global-loader');
+            if (loader) loader.style.display = 'flex';
+        });
+
+        document.addEventListener('livewire:navigated', () => {
+            const loader = document.getElementById('global-loader');
+            if (loader) loader.style.display = 'none';
         });
     </script>
     {{-- dark mode --}}

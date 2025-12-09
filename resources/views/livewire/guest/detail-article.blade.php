@@ -13,8 +13,16 @@
                 {{-- Like & Comment --}}
                 <div class="btn-group me-2">
                     <button type="button" class="btn btn-link p-2 text-decoration-none"
-                        wire:click.stop="toggleLike({{ $article->id }})">
-                        <i class="bi bi-heart{{ $article->isLiked ? '-fill text-danger' : ' text-secondary' }}"></i>
+                        wire:click.stop="toggleLike({{ $article->id }})" wire:loading.attr="disabled"
+                        wire:target="toggleLike({{ $article->id }})">
+                        <span wire:loading.remove wire:target="toggleLike({{ $article->id }})">
+                            <i class="bi bi-heart{{ $article->isLiked ? '-fill text-danger' : ' text-secondary' }}"></i>
+                        </span>
+                        <span wire:loading wire:target="toggleLike({{ $article->id }})">
+                            <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </span>
                         <small class="text-muted">{{ $article->likes->count() }}</small>
                     </button>
                     <button type="button" class="btn btn-link p-2 text-decoration-none">

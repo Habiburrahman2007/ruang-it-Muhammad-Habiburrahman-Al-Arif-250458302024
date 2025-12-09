@@ -91,52 +91,73 @@
                 </div>
         </div>
     @else
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            @foreach ($articles as $article)
-                <div class="col d-flex">
-                    <div class="card flex-fill blog-card rounded-3 overflow-hidden shadow-sm h-100">
-                        <a href="{{ route('detail-article', $article->slug) }}" class="text-decoration-none text-dark">
-                            <img class="card-img-top img-fluid rounded-top-3 object-cover"
-                                style="height: 200px; width: 100%; object-fit: cover;"
-                                src="{{ !empty($article->image) && file_exists(storage_path('app/public/' . $article->image))
-                                    ? asset('storage/' . $article->image)
-                                    : asset('img/Login.jpg') }}"
-                                alt="{{ $article->title }}">
-                            <div class="card-body">
-                                <h5 class="card-title text-secondary">{{ $article->title }}</h5>
-                                @php
-                                    $preview = \App\Helpers\ContentHelper::excerpt($article->content, 120);
-                                @endphp
-                                <p class="card-text text-secondary">{!! $preview !!}</p>
-                                <span class="badge {{ $article->category->color }}">
-                                    {{ $article->category->name }}
-                                </span>
-                            </div>
-                        </a>
-                        <div class="card-footer border-0 d-flex justify-content-between align-items-center px-3 pb-3">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-link p-0 text-decoration-none"
-                                    wire:click="toggleLike({{ $article->id }})">
-                                    <i
-                                        class="bi bi-heart{{ $article->isLiked ? '-fill text-danger' : ' text-secondary' }}"></i>
-                                    <small class="text-muted ms-2">{{ $article->likes->count() }}</small>
-                                </button>
-                                <button type="button" class="btn btn-link p-0 text-decoration-none ms-3">
-                                    <i class="bi bi-chat text-secondary"></i>
-                                    <small class="text-muted ms-2">{{ $article->comments->count() }}</small>
-                                </button>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <img src="{{ $article->user->photo_profile ? asset('storage/' . $article->user->photo_profile) : asset('img/default-avatar.jpeg') }}"
-                                    class="rounded-circle me-2" style="width:35px; height:35px; object-fit:cover;"
-                                    alt="Author">
-                                <small
-                                    class="fw-semibold text-secondary">{{ \Illuminate\Support\Str::limit($article->user->name, 10, '...') }}</small>
+        <div class="position-relative">
+            <div wire:loading.flex wire:target="search, setCategory"
+                class="position-absolute top-0 start-0 w-100 h-100 justify-content-center align-items-center bg-white bg-opacity-75 z-2"
+                style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 transition-opacity"
+                wire:loading.class="opacity-50" wire:target="search, setCategory">
+                @foreach ($articles as $article)
+                    <div class="col d-flex">
+                        <div class="card flex-fill blog-card rounded-3 overflow-hidden shadow-sm h-100">
+                            <a href="{{ route('detail-article', $article->slug) }}"
+                                class="text-decoration-none text-dark">
+                                <img class="card-img-top img-fluid rounded-top-3 object-cover"
+                                    style="height: 200px; width: 100%; object-fit: cover;"
+                                    src="{{ !empty($article->image) && file_exists(storage_path('app/public/' . $article->image))
+                                        ? asset('storage/' . $article->image)
+                                        : asset('img/Login.jpg') }}"
+                                    alt="{{ $article->title }}">
+                                <div class="card-body">
+                                    <h5 class="card-title text-secondary">{{ $article->title }}</h5>
+                                    @php
+                                        $preview = \App\Helpers\ContentHelper::excerpt($article->content, 120);
+                                    @endphp
+                                    <p class="card-text text-secondary">{!! $preview !!}</p>
+                                    <span class="badge {{ $article->category->color }}">
+                                        {{ $article->category->name }}
+                                    </span>
+                                </div>
+                            </a>
+                            <div
+                                class="card-footer border-0 d-flex justify-content-between align-items-center px-3 pb-3">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-link p-0 text-decoration-none"
+                                        wire:click="toggleLike({{ $article->id }})" wire:loading.attr="disabled"
+                                        wire:target="toggleLike({{ $article->id }})">
+                                        <span wire:loading.remove wire:target="toggleLike({{ $article->id }})">
+                                            <i
+                                                class="bi bi-heart{{ $article->isLiked ? '-fill text-danger' : ' text-secondary' }}"></i>
+                                        </span>
+                                        <span wire:loading wire:target="toggleLike({{ $article->id }})">
+                                            <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </span>
+                                        <small class="text-muted ms-2">{{ $article->likes->count() }}</small>
+                                    </button>
+                                    <button type="button" class="btn btn-link p-0 text-decoration-none ms-3">
+                                        <i class="bi bi-chat text-secondary"></i>
+                                        <small class="text-muted ms-2">{{ $article->comments->count() }}</small>
+                                    </button>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ $article->user->photo_profile ? asset('storage/' . $article->user->photo_profile) : asset('img/default-avatar.jpeg') }}"
+                                        class="rounded-circle me-2" style="width:35px; height:35px; object-fit:cover;"
+                                        alt="Author">
+                                    <small
+                                        class="fw-semibold text-secondary">{{ \Illuminate\Support\Str::limit($article->user->name, 10, '...') }}</small>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
         @endif
     </div>

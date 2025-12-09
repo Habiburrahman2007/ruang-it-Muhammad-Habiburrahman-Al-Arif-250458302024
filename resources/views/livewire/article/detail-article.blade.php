@@ -10,8 +10,16 @@
                 style="margin-top: 4rem;">
                 <div class="btn-group mb-2">
                     <button type="button" class="btn btn-link p-2 text-decoration-none"
-                        wire:click="toggleLike({{ $article->id }})">
-                        <i class="bi bi-heart{{ $article->isLiked ? '-fill text-danger' : ' text-secondary' }}"></i>
+                        wire:click="toggleLike({{ $article->id }})" wire:loading.attr="disabled"
+                        wire:target="toggleLike({{ $article->id }})">
+                        <span wire:loading.remove wire:target="toggleLike({{ $article->id }})">
+                            <i class="bi bi-heart{{ $article->isLiked ? '-fill text-danger' : ' text-secondary' }}"></i>
+                        </span>
+                        <span wire:loading wire:target="toggleLike({{ $article->id }})">
+                            <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </span>
                         <small class="text-muted">{{ $article->likes->count() }}</small>
                     </button>
                     <button type="button" class="btn btn-link p-2 text-decoration-none">
@@ -61,8 +69,16 @@
 
             <div class="d-flex d-md-none justify-content-end align-items-center gap-3 mb-3">
                 <button type="button" class="btn btn-link p-0 text-decoration-none"
-                    wire:click="toggleLike({{ $article->id }})">
-                    <i class="bi bi-heart{{ $article->isLiked ? '-fill text-danger' : ' text-secondary' }}"></i>
+                    wire:click="toggleLike({{ $article->id }})" wire:loading.attr="disabled"
+                    wire:target="toggleLike({{ $article->id }})">
+                    <span wire:loading.remove wire:target="toggleLike({{ $article->id }})">
+                        <i class="bi bi-heart{{ $article->isLiked ? '-fill text-danger' : ' text-secondary' }}"></i>
+                    </span>
+                    <span wire:loading wire:target="toggleLike({{ $article->id }})">
+                        <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </span>
                     <small class="text-muted ms-1">{{ $article->likes->count() }}</small>
                 </button>
 
