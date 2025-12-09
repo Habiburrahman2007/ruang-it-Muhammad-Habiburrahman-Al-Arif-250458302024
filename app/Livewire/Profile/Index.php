@@ -28,8 +28,8 @@ class Index extends Component
 
     public function mount()
     {
-        $this->user = Auth::user()->load(['articles.category', 'articles.likes', 'articles.comments']);
-
+        $this->user = Auth::user();
+        
         // Get all categories used by this user
         $this->categories = Category::whereHas('articles', function ($q) {
             $q->where('user_id', $this->user->id);
@@ -40,7 +40,9 @@ class Index extends Component
 
     public function loadArticles()
     {
-        $query = $this->user->articles()->with(['category', 'likes', 'comments', 'user']);
+        $query = $this->user->articles()
+            ->with(['category', 'user']) // Eager load user just in case, though it's auth user
+            ->withCount(['likes', 'comments']);
 
         if ($this->category !== 'All') {
             $query->whereHas('category', fn($q) => $q->where('name', $this->category));
@@ -52,18 +54,20 @@ class Index extends Component
 
         $this->totalFiltered = $query->count();
 
-        $this->articles = $query->latest()->take($this->perPage)->get();
+        // Optimized query with is_liked subquery
+        $this->articles = $query->latest()
+            ->selectRaw('articles.*, EXISTS(
+                SELECT 1 FROM likes 
+                WHERE likes.article_id = articles.id 
+                AND likes.user_id = ?
+            ) as is_liked', [$this->user->id])
+            ->take($this->perPage)
+            ->get();
 
-        // Calculate statistics
-        $allArticles = $this->user->articles()->with(['likes', 'comments'])->get();
-        $this->articleCount = $allArticles->count();
-        $this->likeCount = $allArticles->sum(fn($a) => $a->likes->count());
-        $this->commentCount = $allArticles->sum(fn($a) => $a->comments->count());
-
-        // Mark articles as liked by current user
-        foreach ($this->articles as $article) {
-            $article->isLiked = $article->likes->contains('user_id', Auth::id());
-        }
+        // Statistics using aggregate queries instead of fetching all models
+        $this->articleCount = $this->user->articles()->count();
+        $this->likeCount = $this->user->articles()->withCount('likes')->get()->sum('likes_count');
+        $this->commentCount = $this->user->articles()->withCount('comments')->get()->sum('comments_count');
     }
 
     public function loadMore()

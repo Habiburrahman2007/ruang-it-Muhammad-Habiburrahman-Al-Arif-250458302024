@@ -7,6 +7,7 @@ use App\Models\Category;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Auth;
 
 class Detail extends Component
 {
@@ -23,11 +24,13 @@ class Detail extends Component
     public $likeCount = 0;
     public $commentCount = 0;
 
+    public $perPage = 9;
+    public $totalArticles = 0;
+    public $isLoadingMore = false;
+
     public function mount($slug)
     {
-        $this->user = User::with(['articles.category', 'articles.likes', 'articles.comments'])
-            ->where('slug', $slug)
-            ->firstOrFail();
+        $this->user = User::where('slug', $slug)->firstOrFail();
 
         // ambil semua kategori yang digunakan user ini
         $this->categories = Category::whereHas('articles', function ($q) {
@@ -40,7 +43,9 @@ class Detail extends Component
     // 🔹 Fungsi untuk memuat artikel berdasarkan kategori dan pencarian
     public function loadArticles()
     {
-        $query = $this->user->articles()->with(['category', 'likes', 'comments']);
+        $query = $this->user->articles()
+            ->with(['category'])
+            ->withCount(['likes', 'comments']);
 
         if ($this->category !== 'All') {
             $query->whereHas('category', fn($q) => $q->where('name', $this->category));
@@ -50,13 +55,38 @@ class Detail extends Component
             $query->where('title', 'like', '%' . $this->search . '%');
         }
 
-        // hasilnya Collection, bukan array
-        $this->articles = $query->latest()->get();
+        // Hitung total artikel terfilter untuk kontrol Load More
+        $this->totalArticles = $query->count();
 
-        // bisa pakai count() dan sum()
-        $this->articleCount = $this->articles->count();
-        $this->likeCount = $this->articles->sum(fn($a) => $a->likes->count());
-        $this->commentCount = $this->articles->sum(fn($a) => $a->comments->count());
+        $currentUserId = Auth::user()->id;
+
+        // hasilnya Collection, bukan array
+        $this->articles = $query->latest()
+            ->when($currentUserId, function ($q) use ($currentUserId) {
+                return $q->selectRaw('articles.*, EXISTS(
+                    SELECT 1 FROM likes 
+                    WHERE likes.article_id = articles.id 
+                    AND likes.user_id = ?
+                ) as is_liked', [$currentUserId]);
+            })
+            ->take($this->perPage)
+            ->get();
+
+        // Statistik menggunakan aggregate query yang efisien
+        $this->articleCount = $this->user->articles()->count();
+        // Gunakan query terpisah yang dikhususkan untuk count relasi
+        $this->likeCount = $this->user->articles()->withCount('likes')->get()->sum('likes_count');
+        $this->commentCount = $this->user->articles()->withCount('comments')->get()->sum('comments_count');
+    }
+
+    public function loadMore()
+    {
+        if ($this->perPage < $this->totalArticles) {
+            $this->isLoadingMore = true;
+            $this->perPage += 9;
+            $this->loadArticles();
+            $this->isLoadingMore = false;
+        }
     }
 
 
