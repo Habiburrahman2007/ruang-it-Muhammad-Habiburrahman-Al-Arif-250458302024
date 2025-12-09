@@ -19,7 +19,7 @@ class LandingPage extends Component
 
     public function mount()
     {
-        $this->articles = Article::latest()->take(9)->get();
+        $this->articles = Article::with('category', 'user')->latest()->take(9)->get();
         $this->stats = [
             [
                 'title' => Article::where('status', 'active')->count() . ' Artikel',
