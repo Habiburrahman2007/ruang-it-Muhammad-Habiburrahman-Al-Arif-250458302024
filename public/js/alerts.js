@@ -9,6 +9,19 @@ window.showSuccess = function (message, config = {}) {
     });
 }
 
+window.showLoading = function (title = 'Memproses...', text = 'Mohon tunggu sebentar.') {
+    Swal.fire({
+        title: title,
+        text: text,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showConfirmButton: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+}
+
 window.confirmLogout = function () {
     Swal.fire({
         title: 'Yakin mau logout?',
@@ -21,6 +34,8 @@ window.confirmLogout = function () {
         cancelButtonText: 'Batal'
     }).then(result => {
         if (result.isConfirmed) {
+            window.showLoading('Sedang Logout...', 'Sampai jumpa lagi!');
+            
             // Create and submit logout form
             const form = document.createElement('form');
             form.method = 'POST';
@@ -52,6 +67,7 @@ window.confirmDelete = function (articleId) {
         cancelButtonText: 'Batal'
     }).then(result => {
         if (result.isConfirmed) {
+            window.showLoading('Menghapus...', 'Sedang menghapus artikel.');
             console.log('Dispatching deleteArticleConfirmed for id:', articleId);
             Livewire.dispatch('deleteArticleConfirmed', articleId);
         }
@@ -71,6 +87,7 @@ window.confirmToggleUser = function (userId, action) {
         cancelButtonText: 'Batal'
     }).then(result => {
         if (result.isConfirmed) {
+            window.showLoading(isBan ? 'Memblokir...' : 'engaktifkan...', 'Sedang memperbarui status pengguna.');
             Livewire.dispatch('toggleUserStatus', { id: userId });
         }
     });
@@ -88,6 +105,7 @@ window.confirmDeleteCategory = function (categoryId) {
         cancelButtonText: 'Batal'
     }).then(result => {
         if (result.isConfirmed) {
+            window.showLoading('Menghapus...', 'Sedang menghapus kategori.');
             Livewire.dispatch('deleteCategoryConfirmed', { id: categoryId });
         }
     });
@@ -104,6 +122,7 @@ window.confirmToggleStatus = function (articleId, action) {
         cancelButtonText: 'Batal'
     }).then(result => {
         if (result.isConfirmed) {
+             window.showLoading('Memproses...', 'Sedang memperbarui status artikel.');
             Livewire.dispatch('toggleStatus', { id: articleId });
         }
     });
@@ -123,6 +142,7 @@ window.confirmToggle = function (commentId, hide) {
         cancelButtonText: 'Batal'
     }).then(result => {
         if (result.isConfirmed) {
+            window.showLoading('Memproses...', 'Sedang memperbarui status komentar.');
             Livewire.dispatch('toggleCommentConfirmed', { commentId });
         }
     });

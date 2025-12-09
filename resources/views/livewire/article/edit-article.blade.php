@@ -22,6 +22,12 @@
                                         <input class="form-control form-control-sm" id="formFileSm" type="file"
                                             wire:model="image" accept="image/*">
 
+                                        {{-- Image Upload Loading State --}}
+                                        <div wire:loading wire:target="image" class="text-primary mt-2">
+                                            <small><i class="fas fa-spinner fa-spin me-1"></i> Sedang mengupload
+                                                gambar...</small>
+                                        </div>
+
                                         @if ($image)
                                             <div class="mt-3">
                                                 <img src="{{ $image->temporaryUrl() }}" alt="Preview"
@@ -64,7 +70,7 @@
                                     @enderror
                                 </div>
 
-                                <div wire:ignore>
+                                <div wire:ignore class="@error('content') border border-danger rounded @enderror">
                                     <label class="form-label">Isi artikel</label>
                                     <input id="content" name="content" type="hidden" wire:model="content"
                                         value="{{ old('content', $content) }}">

@@ -22,6 +22,13 @@
                                         <input class="form-control form-control-sm" id="formFileSm" type="file"
                                             wire:model="image"
                                             accept="image/png, image/jpeg, image/jpg, image/webp, image/gif">
+
+                                        {{-- Image Upload Loading State --}}
+                                        <div wire:loading wire:target="image" class="text-primary mt-2">
+                                            <small><i class="fas fa-spinner fa-spin me-1"></i> Sedang mengupload
+                                                gambar...</small>
+                                        </div>
+
                                         @if ($image)
                                             <img src="{{ $image->temporaryUrl() }}" alt="Preview" class="img-thumbnail"
                                                 style="max-height: 200px;">
@@ -59,7 +66,7 @@
                                 <div class="col-12 mb-4" wire:ignore>
                                     <label class="form-label">Isi artikel</label>
                                     <input id="x" type="hidden" wire:model="content">
-                                    <div class="">
+                                    <div class="@error('content') border border-danger rounded @enderror">
                                         <trix-editor input="x" class="form-control"></trix-editor>
                                     </div>
                                 </div>
