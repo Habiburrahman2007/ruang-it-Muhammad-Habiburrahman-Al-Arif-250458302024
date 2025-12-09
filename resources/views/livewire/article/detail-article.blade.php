@@ -29,7 +29,8 @@
                         <ul class="dropdown-menu dropdown-menu-end shadow-sm"
                             aria-labelledby="dropdownMenuButton{{ $article->id }}">
                             <li>
-                                <a class="dropdown-item" href="{{ route('edit-article', $article->slug) }}">
+                                <a class="dropdown-item"
+                                    href="{{ route('edit-article', ['slug' => $article->slug, 'from' => request('from')]) }}">
                                     <i class="bi bi-pencil-square me-2 text-primary"></i>Edit
                                 </a>
                             </li>

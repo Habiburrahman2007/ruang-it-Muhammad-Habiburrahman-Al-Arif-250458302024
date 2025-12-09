@@ -26,7 +26,7 @@
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
                 <li
-                    class="sidebar-item {{ request()->routeIs('dashboard') || ((request()->routeIs('detail-article') || request()->routeIs('detail-profile') || request()->routeIs('guidelines')) && request('from') === 'dashboard') ? 'active bg-primary text-white rounded' : '' }}">
+                    class="sidebar-item {{ request()->routeIs('dashboard') || ((request()->routeIs('detail-article') || request()->routeIs('edit-article') || request()->routeIs('detail-profile') || request()->routeIs('guidelines')) && request('from') === 'dashboard') ? 'active bg-primary text-white rounded' : '' }}">
                     <a wire:navigate href="{{ route('dashboard') }}"
                         class="sidebar-link d-flex align-items-center gap-2">
                         <i class="bi bi-grid-fill"></i>
@@ -45,7 +45,7 @@
 
                 <li class="sidebar-title">Akun</li>
                 <li
-                    class="sidebar-item {{ request()->routeIs('profile', 'profile-edit') || ((request()->routeIs('detail-article') || request()->routeIs('guidelines')) && request('from') === 'profile') ? 'active bg-primary text-white rounded' : '' }}">
+                    class="sidebar-item {{ request()->routeIs('profile', 'profile-edit') || ((request()->routeIs('detail-article') || request()->routeIs('edit-article') || request()->routeIs('guidelines')) && request('from') === 'profile') ? 'active bg-primary text-white rounded' : '' }}">
                     <a wire:navigate href="{{ route('profile') }}" class="sidebar-link d-flex align-items-center gap-2">
                         <i class="bi bi-person-fill"></i>
                         <span>Profil</span>
@@ -79,7 +79,7 @@
                     </li>
 
                     <li
-                        class="sidebar-item {{ request()->routeIs('blog-control') || ((request()->routeIs('detail-article') || request()->routeIs('guidelines')) && request('from') === 'blog-control') ? 'active bg-primary text-white rounded' : '' }}">
+                        class="sidebar-item {{ request()->routeIs('blog-control') || ((request()->routeIs('detail-article') || request()->routeIs('edit-article') || request()->routeIs('guidelines')) && request('from') === 'blog-control') ? 'active bg-primary text-white rounded' : '' }}">
                         <a wire:navigate href="{{ route('blog-control') }}"
                             class="sidebar-link d-flex align-items-center gap-2">
                             <i class="bi bi-journal-check"></i>
