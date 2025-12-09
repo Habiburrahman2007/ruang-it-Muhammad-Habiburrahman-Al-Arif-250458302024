@@ -1,5 +1,5 @@
 <div>
-    <nav id="navbar"
+    <nav id="navbar" x-data="{ mobileMenuOpen: false }"
         class="bg-transparent border-b border-transparent fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out">
         <div class="w-full flex items-center justify-between px-8 py-4">
             <a href="{{ route('landing-page') }}" class="flex items-center space-x-3 rtl:space-x-reverse mx-3">
@@ -21,7 +21,7 @@
 
             <!-- Hamburger untuk mobile -->
             <div class="relative md:hidden">
-                <button id="hamburgerBtn" type="button"
+                <button type="button" @click="mobileMenuOpen = !mobileMenuOpen"
                     class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                     aria-expanded="false" aria-controls="dropdownMenu">
                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -32,18 +32,22 @@
                 </button>
 
                 <!-- Dropdown Menu Mobile -->
-                <ul id="dropdownMenu"
-                    class="absolute right-0 mt-2 w-40 bg-gray-800 border border-gray-700 rounded-lg shadow-lg py-2 hidden">
-                    <li><a href="#about" data-section="about"
+                <ul x-show="mobileMenuOpen" @click.outside="mobileMenuOpen = false"
+                    x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95"
+                    x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-75"
+                    x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                    class="absolute right-0 mt-2 w-40 bg-gray-800 border border-gray-700 rounded-lg shadow-lg py-2"
+                    style="display: none;">
+                    <li><a href="#about" @click="mobileMenuOpen = false" data-section="about"
                             class="nav-link block px-4 py-2 text-white hover:bg-gray-700 hover:text-blue-500">Tentang</a>
                     </li>
-                    <li><a href="#categories" data-section="categories"
+                    <li><a href="#categories" @click="mobileMenuOpen = false" data-section="categories"
                             class="nav-link block px-4 py-2 text-white hover:bg-gray-700 hover:text-blue-500">Kategori</a>
                     </li>
-                    <li><a href="#blogs" data-section="blogs"
+                    <li><a href="#blogs" @click="mobileMenuOpen = false" data-section="blogs"
                             class="nav-link block px-4 py-2 text-white hover:bg-gray-700 hover:text-blue-500">Artikel</a>
                     </li>
-                    <li><a href="#footer" data-section="footer"
+                    <li><a href="#footer" @click="mobileMenuOpen = false" data-section="footer"
                             class="nav-link block px-4 py-2 text-white hover:bg-gray-700 hover:text-blue-500">Kontak</a>
                     </li>
                 </ul>
@@ -512,23 +516,7 @@
             // Run on page load
             setActiveLink();
 
-            // Hamburger menu toggle
-            const hamburgerBtn = document.getElementById('hamburgerBtn');
-            const dropdownMenu = document.getElementById('dropdownMenu');
-
-            if (hamburgerBtn && dropdownMenu) {
-                hamburgerBtn.addEventListener('click', function() {
-                    dropdownMenu.classList.toggle('hidden');
-                });
-
-                // Close dropdown when clicking a link
-                const dropdownLinks = dropdownMenu.querySelectorAll('a');
-                dropdownLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        dropdownMenu.classList.add('hidden');
-                    });
-                });
-            }
+            // Hamburger menu toggle removed (replaced by Alpine.js)
         });
     </script>
 </div>

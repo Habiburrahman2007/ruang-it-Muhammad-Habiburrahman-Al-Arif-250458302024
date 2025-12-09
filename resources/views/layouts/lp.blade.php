@@ -10,7 +10,7 @@
         integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon" href="{{ asset('img/logo_fp-removebg-preview.png') }}" type="image/png">
-    <script src="/js/theme-toggle.js" defer></script>
+
     <style>
         .headline {
             @apply text-indigo-700 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight;
@@ -31,6 +31,7 @@
             animation: scroll 15s linear infinite;
         }
     </style>
+    @livewireStyles
 </head>
 
 <body class="bg-cyan-50 text-gray-900 min-h-screen flex flex-col overflow-x-hidden padding-top: 70px;">
@@ -48,14 +49,6 @@
                 navbar.classList.add('bg-transparent', 'border-transparent');
                 navbar.classList.remove('bg-gray-900/70', 'backdrop-blur-md', 'border-gray-700', 'shadow-lg');
             }
-        });
-    </script>
-    <script>
-        const btn = document.getElementById('hamburgerBtn');
-        const menu = document.getElementById('dropdownMenu');
-
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
         });
     </script>
 
@@ -115,6 +108,7 @@
     </script>
 
 
+    @livewireScripts
 </body>
 
 </html>
