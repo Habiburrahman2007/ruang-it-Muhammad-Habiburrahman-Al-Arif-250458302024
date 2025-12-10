@@ -45,7 +45,7 @@
 
                 <li class="sidebar-title">Akun</li>
                 <li
-                    class="sidebar-item {{ request()->routeIs('profile', 'profile-edit') || ((request()->routeIs('detail-article') || request()->routeIs('edit-article') || request()->routeIs('guidelines')) && request('from') === 'profile') ? 'active bg-primary text-white rounded' : '' }}">
+                    class="sidebar-item {{ request()->routeIs('profile', 'profile-edit') || ((request()->routeIs('detail-article') || request()->routeIs('edit-article') || request()->routeIs('detail-profile') || request()->routeIs('guidelines')) && request('from') === 'profile') ? 'active bg-primary text-white rounded' : '' }}">
                     <a wire:navigate href="{{ route('profile') }}" class="sidebar-link d-flex align-items-center gap-2">
                         <i class="bi bi-person-fill"></i>
                         <span>Profil</span>

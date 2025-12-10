@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 class Login extends Component
 {
     #[Layout('layouts.auth')]
-    #[Title('Login Page')]
+    #[Title('Login | Ruang IT')]
 
     public $email;
     public $password;

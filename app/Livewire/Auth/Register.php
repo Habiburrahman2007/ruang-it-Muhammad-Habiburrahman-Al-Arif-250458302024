@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 class Register extends Component
 {
     #[Layout('layouts.auth')]
-    #[Title('Register Page')]
+    #[Title('Register | Ruang IT')]
 
     public $name;
     public $email;
