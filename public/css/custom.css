@@ -1,0 +1,139 @@
+.card-text ul {
+    list-style-type: disc !important;
+    margin-left: 1.5rem !important;
+}
+
+.card-text ol {
+    list-style-type: decimal !important;
+    margin-left: 1.5rem !important;
+}
+
+.card-text li {
+    display: list-item !important;
+    margin-bottom: 0.5rem;
+}
+
+trix-editor ul,
+trix-editor ol {
+    list-style-position: inside !important;
+    margin-left: 1.5rem !important;
+    padding-left: 1rem !important;
+}
+
+trix-editor ul {
+    list-style-type: disc !important;
+}
+
+trix-editor ol {
+    list-style-type: decimal !important;
+}
+
+trix-editor li {
+    display: list-item !important;
+    margin-bottom: 0.4rem !important;
+}
+
+.preview-content {
+    max-height: 80px;
+    overflow: hidden;
+}
+
+.preview-content ul {
+    list-style-type: disc;
+    padding-left: 1.2em;
+}
+
+.preview-content ol {
+    list-style-type: decimal;
+    padding-left: 1.2em;
+}
+
+
+#sidebar.active~#main header .burger-btn {
+    display: none !important;
+}
+
+header.mb-3 {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background-color: var(--bs-body-bg);
+}
+
+.blog-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog-card:hover {
+    transform: scale(1.03);
+    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+
+.dark .trix-button {
+    background-color: white !important;
+    border-radius: 4px;
+    margin: 1px;
+}
+
+.dark .trix-button.trix-active {
+    background-color: #e5e7eb !important;
+    /* gray-200 */
+}
+
+/* Global Loader Styles */
+#global-loader {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease;
+}
+
+html.dark #global-loader {
+    background-color: rgba(21, 21, 33, 0.85);
+    /* Darker background for dark mode */
+}
+
+.loader-content {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 5rem;
+    height: 5rem;
+}
+
+.loader-logo {
+    width: 2.8rem;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse-logo 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse-logo {
+    0% {
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0.8;
+    }
+}

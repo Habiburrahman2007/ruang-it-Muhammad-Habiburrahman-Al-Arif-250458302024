@@ -35,7 +35,7 @@ window.confirmLogout = function () {
     }).then(result => {
         if (result.isConfirmed) {
             window.showLoading('Sedang Logout...', 'Sampai jumpa lagi!');
-            
+
             // Create and submit logout form
             const form = document.createElement('form');
             form.method = 'POST';
@@ -122,7 +122,7 @@ window.confirmToggleStatus = function (articleId, action) {
         cancelButtonText: 'Batal'
     }).then(result => {
         if (result.isConfirmed) {
-             window.showLoading('Memproses...', 'Sedang memperbarui status artikel.');
+            window.showLoading('Memproses...', 'Sedang memperbarui status artikel.');
             Livewire.dispatch('toggleStatus', { id: articleId });
         }
     });
