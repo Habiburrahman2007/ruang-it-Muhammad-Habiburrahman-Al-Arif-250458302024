@@ -137,3 +137,7 @@ html.dark #global-loader {
         opacity: 0.8;
     }
 }
+
+.trix-button--icon-attach {
+    display: none !important;
+}

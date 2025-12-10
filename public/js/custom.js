@@ -212,3 +212,7 @@ document.addEventListener('trix-change', function (e) {
         xInput.value = e.target.value;
     }
 });
+
+document.addEventListener("trix-file-accept", function (event) {
+    event.preventDefault();
+});
