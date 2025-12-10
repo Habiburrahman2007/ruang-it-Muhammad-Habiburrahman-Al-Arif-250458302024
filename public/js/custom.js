@@ -1,20 +1,17 @@
-/* Hamburger Menu Script */
+
 function initializeHamburger() {
     const burgerBtn = document.querySelector('.burger-btn');
     const sidebar = document.getElementById('sidebar');
     const sidebarHide = document.querySelector('.sidebar-hide');
 
     if (burgerBtn && sidebar) {
-        // Remove old event listeners by cloning
         const newBurgerBtn = burgerBtn.cloneNode(true);
         burgerBtn.parentNode.replaceChild(newBurgerBtn, burgerBtn);
 
-        // Add new event listener
         newBurgerBtn.addEventListener('click', function (e) {
             e.preventDefault();
             sidebar.classList.toggle('active');
 
-            // Create or remove backdrop
             let backdrop = document.querySelector('.sidebar-backdrop');
             if (sidebar.classList.contains('active')) {
                 if (!backdrop) {
@@ -35,11 +32,9 @@ function initializeHamburger() {
     }
 
     if (sidebarHide && sidebar) {
-        // Remove old event listeners by cloning
         const newSidebarHide = sidebarHide.cloneNode(true);
         sidebarHide.parentNode.replaceChild(newSidebarHide, sidebarHide);
 
-        // Add new event listener
         newSidebarHide.addEventListener('click', function (e) {
             e.preventDefault();
             sidebar.classList.remove('active');
@@ -51,13 +46,10 @@ function initializeHamburger() {
     }
 }
 
-// Initialize on page load
 document.addEventListener('DOMContentLoaded', initializeHamburger);
 
-// Reinitialize after Livewire navigation
 document.addEventListener('livewire:navigated', initializeHamburger);
 
-/* Navigation & Loader */
 document.addEventListener('livewire:navigated', () => {
     Livewire.dispatch('refreshComponent');
 });
@@ -72,7 +64,6 @@ document.addEventListener('livewire:navigated', () => {
     if (loader) loader.style.display = 'none';
 });
 
-/* Dark Mode */
 function initDarkMode() {
     const toggle = document.getElementById('toggle-dark-btn');
     const html = document.documentElement;
@@ -90,7 +81,6 @@ function initDarkMode() {
         html.setAttribute('data-bs-theme', 'light');
     }
 
-    // Initial Icon State
     const icon = document.getElementById('theme-icon');
     if (icon) {
         if (isDark) {
@@ -103,7 +93,6 @@ function initDarkMode() {
     }
 
     if (toggle) {
-        // Remove old event listeners by cloning
         const newToggle = toggle.cloneNode(true);
         toggle.parentNode.replaceChild(newToggle, toggle);
 
@@ -114,7 +103,6 @@ function initDarkMode() {
             const currentIcon = newToggle.querySelector('#theme-icon');
 
             if (!isDarkNow) {
-                // Switch to Dark
                 localStorage.setItem('theme', 'dark');
                 html.classList.add('dark');
                 body.classList.add('dark');
@@ -125,7 +113,6 @@ function initDarkMode() {
                     currentIcon.classList.add('fa-moon');
                 }
             } else {
-                // Switch to Light
                 localStorage.setItem('theme', 'light');
                 html.classList.remove('dark');
                 body.classList.remove('dark');
@@ -145,8 +132,6 @@ document.addEventListener('livewire:navigated', () => {
     initDarkMode();
 });
 
-/* Session Success Alerts */
-// Note: Requires window variables to be set in blade
 document.addEventListener('DOMContentLoaded', function () {
     if (window.article_updated) {
         Swal.fire({
@@ -179,7 +164,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-/* Modal Handling */
 document.addEventListener('livewire:load', function () {
     Livewire.on('openEditModal', () => {
         var myModal = new bootstrap.Modal(document.getElementById('editCommentModal'));
@@ -222,7 +206,6 @@ document.addEventListener('livewire:init', () => {
     });
 });
 
-/* Trix Editor */
 document.addEventListener('trix-change', function (e) {
     const xInput = document.getElementById('x');
     if (xInput) {

@@ -36,12 +36,12 @@ window.confirmLogout = function () {
         if (result.isConfirmed) {
             window.showLoading('Sedang Logout...', 'Sampai jumpa lagi!');
 
-            // Create and submit logout form
+
             const form = document.createElement('form');
             form.method = 'POST';
             form.action = '/logout';
 
-            // Add CSRF token
+
             const csrfInput = document.createElement('input');
             csrfInput.type = 'hidden';
             csrfInput.name = '_token';
@@ -158,7 +158,7 @@ window.initAlerts = function () {
     Livewire.on('categoryDeleted', msg => showSuccess({ text: msg }));
     Livewire.on('statusUpdated', msg => showSuccess({ text: msg }));
 
-    // Sukses based on session
+
     const events = {
         article_created: { title: 'Berhasil!', text: 'Artikel berhasil diterbitkan.' },
         category_created: { title: 'Kategori dibuat!', text: 'Kategori berhasil ditambahkan.' },
@@ -174,13 +174,13 @@ window.initAlerts = function () {
     });
 };
 
-// Init saat pertama kali load (jika Livewire sudah siap)
+
 document.addEventListener('livewire:init', () => {
     console.log('Livewire initialized, initializing alerts...');
     window.initAlerts();
 });
 
-// Init ulang saat navigasi selesai
+
 document.addEventListener('livewire:navigated', () => {
     console.log('Livewire navigated.');
     console.log('Checking window.confirmLogout:', typeof window.confirmLogout);
@@ -188,7 +188,7 @@ document.addEventListener('livewire:navigated', () => {
     window.initAlerts();
 });
 
-// Jalankan langsung jika Livewire sudah siap (misalnya script di-load belakangan)
+
 if (window.Livewire) {
     console.log('Livewire already loaded, initializing alerts immediately...');
     window.initAlerts();

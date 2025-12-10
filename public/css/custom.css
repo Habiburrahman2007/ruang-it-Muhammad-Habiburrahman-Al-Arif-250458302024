@@ -78,10 +78,10 @@ header.mb-3 {
 
 .dark .trix-button.trix-active {
     background-color: #e5e7eb !important;
-    /* gray-200 */
+
 }
 
-/* Global Loader Styles */
+
 #global-loader {
     display: none;
     position: fixed;
@@ -99,7 +99,7 @@ header.mb-3 {
 
 html.dark #global-loader {
     background-color: rgba(21, 21, 33, 0.85);
-    /* Darker background for dark mode */
+
 }
 
 .loader-content {

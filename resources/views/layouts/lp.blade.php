@@ -31,7 +31,6 @@
             animation: scroll 15s linear infinite;
         }
 
-        /* Global Loader Styles */
         #global-loader {
             display: none;
             position: fixed;

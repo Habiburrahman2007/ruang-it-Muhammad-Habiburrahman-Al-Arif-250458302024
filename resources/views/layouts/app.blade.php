@@ -56,7 +56,7 @@
 
 
     @stack('scripts')
-    {{-- Link JS text editor --}}
+
     <script type="text/javascript" src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
     <script>
         window.article_created = @json(session('article_created'));
