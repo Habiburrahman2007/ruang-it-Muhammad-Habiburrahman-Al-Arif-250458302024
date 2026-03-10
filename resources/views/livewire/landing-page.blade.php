@@ -12,7 +12,7 @@
                 <li><a href="#about" data-section="about" class="nav-link hover:text-blue-500 transition">Tentang</a>
                 </li>
                 <li><a href="#categories" data-section="categories"
-                        class="nav-link hover:text-blue-500 transition">Kategori</a></li>
+                        class="nav-link hover:text-blue-500 transition">Kategory</a></li>
                 <li><a href="#blogs" data-section="blogs" class="nav-link hover:text-blue-500 transition">Artikel</a>
                 </li>
                 <li><a href="#footer" data-section="footer" class="nav-link hover:text-blue-500 transition">Kontak</a>
