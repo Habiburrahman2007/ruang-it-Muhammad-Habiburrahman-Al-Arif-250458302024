@@ -22,13 +22,35 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         // Log all exceptions for debugging
         $exceptions->report(function (Throwable $e) {
-            Log::error('Application Error: ' . $e->getMessage(), [
+            $data = [
                 'exception' => get_class($e),
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
-                'url' => request()->fullUrl(),
-                'user_id' => Auth::id(),
-            ]);
+            ];
+
+            // Only log request URL if running in a web context and request is bound
+            // Avoid using app() if it might be in a bad state, but here it should be fine
+            try {
+                if (function_exists('app') && !app()->runningInConsole() && app()->bound('request')) {
+                    $data['url'] = request()->fullUrl();
+                }
+            } catch (\Throwable $t) {}
+
+            // Use auth()->id() if possible, or just skip if auth is not ready
+            try {
+                if (function_exists('app') && app()->bound('auth')) {
+                    $data['user_id'] = auth()->id();
+                }
+            } catch (\Throwable $t) {}
+
+            // Use logger instance directly to avoid Facade root issues
+            try {
+                if (function_exists('app') && app()->bound('log')) {
+                    app('log')->error('Application Error: ' . $e->getMessage(), $data);
+                }
+            } catch (\Throwable $t) {
+                // Last resort: if everything fails, we can't log here
+            }
         });
 
         // Handle database errors gracefully
