@@ -40,6 +40,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/articles/{id}', [ArticleController::class, 'update']);
     Route::delete('/articles/{id}', [ArticleController::class, 'destroy']);
 
+    // Categories
+    Route::post('/categories', [CategoryController::class, 'store']);
+
     // Comments
     Route::post('/articles/{articleId}/comments', [CommentController::class, 'store']);
     Route::put('/comments/{id}', [CommentController::class, 'update']);
