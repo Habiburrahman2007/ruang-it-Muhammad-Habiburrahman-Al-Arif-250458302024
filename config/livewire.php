@@ -64,7 +64,7 @@ return [
     */
 
     'temporary_file_upload' => [
-        'disk' => null,        // Use default disk
+        'disk' => 'public',        // Use public disk for compatibility with metadata retrieval
         'rules' => ['file', 'max:12288'], // 12MB max, removed 'required'
         'directory' => 'livewire-tmp',   // Directory name in storage/app
         'middleware' => 'throttle:60,1',  // Rate limiting
