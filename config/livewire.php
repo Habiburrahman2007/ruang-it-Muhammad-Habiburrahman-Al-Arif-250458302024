@@ -64,8 +64,8 @@ return [
     */
 
     'temporary_file_upload' => [
-        'disk' => 'local',        // Explicitly use local disk for temp uploads
-        'rules' => ['required', 'file', 'max:12288'], // 12MB max
+        'disk' => null,        // Use default disk
+        'rules' => ['file', 'max:12288'], // 12MB max, removed 'required'
         'directory' => 'livewire-tmp',   // Directory name in storage/app
         'middleware' => 'throttle:60,1',  // Rate limiting
         'preview_mimes' => [   // Supported file types for temporary pre-signed file URLs...
