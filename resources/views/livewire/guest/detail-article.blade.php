@@ -16,7 +16,7 @@
                         wire:click.stop="toggleLike({{ $article->id }})" wire:loading.attr="disabled"
                         wire:target="toggleLike({{ $article->id }})">
                         <span wire:loading.remove wire:target="toggleLike({{ $article->id }})">
-                            <i class="bi bi-heart{{ $article->isLiked ? '-fill text-danger' : ' text-secondary' }}"></i>
+                            <i class="bi bi-heart{{ $isLiked ? '-fill text-danger' : ' text-secondary' }}"></i>
                         </span>
                         <span wire:loading wire:target="toggleLike({{ $article->id }})">
                             <div class="spinner-border spinner-border-sm text-secondary" role="status">
