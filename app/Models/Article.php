@@ -20,6 +20,16 @@ class Article extends Model
         'slug',
     ];
 
+    protected $appends = ['image_url'];
+
+    public function getImageUrlAttribute()
+    {
+        if ($this->image) {
+            return asset('storage/' . $this->image);
+        }
+        return null;
+    }
+
     protected static function booted()
     {
         static::creating(function ($article) {

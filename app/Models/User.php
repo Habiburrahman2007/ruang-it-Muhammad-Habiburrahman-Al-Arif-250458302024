@@ -14,6 +14,16 @@ class User extends Authenticatable
 
     protected $fillable = ['name', 'slug', 'email', 'password', 'profession', 'photo_profile', 'bio'];
 
+    protected $appends = ['photo_profile_url'];
+
+    public function getPhotoProfileUrlAttribute()
+    {
+        if ($this->photo_profile) {
+            return asset('storage/' . $this->photo_profile);
+        }
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name);
+    }
+
     // Prevent mass assignment for sensitive fields
     protected $guarded = ['role', 'banned', 'id', 'created_at', 'updated_at'];
 
