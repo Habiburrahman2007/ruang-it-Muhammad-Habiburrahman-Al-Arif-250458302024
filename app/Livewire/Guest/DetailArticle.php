@@ -20,6 +20,7 @@ class DetailArticle extends Component
     public $slug;
     public $user;
     public $isLiked = false;
+    public $likesCount = 0;
     public $comments = [];
     public $newComment;
     public $perPage = 3;
@@ -36,6 +37,7 @@ class DetailArticle extends Component
                 ->count() > 0;
         }
 
+        $this->likesCount = $this->article->likes->count();
         $this->loadComments();
     }
 
@@ -125,6 +127,7 @@ class DetailArticle extends Component
         }
 
         $this->article->load('likes');
+        $this->likesCount = $this->article->likes->count();
     }
 
     public function render()

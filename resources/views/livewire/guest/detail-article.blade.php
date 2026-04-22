@@ -13,17 +13,10 @@
                 {{-- Like & Comment --}}
                 <div class="btn-group me-2">
                     <button type="button" class="btn btn-link p-2 text-decoration-none"
-                        wire:click.stop="toggleLike({{ $article->id }})" wire:loading.attr="disabled"
-                        wire:target="toggleLike({{ $article->id }})">
-                        <span wire:loading.remove wire:target="toggleLike({{ $article->id }})">
-                            <i class="bi bi-heart{{ $isLiked ? '-fill text-danger' : ' text-secondary' }}"></i>
-                        </span>
-                        <span wire:loading wire:target="toggleLike({{ $article->id }})">
-                            <div class="spinner-border spinner-border-sm text-secondary" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </span>
-                        <small class="text-muted">{{ $article->likes->count() }}</small>
+                        x-data="{ isProcessing: false }"
+                        x-on:click.stop="if(isProcessing) return; isProcessing = true; $wire.isLiked = !$wire.isLiked; $wire.likesCount += $wire.isLiked ? 1 : -1; $wire.toggleLike({{ $article->id }}).then(() => { isProcessing = false; })">
+                        <i class="bi" :class="$wire.isLiked ? 'bi-heart-fill text-danger' : 'bi-heart text-secondary'"></i>
+                        <small class="text-muted" x-text="$wire.likesCount">{{ $likesCount }}</small>
                     </button>
                     <button type="button" class="btn btn-link p-2 text-decoration-none">
                         <i class="bi bi-chat text-secondary"></i>
