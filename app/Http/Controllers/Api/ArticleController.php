@@ -13,8 +13,7 @@ class ArticleController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Article::query()->select('articles.*')
-            ->with(['user:id,name,slug,photo_profile', 'category:id,name,color'])
+        $query = Article::with(['user:id,name,slug,photo_profile', 'category:id,name,color'])
             ->withCount(['comments', 'likes'])
             ->latest();
 
@@ -38,17 +37,16 @@ class ArticleController extends Controller
 
     public function show($identifier)
     {
-        $article = Article::query()->select('articles.*')
-            ->with([
-                'user:id,name,slug,photo_profile,bio',
-                'category:id,name,color',
-                'comments.user:id,name,photo_profile',
-                'likes'
-            ])
-            ->withCount(['comments', 'likes'])
-            ->where('id', $identifier)
-            ->orWhere('slug', $identifier)
-            ->first();
+        $article = Article::with([
+            'user:id,name,slug,photo_profile,bio',
+            'category:id,name,color',
+            'comments.user:id,name,photo_profile',
+            'likes'
+        ])
+        ->withCount(['comments', 'likes'])
+        ->where('id', $identifier)
+        ->orWhere('slug', $identifier)
+        ->first();
 
         if (!$article) {
             return response()->json(['message' => 'Article not found'], 404);
