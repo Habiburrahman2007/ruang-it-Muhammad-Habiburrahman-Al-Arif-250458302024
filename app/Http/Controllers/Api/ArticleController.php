@@ -13,7 +13,8 @@ class ArticleController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Article::with(['user:id,name,slug,photo_profile', 'category:id,name,color'])
+        $query = Article::query()->select('articles.*')
+            ->with(['user:id,name,slug,photo_profile', 'category:id,name,color'])
             ->withCount(['comments', 'likes'])
             ->latest();
 
@@ -31,43 +32,27 @@ class ArticleController extends Controller
 
         $articles = $query->paginate($request->get('per_page', 10));
 
-        // Pastikan accessor image_url & photo_profile_url ikut ter-include
-        $articles->getCollection()->transform(function ($article) {
-            if ($article->user) {
-                $article->user->append('photo_profile_url');
-            }
-            return $article;
-        });
-
+        // Accessor image_url & photo_profile_url akan otomatis ter-include karena ada di $appends model
         return response()->json($articles);
     }
 
     public function show($identifier)
     {
-        $article = Article::with([
-            'user:id,name,slug,photo_profile,bio',
-            'category:id,name,color',
-            'comments.user:id,name,photo_profile',
-            'likes'
-        ])
-        ->withCount(['comments', 'likes'])
-        ->where('id', $identifier)
-        ->orWhere('slug', $identifier)
-        ->first();
+        $article = Article::query()->select('articles.*')
+            ->with([
+                'user:id,name,slug,photo_profile,bio',
+                'category:id,name,color',
+                'comments.user:id,name,photo_profile',
+                'likes'
+            ])
+            ->withCount(['comments', 'likes'])
+            ->where('id', $identifier)
+            ->orWhere('slug', $identifier)
+            ->first();
 
         if (!$article) {
             return response()->json(['message' => 'Article not found'], 404);
         }
-
-        // Pastikan accessor photo_profile_url ikut ter-include di user & comments
-        if ($article->user) {
-            $article->user->append('photo_profile_url');
-        }
-        $article->comments->each(function ($comment) {
-            if ($comment->user) {
-                $comment->user->append('photo_profile_url');
-            }
-        });
 
         // Check if current user liked it
         if (auth('sanctum')->check()) {
@@ -110,9 +95,11 @@ class ArticleController extends Controller
             'category_id' => $request->category_id,
         ]);
 
+        $article->load(['user', 'category']);
+
         return response()->json([
             'message' => 'Article created successfully',
-            'data' => $article->load(['user', 'category'])
+            'data' => $article
         ], 201);
     }
 
@@ -155,9 +142,11 @@ class ArticleController extends Controller
 
         $article->update($data);
 
+        $fresh = $article->fresh()->load(['user', 'category']);
+
         return response()->json([
             'message' => 'Article updated successfully',
-            'data' => $article->fresh()->load(['user', 'category'])
+            'data' => $fresh
         ]);
     }
 

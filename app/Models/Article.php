@@ -25,8 +25,12 @@ class Article extends Model
 
     public function getImageUrlAttribute()
     {
-        if ($this->attributes['image'] ?? null) {
-            return url('storage/' . $this->attributes['image']);
+        $image = $this->getAttribute('image');
+        if ($image) {
+            if (filter_var($image, FILTER_VALIDATE_URL)) {
+                return $image;
+            }
+            return Storage::disk('public')->url($image);
         }
         return null;
     }
