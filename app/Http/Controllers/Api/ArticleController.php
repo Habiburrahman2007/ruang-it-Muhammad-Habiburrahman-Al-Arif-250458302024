@@ -31,6 +31,14 @@ class ArticleController extends Controller
 
         $articles = $query->paginate($request->get('per_page', 10));
 
+        // Pastikan accessor image_url & photo_profile_url ikut ter-include
+        $articles->getCollection()->transform(function ($article) {
+            if ($article->user) {
+                $article->user->append('photo_profile_url');
+            }
+            return $article;
+        });
+
         return response()->json($articles);
     }
 
@@ -50,6 +58,16 @@ class ArticleController extends Controller
         if (!$article) {
             return response()->json(['message' => 'Article not found'], 404);
         }
+
+        // Pastikan accessor photo_profile_url ikut ter-include di user & comments
+        if ($article->user) {
+            $article->user->append('photo_profile_url');
+        }
+        $article->comments->each(function ($comment) {
+            if ($comment->user) {
+                $comment->user->append('photo_profile_url');
+            }
+        });
 
         // Check if current user liked it
         if (auth('sanctum')->check()) {
