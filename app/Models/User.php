@@ -18,10 +18,10 @@ class User extends Authenticatable
 
     public function getPhotoProfileUrlAttribute()
     {
-        if ($this->photo_profile) {
-            return asset('storage/' . $this->photo_profile);
+        if (!empty($this->attributes['photo_profile'])) {
+            return url('storage/' . $this->attributes['photo_profile']);
         }
-        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name);
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->attributes['name'] ?? 'User');
     }
 
     // Prevent mass assignment for sensitive fields
