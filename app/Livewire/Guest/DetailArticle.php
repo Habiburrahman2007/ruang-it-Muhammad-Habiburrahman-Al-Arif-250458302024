@@ -96,8 +96,8 @@ class DetailArticle extends Component
             return;
         }
 
-        if ($article->image_id && Storage::exists('public/' . $article->image_id)) {
-            Storage::delete('public/' . $article->image_id);
+        if ($article->image && Storage::disk('public')->exists($article->image)) {
+            Storage::disk('public')->delete($article->image);
         }
 
         $article->delete();

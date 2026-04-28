@@ -24,7 +24,7 @@ class User extends Authenticatable
             if (filter_var($photo, FILTER_VALIDATE_URL)) {
                 return $photo;
             }
-            return Storage::disk('public')->url($photo);
+            return asset('storage/' . $photo);
         }
         return 'https://ui-avatars.com/api/?name=' . urlencode($this->name ?? 'User');
     }

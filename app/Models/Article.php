@@ -30,7 +30,7 @@ class Article extends Model
             if (filter_var($image, FILTER_VALIDATE_URL)) {
                 return $image;
             }
-            return Storage::disk('public')->url($image);
+            return asset('storage/' . $image);
         }
         return null;
     }
