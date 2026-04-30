@@ -51,8 +51,8 @@
 
             <div class="d-flex align-items-center mt-4 mb-2">
                 <div class="avatar avatar-md">
-                    <img src="{{ $article->user->photo_profile ? asset('storage/' . $article->user->photo_profile) : asset('img/default-avatar.jpeg') }}"
-                        alt="Foto Profil {{ $article->user->name }}">
+                    <img src="{{ $article->user->photo_profile_url }}"
+                        alt="Foto Profil {{ $article->user->name }}" width="48" height="48" fetchpriority="high">
                 </div>
                 <div class="ms-3">
                     <h6 class="mb-0 fw-bold text-md">{{ $article->user->name }}</h6>
@@ -114,8 +114,8 @@
 
             @if ($article->image)
                 <div class="d-flex justify-content-center my-4">
-                    <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}"
-                        class="img-fluid rounded shadow-sm" style="width: 100%; max-height: 500px; object-fit: cover;">
+                    <img src="{{ $article->image_url }}" alt="{{ $article->title }}"
+                        class="img-fluid rounded shadow-sm" style="width: 100%; max-height: 500px; object-fit: cover;" width="800" height="500" fetchpriority="high">
                 </div>
             @endif
 

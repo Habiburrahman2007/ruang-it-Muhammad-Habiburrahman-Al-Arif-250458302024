@@ -54,7 +54,7 @@
                                     src="{{ !empty($article->image) && file_exists(storage_path('app/public/' . $article->image))
                                         ? asset('storage/' . $article->image)
                                         : asset('img/Login.jpg') }}"
-                                    alt="{{ $article->title }}">
+                                    alt="{{ $article->title }}" width="400" height="200" loading="lazy">
                                 <div class="card-body">
                                     <h4 class="card-title text-secondary">{{ $article->title }}</h4>
                                     @php
@@ -83,7 +83,7 @@
                                         class="d-flex align-items-center text-decoration-none">
                                         <img src="{{ $article->user->photo_profile ? asset('storage/' . $article->user->photo_profile) : asset('img/default-avatar.jpeg') }}"
                                             class="rounded-circle me-2"
-                                            style="width: 35px; height: 35px; object-fit: cover;" alt="Author">
+                                            style="width: 35px; height: 35px; object-fit: cover;" alt="Author" width="35" height="35" loading="lazy">
                                         <small class="fw-semibold text-secondary">
                                             {{ \Illuminate\Support\Str::limit($article->user->name, 10, '...') }}
                                         </small>
