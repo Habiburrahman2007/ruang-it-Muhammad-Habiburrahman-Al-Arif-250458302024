@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
 
@@ -99,6 +100,7 @@ class AuthController extends Controller
             'name' => 'sometimes|string|max:255',
             'profession' => 'nullable|string|max:255',
             'bio' => 'nullable|string',
+            'photo_profile' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -108,7 +110,21 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $user->update($request->only('name', 'profession', 'bio'));
+        $data = $request->only('name', 'profession', 'bio');
+
+        if ($request->hasFile('photo_profile')) {
+            // Delete old photo if exists
+            if ($user->photo_profile) {
+                Storage::disk('public')->delete($user->photo_profile);
+            }
+
+            // Store new photo
+            $extension = $request->file('photo_profile')->getClientOriginalExtension();
+            $filename = uniqid('profile_', true) . '_' . bin2hex(random_bytes(8)) . '.' . $extension;
+            $data['photo_profile'] = $request->file('photo_profile')->storeAs('profile-photos', $filename, 'public');
+        }
+
+        $user->update($data);
 
         return response()->json([
             'message' => 'Profile updated successfully',

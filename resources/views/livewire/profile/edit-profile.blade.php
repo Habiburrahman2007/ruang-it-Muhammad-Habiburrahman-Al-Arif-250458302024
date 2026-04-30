@@ -50,7 +50,7 @@
                 </div>
 
                 <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary px-4" wire:click="updateProfile">
+                    <button type="submit" class="btn btn-primary px-4">
                         <span wire:loading.remove wire:target="updateProfile">
                             Simpan perubahan
                         </span>
