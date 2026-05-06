@@ -40,7 +40,7 @@
                                     <td>
                                         <span class="badge {{ $category->colorClass }}"
                                             style="{{ $category->colorStyle }}">
-                                            {{ $colorOptions[$category->color] ?? $category->color }}
+                                            {{ $colorOptions[$category->color] ?? 'Warna' }}
                                         </span>
                                     </td>
                                     <td class="text-center">{{ $category->active_articles_count }}</td>

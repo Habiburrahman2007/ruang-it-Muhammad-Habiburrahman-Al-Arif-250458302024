@@ -25,6 +25,14 @@ class CreateCategory extends Component
         'bg-success' => 'Hijau',
         'bg-warning' => 'Kuning',
         'bg-primary' => 'Biru',
+        '#dc3545' => 'Merah',
+        '#28a745' => 'Hijau',
+        '#ffc107' => 'Kuning',
+        '#007bff' => 'Biru',
+        '#ff0000' => 'Merah',
+        '#00ff00' => 'Hijau',
+        '#ffff00' => 'Kuning',
+        '#0000ff' => 'Biru',
     ];
 
     public function save()
