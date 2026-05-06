@@ -61,7 +61,8 @@
                                         $preview = \App\Helpers\ContentHelper::excerpt($article->content, 120);
                                     @endphp
                                     <p class="card-text text-secondary">{!! $preview !!}</p>
-                                    <span class="badge {{ $article->category->color }}">
+                                    <span class="badge {{ $article->category->colorClass }}"
+                                        style="{{ $article->category->colorStyle }}">
                                         {{ $article->category->name }}
                                     </span>
                                 </div>
@@ -83,7 +84,8 @@
                                         class="d-flex align-items-center text-decoration-none">
                                         <img src="{{ $article->user->photo_profile ? asset('storage/' . $article->user->photo_profile) : asset('img/default-avatar.jpeg') }}"
                                             class="rounded-circle me-2"
-                                            style="width: 35px; height: 35px; object-fit: cover;" alt="Author" width="35" height="35" loading="lazy">
+                                            style="width: 35px; height: 35px; object-fit: cover;" alt="Author"
+                                            width="35" height="35" loading="lazy">
                                         <small class="fw-semibold text-secondary">
                                             {{ \Illuminate\Support\Str::limit($article->user->name, 10, '...') }}
                                         </small>

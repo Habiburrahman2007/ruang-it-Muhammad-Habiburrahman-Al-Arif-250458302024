@@ -2,17 +2,18 @@
     <div class="card position-relative border-0 shadow-sm">
         <div class="card-body position-relative p-5">
 
-            <span class="badge {{ $article->category->color }} position-absolute top-0 start-10 mt-4 me-4">
+            <span class="badge {{ $article->category->colorClass }} position-absolute top-0 start-10 mt-4 me-4"
+                style="{{ $article->category->colorStyle }}">
                 {{ $article->category->name }}
             </span>
 
             <div class="position-absolute top-0 end-0 d-none d-md-flex flex-column align-items-end me-4"
                 style="margin-top: 4rem;">
                 <div class="btn-group mb-2">
-                    <button type="button" class="btn btn-link p-2 text-decoration-none"
-                        x-data="{ isProcessing: false }"
+                    <button type="button" class="btn btn-link p-2 text-decoration-none" x-data="{ isProcessing: false }"
                         x-on:click="if(isProcessing) return; isProcessing = true; $wire.isLiked = !$wire.isLiked; $wire.likesCount += $wire.isLiked ? 1 : -1; $wire.toggleLike({{ $article->id }}).then(() => { isProcessing = false; })">
-                        <i class="bi" :class="$wire.isLiked ? 'bi-heart-fill text-danger' : 'bi-heart text-secondary'"></i>
+                        <i class="bi"
+                            :class="$wire.isLiked ? 'bi-heart-fill text-danger' : 'bi-heart text-secondary'"></i>
                         <small class="text-muted" x-text="$wire.likesCount">{{ $likesCount }}</small>
                     </button>
                     <button type="button" class="btn btn-link p-2 text-decoration-none">
@@ -51,8 +52,8 @@
 
             <div class="d-flex align-items-center mt-4 mb-2">
                 <div class="avatar avatar-md">
-                    <img src="{{ $article->user->photo_profile_url }}"
-                        alt="Foto Profil {{ $article->user->name }}" width="48" height="48" fetchpriority="high">
+                    <img src="{{ $article->user->photo_profile_url }}" alt="Foto Profil {{ $article->user->name }}"
+                        width="48" height="48" fetchpriority="high">
                 </div>
                 <div class="ms-3">
                     <h6 class="mb-0 fw-bold text-md">{{ $article->user->name }}</h6>
@@ -61,10 +62,10 @@
             </div>
 
             <div class="d-flex d-md-none justify-content-end align-items-center gap-3 mb-3">
-                <button type="button" class="btn btn-link p-0 text-decoration-none"
-                    x-data="{ isProcessing: false }"
+                <button type="button" class="btn btn-link p-0 text-decoration-none" x-data="{ isProcessing: false }"
                     x-on:click="if(isProcessing) return; isProcessing = true; $wire.isLiked = !$wire.isLiked; $wire.likesCount += $wire.isLiked ? 1 : -1; $wire.toggleLike({{ $article->id }}).then(() => { isProcessing = false; })">
-                    <i class="bi" :class="$wire.isLiked ? 'bi-heart-fill text-danger' : 'bi-heart text-secondary'"></i>
+                    <i class="bi"
+                        :class="$wire.isLiked ? 'bi-heart-fill text-danger' : 'bi-heart text-secondary'"></i>
                     <small class="text-muted ms-1" x-text="$wire.likesCount">{{ $likesCount }}</small>
                 </button>
 
@@ -115,7 +116,8 @@
             @if ($article->image)
                 <div class="d-flex justify-content-center my-4">
                     <img src="{{ $article->image_url }}" alt="{{ $article->title }}"
-                        class="img-fluid rounded shadow-sm" style="width: 100%; max-height: 500px; object-fit: cover;" width="800" height="500" fetchpriority="high">
+                        class="img-fluid rounded shadow-sm" style="width: 100%; max-height: 500px; object-fit: cover;"
+                        width="800" height="500" fetchpriority="high">
                 </div>
             @endif
 
