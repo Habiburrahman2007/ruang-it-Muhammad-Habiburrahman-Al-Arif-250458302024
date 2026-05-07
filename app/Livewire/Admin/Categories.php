@@ -92,7 +92,6 @@ class Categories extends Component
 
         return view('livewire.admin.categories', [
             'categories' => $categories,
-            'colorOptions' => $this->colorOptions,
         ]);
     }
 }
