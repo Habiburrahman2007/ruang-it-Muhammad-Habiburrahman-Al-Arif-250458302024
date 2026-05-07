@@ -69,7 +69,7 @@ window.confirmDelete = function (articleId) {
         if (result.isConfirmed) {
             window.showLoading('Menghapus...', 'Sedang menghapus artikel.');
             console.log('Dispatching deleteArticleConfirmed for id:', articleId);
-            Livewire.dispatch('deleteArticleConfirmed', { id: articleId });
+            Livewire.dispatch('deleteArticleConfirmed', [articleId]);
         }
     });
 }
@@ -157,6 +157,10 @@ window.initAlerts = function () {
     Livewire.on('userStatusUpdated', msg => showSuccess({ text: msg }));
     Livewire.on('categoryDeleted', msg => showSuccess({ text: msg }));
     Livewire.on('statusUpdated', msg => showSuccess({ text: msg }));
+    Livewire.on('commentToggled', ({ message }) => {
+        Swal.close();
+        showSuccess({ text: message });
+    });
 
 
     const events = {

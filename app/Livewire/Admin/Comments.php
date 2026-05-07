@@ -41,7 +41,7 @@ class Comments extends Component
             'is_hidden' => !$comment->is_hidden,
         ]);
 
-        $this->dispatch('commentToggled', $comment->is_hidden
+        $this->dispatch('commentToggled', message: $comment->is_hidden
             ? 'Komentar disembunyikan.'
             : 'Komentar ditampilkan kembali.');
     }
