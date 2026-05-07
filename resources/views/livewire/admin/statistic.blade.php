@@ -146,9 +146,6 @@
     </div>
 
     <!-- ApexCharts Script -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.45.1/apexcharts.min.js" crossorigin="anonymous"
-        referrerpolicy="no-referrer"></script>
-
     <script>
         // Use window property to avoid duplicate declaration on livewire:navigated
         if (typeof window.pieChart === 'undefined') {
@@ -212,23 +209,39 @@
             window.pieChart.render();
         }
 
-        // Fungsi Wrapper untuk inisialisasi semua chart
         function initCharts() {
-            createPieChart();
+            // Jika ApexCharts belum dimuat, load dulu lalu render
+            if (typeof ApexCharts === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.45.1/apexcharts.min.js';
+                script.onload = function() {
+                    createPieChart();
+                };
+                document.head.appendChild(script);
+            } else {
+                createPieChart();
+            }
         }
 
         // --- EVENT LISTENERS ---
 
-        // 1. Jalankan saat Navigasi Livewire selesai (Pindah Halaman)
+        // 1. Jalankan saat halaman pertama kali dimuat (hard refresh & navigasi Livewire)
+        document.addEventListener('livewire:init', () => {
+            initCharts();
+        });
+
+        // 2. Fallback: Jalankan saat DOMContentLoaded (jika livewire:init tidak terpanggil)
+        document.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+        });
+
+        // 3. Jalankan saat Navigasi Livewire selesai (pindah halaman lalu kembali)
         document.addEventListener('livewire:navigated', () => {
             initCharts();
         });
 
-        // 2. Jalankan saat Load Pertama kali (Hard Refresh)
-        // Menggunakan DOMContentLoaded lebih aman & cepat daripada 'load'
-        document.addEventListener('DOMContentLoaded', () => {
-            initCharts();
-        });
+        // 4. Jalankan langsung (untuk kasus script sudah ada saat ini dieksekusi)
+        initCharts();
     </script>
 
 </div>

@@ -69,7 +69,7 @@ window.confirmDelete = function (articleId) {
         if (result.isConfirmed) {
             window.showLoading('Menghapus...', 'Sedang menghapus artikel.');
             console.log('Dispatching deleteArticleConfirmed for id:', articleId);
-            Livewire.dispatch('deleteArticleConfirmed', articleId);
+            Livewire.dispatch('deleteArticleConfirmed', { id: articleId });
         }
     });
 }
