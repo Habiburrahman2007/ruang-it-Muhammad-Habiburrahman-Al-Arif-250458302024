@@ -72,7 +72,8 @@
                                         {!! $preview !!}
                                     </p>
                                     <div class="mt-auto">
-                                        <span class="badge {{ $article->category->color }}">
+                                        <span class="badge {{ $article->category->colorClass }}"
+                                            style="{{ $article->category->colorStyle }}">
                                             {{ $article->category->name }}
                                         </span>
                                     </div>

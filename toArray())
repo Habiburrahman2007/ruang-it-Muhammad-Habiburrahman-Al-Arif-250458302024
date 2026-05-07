@@ -1,0 +1,6 @@
+
+In sanctum.php line 21:
+                                             
+  Class "Laravel\Sanctum\Sanctum" not found  
+                                             
+

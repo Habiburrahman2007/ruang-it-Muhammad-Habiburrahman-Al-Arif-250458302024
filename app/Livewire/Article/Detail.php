@@ -22,6 +22,7 @@ class Detail extends Component
     public $user;
     public $likesCount;
     public $commentsCount;
+    public $isLiked = false;
     public $comments = [];
     public $newComment = '';
     public $editingCommentId;
@@ -48,11 +49,11 @@ class Detail extends Component
             ->firstOrFail();
 
         if ($this->user) {
-            $this->article->isLiked = $this->article->likes
+            $this->isLiked = $this->article->likes
                 ->where('user_id', $this->user->id)
                 ->count() > 0;
         } else {
-            $this->article->isLiked = false;
+            $this->isLiked = false;
         }
 
         $this->likesCount = $this->article->likes->count();

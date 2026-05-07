@@ -107,8 +107,8 @@
                                                 <td>{{ Str::limit($article->user->name, 10, '...') }}</td>
                                                 <td>
                                                     @if ($article->category)
-                                                        <span
-                                                            class="badge {{ $article->category->color ?? 'bg-secondary' }}">
+                                                        <span class="badge {{ $article->category->colorClass ?? '' }}"
+                                                            style="{{ $article->category->colorStyle ?? '' }}">
                                                             {{ $article->category->name }}
                                                         </span>
                                                     @else

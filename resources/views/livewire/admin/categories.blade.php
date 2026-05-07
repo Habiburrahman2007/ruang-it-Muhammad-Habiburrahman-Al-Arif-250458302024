@@ -34,11 +34,13 @@
                         <tbody>
                             @foreach ($categories as $category)
                                 <tr>
-                                    <td>{{ ($categories->currentPage() - 1) * $categories->perPage() + $loop->iteration }}</td>
+                                    <td>{{ ($categories->currentPage() - 1) * $categories->perPage() + $loop->iteration }}
+                                    </td>
                                     <td>{{ $category->name }}</td>
                                     <td>
-                                        <span class="badge {{ $category->color }}">
-                                            {{ $colorOptions[$category->color] ?? $category->color }}
+                                        <span class="badge {{ $category->colorClass }}"
+                                            style="{{ $category->colorStyle }}">
+                                            {{ $colorOptions[$category->color] ?? 'Warna' }}
                                         </span>
                                     </td>
                                     <td class="text-center">{{ $category->active_articles_count }}</td>

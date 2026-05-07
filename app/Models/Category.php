@@ -11,6 +11,16 @@ class Category extends Model
 
     protected $fillable = ['name', 'color'];
 
+    public function getColorClassAttribute()
+    {
+        return preg_match('/^(#|rgb\(|hsl\()/i', $this->color) ? '' : $this->color;
+    }
+
+    public function getColorStyleAttribute()
+    {
+        return preg_match('/^(#|rgb\(|hsl\()/i', $this->color) ? 'background-color: ' . $this->color . ';' : '';
+    }
+
     public function articles() {
         return $this->hasMany(Article::class);
     }

@@ -67,6 +67,7 @@
         window.profile_updated = @json(session('profile_updated'));
         window.comment_updated = @json(session('comment_updated'));
     </script>
+    <script src="{{ asset('dist/assets/compiled/js/app.js') }}" data-navigate-once="true"></script>
     <script src="{{ asset('js/custom.js') }}" data-navigate-once="true"></script>
     @livewireScripts
 

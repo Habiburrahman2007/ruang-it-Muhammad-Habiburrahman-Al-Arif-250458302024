@@ -19,6 +19,8 @@ class DetailArticle extends Component
     public $article;
     public $slug;
     public $user;
+    public $isLiked = false;
+    public $likesCount = 0;
     public $comments = [];
     public $newComment;
     public $perPage = 3;
@@ -26,9 +28,16 @@ class DetailArticle extends Component
     public function mount($slug)
     {
         $this->slug = $slug;
-        $this->article = Article::with(['user', 'category'])->where('slug', $slug)->firstOrFail();
+        $this->article = Article::with(['user', 'category', 'likes'])->where('slug', $slug)->firstOrFail();
         $this->user = Auth::user();
 
+        if ($this->user) {
+            $this->isLiked = $this->article->likes
+                ->where('user_id', $this->user->id)
+                ->count() > 0;
+        }
+
+        $this->likesCount = $this->article->likes->count();
         $this->loadComments();
     }
 
@@ -87,8 +96,8 @@ class DetailArticle extends Component
             return;
         }
 
-        if ($article->image_id && Storage::exists('public/' . $article->image_id)) {
-            Storage::delete('public/' . $article->image_id);
+        if ($article->image && Storage::disk('public')->exists($article->image)) {
+            Storage::disk('public')->delete($article->image);
         }
 
         $article->delete();
@@ -108,14 +117,17 @@ class DetailArticle extends Component
 
         if ($like) {
             $like->delete();
+            $this->isLiked = false;
         } else {
             Like::create([
                 'user_id' => $user->id,
                 'article_id' => $articleId,
             ]);
+            $this->isLiked = true;
         }
 
-        $this->loadArticles(); // pastikan method ini memang ada
+        $this->article->load('likes');
+        $this->likesCount = $this->article->likes->count();
     }
 
     public function render()

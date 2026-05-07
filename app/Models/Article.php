@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 
 class Article extends Model
 {
@@ -19,6 +20,20 @@ class Article extends Model
         'status',
         'slug',
     ];
+
+    protected $appends = ['image_url'];
+
+    public function getImageUrlAttribute()
+    {
+        $image = $this->getAttribute('image');
+        if ($image) {
+            if (filter_var($image, FILTER_VALIDATE_URL)) {
+                return $image;
+            }
+            return asset('storage/' . $image);
+        }
+        return null;
+    }
 
     protected static function booted()
     {

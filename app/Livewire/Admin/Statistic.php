@@ -76,7 +76,7 @@ class Statistic extends Component
         $this->categoryNames = $categories->pluck('name')->toArray();
         $this->categoryArticleCounts = $categories->pluck('articles_count')->toArray();
         $this->categoryColors = $categories->pluck('color')->map(function ($color) {
-            return $this->hexColors[$color] ?? '#6c757d';
+            return $this->hexColors[$color] ?? $color ?? '#6c757d';
         })->toArray();
     }
 

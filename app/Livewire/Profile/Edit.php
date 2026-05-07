@@ -50,7 +50,9 @@ class Edit extends Component
             }
 
             // Store new photo
-            $path = $this->new_photo->store('profile-photos', 'public');
+            $extension = $this->new_photo->getClientOriginalExtension();
+            $filename = uniqid('profile_', true) . '_' . bin2hex(random_bytes(8)) . '.' . $extension;
+            $path = $this->new_photo->storeAs('profile-photos', $filename, 'public');
             $user->photo_profile = $path;
         }
 

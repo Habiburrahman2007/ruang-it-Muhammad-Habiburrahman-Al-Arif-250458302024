@@ -31,6 +31,7 @@ class ArticleController extends Controller
 
         $articles = $query->paginate($request->get('per_page', 10));
 
+        // Accessor image_url & photo_profile_url akan otomatis ter-include karena ada di $appends model
         return response()->json($articles);
     }
 
@@ -92,9 +93,11 @@ class ArticleController extends Controller
             'category_id' => $request->category_id,
         ]);
 
+        $article->load(['user', 'category']);
+
         return response()->json([
             'message' => 'Article created successfully',
-            'data' => $article->load(['user', 'category'])
+            'data' => $article
         ], 201);
     }
 
@@ -137,9 +140,11 @@ class ArticleController extends Controller
 
         $article->update($data);
 
+        $fresh = $article->fresh()->load(['user', 'category']);
+
         return response()->json([
             'message' => 'Article updated successfully',
-            'data' => $article->fresh()->load(['user', 'category'])
+            'data' => $fresh
         ]);
     }
 

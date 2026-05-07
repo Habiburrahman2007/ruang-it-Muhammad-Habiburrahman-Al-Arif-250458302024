@@ -3,7 +3,7 @@
         class="bg-transparent border-b border-transparent fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out">
         <div class="w-full flex items-center justify-between px-8 py-4">
             <a href="{{ route('landing-page') }}" class="flex items-center space-x-3 rtl:space-x-reverse mx-3">
-                <img src="{{ asset('img/logo_fp-removebg-preview.png') }}" class="h-10" alt="Logo Flowbite" />
+                <img src="{{ asset('img/logo_fp-removebg-preview.png') }}" class="h-10 w-auto" width="40" height="40" alt="Logo Ruang IT" fetchpriority="high" />
                 <span class="self-center text-3xl font-semibold whitespace-nowrap text-white">Ruang IT</span>
             </a>
 
@@ -98,7 +98,7 @@
             </div>
 
             <div class="lg:w-1/2 flex justify-center lg:justify-end">
-                <img src="{{ asset('img/logohero.png') }}" alt="Logo" class="w-100 lg:w-200 h-auto">
+                <img src="{{ asset('img/logohero.png') }}" alt="Logo Hero" class="w-100 lg:w-200 h-auto" width="400" height="400" fetchpriority="high" loading="eager">
             </div>
         </div>
     </section>
@@ -169,7 +169,7 @@
                     <div
                         class="sm:w-[564px] w-full sm:h-[646px] h-full sm:bg-white rounded-3xl sm:border border-gray-200 relative">
                         <img class="sm:mt-5 sm:ml-5 w-full h-full rounded-3xl object-cover"
-                            src="{{ asset('img/eye tech.jpeg') }}" alt="Gambar Tentang Kami" />
+                            src="{{ asset('img/eye tech.jpeg') }}" alt="Gambar Tentang Kami" width="564" height="646" loading="lazy" />
                     </div>
                 </div>
             </div>
@@ -184,9 +184,9 @@
                 <div
                     class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                     <a href="#">
-                        <img class="rounded-t-lg"
+                        <img class="rounded-t-lg w-full h-48 object-cover"
                             src="{{ asset('img/Download Desktop source code and Wallpaper by coding and programming_ for free.jpeg') }}"
-                            alt="" />
+                            alt="Front End Category" width="384" height="192" loading="lazy" />
                     </a>
                     <div class="p-5">
                         <a href="#">
@@ -202,9 +202,9 @@
                 <div
                     class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                     <a href="#">
-                        <img class="rounded-t-lg"
+                        <img class="rounded-t-lg w-full h-48 object-cover"
                             src="{{ asset('img/6 Ways to Have Cyber Security in Your Business.jpeg') }}"
-                            alt="" />
+                            alt="Cyber Security Category" width="384" height="192" loading="lazy" />
                     </a>
                     <div class="p-5">
                         <a href="#">
@@ -219,9 +219,9 @@
                 <div
                     class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
                     <a href="#">
-                        <img class="rounded-t-lg"
+                        <img class="rounded-t-lg w-full h-48 object-cover"
                             src="{{ asset('img/Futuristic Cloud Computing Concept_ AI, Big Data & Technology Innovation, cloud computing concept Stock Photo _ Adobe Stock.jpeg') }}"
-                            alt="" />
+                            alt="Networking Category" width="384" height="192" loading="lazy" />
                     </a>
                     <div class="p-5">
                         <a href="#">
@@ -230,7 +230,6 @@
                         </a>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Jelajahi AWS, Azure, Google Cloud,
                             dan arsitektur tanpa server.</p>
-                        </a>
                     </div>
                 </div>
 
@@ -274,8 +273,8 @@
                                 <p class="card-text text-secondary mb-4">{!! $preview !!}</p>
 
                                 <div class="flex items-center mt-4 gap-x-3">
-                                    <img src="{{ $article->user->photo_profile ?? 'https://via.placeholder.com/40' }}"
-                                        alt="Penulis" class="w-10 h-10 rounded-full object-cover" />
+                                    <img src="{{ $article->user->photo_profile_url }}"
+                                        alt="Penulis" class="w-10 h-10 rounded-full object-cover" width="40" height="40" loading="lazy" />
                                     <div class="text-sm">
                                         <p class="font-semibold">{{ $article->user->name ?? 'Penulis Tidak Dikenal' }}
                                         </p>
@@ -304,13 +303,14 @@
                                 </div>
 
                                 <h3 class="text-lg font-semibold mb-2">{{ $article->title }}</h3>
-                                <p class="text-sm text-gray-300 line-clamp-3">
-                                    {{ Str::limit(strip_tags($article->content), 120) }}
-                                </p>
+                                @php
+                                    $preview = \App\Helpers\ContentHelper::excerpt($article->content, 120);
+                                @endphp
+                                <p class="text-sm text-gray-300 line-clamp-3 mb-4">{!! $preview !!}</p>
 
                                 <div class="flex items-center mt-4 gap-x-3">
-                                    <img src="{{ $article->user->photo_profile ?? 'https://via.placeholder.com/40' }}"
-                                        alt="Penulis" class="w-10 h-10 rounded-full object-cover" />
+                                    <img src="{{ $article->user->photo_profile_url }}"
+                                        alt="Penulis" class="w-10 h-10 rounded-full object-cover" width="40" height="40" loading="lazy" />
                                     <div class="text-sm">
                                         <p class="font-semibold">{{ $article->user->name ?? 'Penulis Tidak Dikenal' }}
                                         </p>
@@ -339,13 +339,14 @@
                                 </div>
 
                                 <h3 class="text-lg font-semibold mb-2">{{ $article->title }}</h3>
-                                <p class="text-sm text-gray-300 line-clamp-3">
-                                    {{ Str::limit(strip_tags($article->content), 120) }}
-                                </p>
+                                @php
+                                    $preview = \App\Helpers\ContentHelper::excerpt($article->content, 120);
+                                @endphp
+                                <p class="text-sm text-gray-300 line-clamp-3 mb-4">{!! $preview !!}</p>
 
                                 <div class="flex items-center mt-4 gap-x-3">
-                                    <img src="{{ $article->user->photo_profile ?? 'https://via.placeholder.com/40' }}"
-                                        alt="Penulis" class="w-10 h-10 rounded-full object-cover" />
+                                    <img src="{{ $article->user->photo_profile_url }}"
+                                        alt="Penulis" class="w-10 h-10 rounded-full object-cover" width="40" height="40" loading="lazy" />
                                     <div class="text-sm">
                                         <p class="font-semibold">{{ $article->user->name ?? 'Penulis Tidak Dikenal' }}
                                         </p>
@@ -364,7 +365,7 @@
         <div
             class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
             <img class="w-full h-150 rounded-3xl object-cover" src="{{ asset('img/gambar lp.png') }}"
-                alt="gambar dasbor">
+                alt="gambar dasbor" width="600" height="600" loading="lazy">
             <div class="mt-4 md:mt-0">
                 <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-indigo-700">Membangun Wawasan Digital
                     bersama

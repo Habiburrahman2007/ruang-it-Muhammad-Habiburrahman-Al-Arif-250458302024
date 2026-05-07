@@ -140,7 +140,8 @@
                                             $preview = \App\Helpers\ContentHelper::excerpt($article->content, 120);
                                         @endphp
                                         <p class="card-text text-secondary">{!! $preview !!}</p>
-                                        <span class="badge {{ $article->category->color }}">
+                                        <span class="badge {{ $article->category->colorClass }}"
+                                            style="{{ $article->category->colorStyle }}">
                                             {{ $article->category->name }}
                                         </span>
                                         @if ($article->status === 'active')
