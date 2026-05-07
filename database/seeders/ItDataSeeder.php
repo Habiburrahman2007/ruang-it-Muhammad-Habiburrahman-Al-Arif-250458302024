@@ -84,12 +84,12 @@ class ItDataSeeder extends Seeder
         // 2. CATEGORIES
         // ---------------------------------------------------------------
         $categoriesData = [
-            ['name' => 'Programming',           'color' => '#3B82F6'],
-            ['name' => 'Networking',             'color' => '#10B981'],
-            ['name' => 'Cyber Security',         'color' => '#EF4444'],
-            ['name' => 'Artificial Intelligence','color' => '#8B5CF6'],
-            ['name' => 'Cloud Computing',        'color' => '#F59E0B'],
-            ['name' => 'Data Science',           'color' => '#14B8A6'],
+            ['name' => 'Programming',           'color' => 'bg-primary'],
+            ['name' => 'Networking',             'color' => 'bg-success'],
+            ['name' => 'Cyber Security',         'color' => 'bg-danger'],
+            ['name' => 'Artificial Intelligence','color' => 'bg-secondary'],
+            ['name' => 'Cloud Computing',        'color' => 'bg-warning'],
+            ['name' => 'Data Science',           'color' => 'bg-info'],
         ];
 
         $categories = [];

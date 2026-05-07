@@ -22,12 +22,15 @@
                                 <div class="col-6">
                                     <div class="form-group mandatory">
                                         <label for="color" class="form-label mb-3">Warna kategori</label>
-                                        <select class="form-select" wire:model.defer="color">
+                                        <select class="form-select" wire:model="color">
                                             <option value="">-- Pilih warna --</option>
                                             @foreach ($colorOptions as $class => $label)
                                                 <option value="{{ $class }}">{{ $label }}</option>
                                             @endforeach
                                         </select>
+                                        @error('color')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
