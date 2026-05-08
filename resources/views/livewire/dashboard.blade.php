@@ -58,22 +58,22 @@
                                         ? asset('storage/' . $article->image)
                                         : asset('img/Login.jpg') }}"
                                     alt="{{ $article->title }}"
-                                    onerror="this.src='{{ asset('img/Login.jpg') }}'; this.style.backgroundColor='#e9ecef';">
+                                    onerror="this.src='<?= asset('img/Login.jpg') ?>'; this.style.backgroundColor='#e9ecef';">
                                 <div class="card-body d-flex flex-column flex-grow-1">
                                     <h4 class="card-title text-secondary"
-                                        style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 3.6rem;">
+                                        {!! 'style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 3.6rem;"' !!}>
                                         {{ $article->title }}
                                     </h4>
                                     @php
                                         $preview = \App\Helpers\ContentHelper::excerpt($article->content, 120);
                                     @endphp
-                                    <p class="card-text text-secondary flex-grow-1"
-                                        style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                                    <p class="card-text text-secondary mb-3"
+                                        {!! 'style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;"' !!}>
                                         {!! $preview !!}
                                     </p>
                                     <div class="mt-auto">
                                         <span class="badge {{ $article->category->colorClass }}"
-                                            style="{{ $article->category->colorStyle }}">
+                                            {!! $article->category->colorStyle ? 'style="' . $article->category->colorStyle . '"' : '' !!}>
                                             {{ $article->category->name }}
                                         </span>
                                     </div>

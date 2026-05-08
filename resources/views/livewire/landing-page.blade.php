@@ -98,7 +98,7 @@
             </div>
 
             <div class="lg:w-1/2 flex justify-center lg:justify-end">
-                <img src="{{ asset('img/newlogo.png') }}" alt="Logo Hero" class="w-64 md:w-80 lg:w-96 xl:w-[400px] h-auto object-contain drop-shadow-2xl" fetchpriority="high" loading="eager">
+                <img src="{{ asset('img/newlogo.png') }}" alt="Logo Hero" class="w-48 md:w-56 lg:w-72 xl:w-80 h-auto object-contain drop-shadow-2xl" fetchpriority="high" loading="eager">
             </div>
         </div>
     </section>
