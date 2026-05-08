@@ -135,11 +135,17 @@
                                             : asset('img/Login.jpg') }}"
                                         alt="{{ $article->title }}">
                                     <div class="card-body">
-                                        <h4 class="card-title text-secondary">{{ $article->title }}</h4>
+                                        <h4 class="card-title text-secondary"
+                                            {!! 'style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 3.6rem;"' !!}>
+                                            {{ $article->title }}
+                                        </h4>
                                         @php
                                             $preview = \App\Helpers\ContentHelper::excerpt($article->content, 120);
                                         @endphp
-                                        <p class="card-text text-secondary">{!! $preview !!}</p>
+                                        <p class="card-text text-secondary"
+                                            {!! 'style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;"' !!}>
+                                            {!! $preview !!}
+                                        </p>
                                         <span class="badge {{ $article->category->colorClass }}"
                                             style="{{ $article->category->colorStyle }}">
                                             {{ $article->category->name }}
