@@ -66,6 +66,7 @@
          data-article-updated="{{ session('article_updated') ? 'true' : 'false' }}"
          data-profile-updated="{{ session('profile_updated') ? 'true' : 'false' }}"
          data-comment-updated="{{ session('comment_updated') ? 'true' : 'false' }}"
+         data-comment-deleted="{{ session('comment_deleted') ? 'true' : 'false' }}"
          style="display: none;">
     </div>
     <script>
@@ -79,6 +80,7 @@
                 window.article_updated = el.getAttribute('data-article-updated') === 'true';
                 window.profile_updated = el.getAttribute('data-profile-updated') === 'true';
                 window.comment_updated = el.getAttribute('data-comment-updated') === 'true';
+                window.comment_deleted = el.getAttribute('data-comment-deleted') === 'true';
             }
         })();
     </script>

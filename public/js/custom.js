@@ -162,6 +162,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         window.comment_updated = null;
     }
+
+    if (window.comment_deleted) {
+        Swal.fire({
+            title: 'Komentar berhasil dihapus!',
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false
+        });
+        window.comment_deleted = null;
+    }
 });
 
 document.addEventListener('livewire:load', function () {

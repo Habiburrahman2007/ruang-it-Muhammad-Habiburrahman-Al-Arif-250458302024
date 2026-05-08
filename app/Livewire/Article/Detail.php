@@ -150,6 +150,7 @@ class Detail extends Component
         }
 
         $comment->delete();
+        session()->flash('comment_deleted', true);
         $this->loadComments();
     }
 
