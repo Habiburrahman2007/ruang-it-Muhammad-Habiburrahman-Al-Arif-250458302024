@@ -6,10 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <title>{{ $title }}</title>
-    <link rel="icon" href="{{ asset('img/logo_fp-removebg-preview.png') }}" type="image/png">
+    <title>{{ $title ?? 'Ruang IT' }}</title>
+    <link rel="icon" href="{{ asset('img/newlogo.png') }}" type="image/png">
     <style>
         body.loading-screen * {
             cursor: wait !important;
@@ -21,7 +20,7 @@
 
 <body class="w-full">
     <div class="flex flex-col justify-center items-center min-h-screen py-5 px-4 w-full bg-cover bg-center"
-        style="background-image: url('{{ asset('img/bg-auth.jpeg') }}');">
+        style="background-image: url('<?= asset('img/bg-auth.jpeg') ?>');">
         {{ $slot }}
     </div>
     <script>

@@ -7,7 +7,7 @@
     </a>
     <div class="w-full p-6">
         <div class="text-center mb-5">
-            <img src="{{ asset('img/logo_fp-removebg-preview.png') }}" alt="Logo" class="mx-auto h-20 w-auto" />
+            <img src="{{ asset('img/newlogo.png') }}" alt="Logo" class="mx-auto h-20 w-auto" />
             <h2 class="mt-3 text-2xl font-bold text-white">Silahkan daftarkan akun Anda</h2>
         </div>
 

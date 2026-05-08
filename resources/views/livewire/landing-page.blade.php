@@ -3,7 +3,7 @@
         class="bg-transparent border-b border-transparent fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out">
         <div class="w-full flex items-center justify-between px-8 py-4">
             <a href="{{ route('landing-page') }}" class="flex items-center space-x-3 rtl:space-x-reverse mx-3">
-                <img src="{{ asset('img/logo_fp-removebg-preview.png') }}" class="h-10 w-auto" width="40" height="40" alt="Logo Ruang IT" fetchpriority="high" />
+                <img src="{{ asset('img/newlogo.png') }}" class="h-10 w-auto" width="40" height="40" alt="Logo Ruang IT" fetchpriority="high" />
                 <span class="self-center text-3xl font-semibold whitespace-nowrap text-white">Ruang IT</span>
             </a>
 
@@ -98,7 +98,7 @@
             </div>
 
             <div class="lg:w-1/2 flex justify-center lg:justify-end">
-                <img src="{{ asset('img/logohero.png') }}" alt="Logo Hero" class="w-100 lg:w-200 h-auto" width="400" height="400" fetchpriority="high" loading="eager">
+                <img src="{{ asset('img/newlogo.png') }}" alt="Logo Hero" class="w-100 lg:w-200 h-auto" width="400" height="400" fetchpriority="high" loading="eager">
             </div>
         </div>
     </section>
@@ -427,7 +427,7 @@
     <footer class="bg-gray-900 text-gray-300 py-10" id="footer">
         <div class="max-w-screen-xl mx-auto text-center space-y-6">
             <div class="flex justify-center items-center gap-3">
-                <img src="{{ asset('img/logo_fp-removebg-preview.png') }}" alt="Logo" class="w-12 h-auto">
+                <img src="{{ asset('img/newlogo.png') }}" alt="Logo" class="w-12 h-auto">
                 <h1 class="text-white text-xl font-semibold">Ruang IT</h1>
             </div>
             <h6>Tempat Belajar IT untuk Semua Kalangan</h6>

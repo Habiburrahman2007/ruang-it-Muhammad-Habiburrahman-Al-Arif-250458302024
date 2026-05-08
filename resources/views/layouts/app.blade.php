@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $title }}</title>
+    <title>{{ $title ?? 'Ruang IT' }}</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -34,7 +34,7 @@
                 <div class="spinner-border text-primary" role="status" style="width: 5rem; height: 5rem;">
                     <span class="visually-hidden">Loading...</span>
                 </div>
-                <img src="{{ asset('img/logo_fp-removebg-preview.png') }}" alt="Logo" class="loader-logo">
+                <img src="{{ asset('img/newlogo.png') }}" alt="Logo" class="loader-logo">
             </div>
         </div>
 
@@ -58,14 +58,29 @@
     @stack('scripts')
 
     <script type="text/javascript" src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
+    <div id="session-status" 
+         data-article-created="{{ session('article_created') ? 'true' : 'false' }}"
+         data-category-created="{{ session('category_created') ? 'true' : 'false' }}"
+         data-article-deleted="{{ session('article_deleted') ? 'true' : 'false' }}"
+         data-success="{{ session('success') }}"
+         data-article-updated="{{ session('article_updated') ? 'true' : 'false' }}"
+         data-profile-updated="{{ session('profile_updated') ? 'true' : 'false' }}"
+         data-comment-updated="{{ session('comment_updated') ? 'true' : 'false' }}"
+         style="display: none;">
+    </div>
     <script>
-        window.article_created = @json(session('article_created'));
-        window.category_created = @json(session('category_created'));
-        window.article_deleted = @json(session('article_deleted'));
-        window.sessionSuccess = @json(session('success'));
-        window.article_updated = @json(session('article_updated'));
-        window.profile_updated = @json(session('profile_updated'));
-        window.comment_updated = @json(session('comment_updated'));
+        (function() {
+            const el = document.getElementById('session-status');
+            if (el) {
+                window.article_created = el.getAttribute('data-article-created') === 'true';
+                window.category_created = el.getAttribute('data-category-created') === 'true';
+                window.article_deleted = el.getAttribute('data-article-deleted') === 'true';
+                window.sessionSuccess = el.getAttribute('data-success');
+                window.article_updated = el.getAttribute('data-article-updated') === 'true';
+                window.profile_updated = el.getAttribute('data-profile-updated') === 'true';
+                window.comment_updated = el.getAttribute('data-comment-updated') === 'true';
+            }
+        })();
     </script>
     <script src="{{ asset('dist/assets/compiled/js/app.js') }}" data-navigate-once="true"></script>
     <script src="{{ asset('js/custom.js') }}" data-navigate-once="true"></script>

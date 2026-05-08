@@ -75,7 +75,7 @@
                     <div class="container-fluid px-3 px-md-5 d-flex justify-content-between align-items-center py-2">
                         <a href="{{ route('landing-page') }}">
                             <h6 class="d-flex align-items-center mb-0">
-                                <img src="{{ asset('img/logo_fp-removebg-preview.png') }}" alt="Logo Ruang IT"
+                                <img src="{{ asset('img/newlogo.png') }}" alt="Logo Ruang IT"
                                     class="logo">
                                 <p class="text-2xl ms-3 mb-0">Ruang IT</p>
                             </h6>

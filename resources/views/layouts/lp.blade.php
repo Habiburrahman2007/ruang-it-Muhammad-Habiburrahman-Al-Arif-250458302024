@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
         integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="icon" href="{{ asset('img/logo_fp-removebg-preview.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('img/newlogo.png') }}" type="image/png">
 
     <style>
         .headline {
@@ -100,7 +100,7 @@
                 </svg>
                 <span class="sr-only">Loading...</span>
             </div>
-            <img src="{{ asset('img/logo_fp-removebg-preview.png') }}" alt="Logo" class="loader-logo">
+            <img src="{{ asset('img/newlogo.png') }}" alt="Logo" class="loader-logo">
         </div>
     </div>
 

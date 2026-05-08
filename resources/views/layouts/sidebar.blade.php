@@ -3,7 +3,7 @@
         <div class="sidebar-header position-relative">
             <div class="d-flex justify-content-evenly align-items-center w-100">
                 <a href="{{ route('landing-page') }}" class="d-flex align-items-center gap-2 text-decoration-none">
-                    <img src="{{ asset('img/logo_fp-removebg-preview.png') }}" alt="Logo" class="w-10 h-auto" />
+                    <img src="{{ asset('img/newlogo.png') }}" alt="Logo" class="w-10 h-auto" />
                     <h3 class="mb-0">Ruang IT</h3>
                 </a>
 
