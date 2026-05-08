@@ -49,6 +49,7 @@ class UserControl extends Component
     public function render()
     {
         $users = User::query()
+            ->withCount('articles')
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })
@@ -58,8 +59,8 @@ class UserControl extends Component
             ->when($this->filterStatus === 'banned', function ($query) {
                 $query->where('banned', true);
             })
-            ->latest()
-            ->paginate(5);
+            ->orderBy('articles_count', 'desc')
+            ->paginate(10);
 
         return view('livewire.admin.user-control', [
             'users' => $users,

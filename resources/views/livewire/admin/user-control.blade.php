@@ -11,7 +11,7 @@
             <div class="card-body">
                 <div class="d-flex flex-column mb-3 gap-2">
                     <div class="w-100">
-                        <input type="text" wire:model.live.search="search" class="form-control"
+                        <input type="text" wire:model.live="search" class="form-control"
                             placeholder="Cari pengguna">
                     </div>
 
@@ -41,6 +41,7 @@
                                 <th>Foto profil</th>
                                 <th>Nama</th>
                                 <th>Email</th>
+                                <th>Jumlah Artikel</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
@@ -58,6 +59,7 @@
                                     </td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
+                                    <td>{{ $user->articles_count }}</td>
                                     <td>
                                         @if ($user->banned)
                                             <span class="badge bg-danger">Banned</span>
@@ -73,22 +75,27 @@
                                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                             </button>
 
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{ $user->id }}">
+                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{ $user->id }}">
                                                 @if ($user->banned)
                                                     <li>
                                                         <button class="dropdown-item text-success"
-                                                            onclick="confirmToggleUser({{ $user->id }}, 'unban')">
+                                                            onclick="confirmToggleUser('{{ $user->id }}', 'unban')">
                                                             <i class="fa-solid fa-unlock me-2"></i>Aktifkan Akun
                                                         </button>
                                                     </li>
                                                 @else
                                                     <li>
                                                         <button class="dropdown-item text-danger"
-                                                            onclick="confirmToggleUser({{ $user->id }}, 'ban')">
+                                                            onclick="confirmToggleUser('{{ $user->id }}', 'ban')">
                                                             <i class="fa-solid fa-ban me-2"></i>Blokir Akun
                                                         </button>
                                                     </li>
                                                 @endif
+                                                <li>
+                                                    <a class="dropdown-item text-primary" href="{{ route('detail-profile', $user->slug) }}" wire:navigate>
+                                                        <i class="fa-solid fa-user me-2"></i>Lihat Profil
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </td>
@@ -96,7 +103,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center">Tidak ditemukan pengguna yang dimaksud</td>
+                                    <td colspan="7" class="text-center">Tidak ditemukan pengguna yang dimaksud</td>
                                 </tr>
                             @endforelse
                         </tbody>
