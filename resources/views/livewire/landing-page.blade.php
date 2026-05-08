@@ -56,7 +56,7 @@
     </nav>
 
     <section id="home" class="relative min-h-screen flex items-center bg-cover bg-center bg-no-repeat"
-        style="background-image: linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.9) 50%, rgba(0,0,0,0) 100%), url('{{ asset('img/jumbotron.png') }}');">
+        style="background-image: linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.9) 50%, rgba(0,0,0,0) 100%), url('<?= asset('img/jumbotron.png') ?>');">
 
         <div
             class="px-4 mx-auto max-w-screen-xl flex flex-col-reverse lg:flex-row items-center justify-between text-center lg:text-left w-full">
@@ -98,7 +98,7 @@
             </div>
 
             <div class="lg:w-1/2 flex justify-center lg:justify-end">
-                <img src="{{ asset('img/newlogo.png') }}" alt="Logo Hero" class="w-100 lg:w-200 h-auto" width="400" height="400" fetchpriority="high" loading="eager">
+                <img src="{{ asset('img/newlogo.png') }}" alt="Logo Hero" class="w-64 md:w-80 lg:w-96 xl:w-[400px] h-auto object-contain drop-shadow-2xl" fetchpriority="high" loading="eager">
             </div>
         </div>
     </section>
@@ -270,7 +270,7 @@
                                 @php
                                     $preview = \App\Helpers\ContentHelper::excerpt($article->content, 120);
                                 @endphp
-                                <p class="card-text text-secondary mb-4">{!! $preview !!}</p>
+                                <p class="text-sm text-gray-300 line-clamp-3 mb-4">{!! $preview !!}</p>
 
                                 <div class="flex items-center mt-4 gap-x-3">
                                     <img src="{{ $article->user->photo_profile_url }}"

@@ -66,7 +66,7 @@ class ContentHelper
      */
     public static function excerpt(string $content, int $length = 150): string
     {
-        $plain = self::stripTags($content);
-        return Str::limit($plain, $length);
+        // Allow basic styling tags. Truncation is handled by CSS line-clamp in the views.
+        return strip_tags($content, '<b><strong><i><em><s><strike><del><u><mark><sub><sup><span><br>');
     }
 }
