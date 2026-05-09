@@ -87,8 +87,7 @@
                         @endif
                     </div>
                 </div>
-        </div>
-    @else
+        @else
         <div class="position-relative">
             <div wire:loading.flex wire:target="search, setCategory"
                 class="position-absolute top-0 start-0 w-100 h-100 justify-content-center align-items-center bg-white bg-opacity-75 z-2"
@@ -113,18 +112,18 @@
                                     alt="{{ $article->title }}">
                                 <div class="card-body">
                                     <h5 class="card-title text-secondary"
-                                        {!! 'style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 3rem;"' !!}>
+                                        style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 3rem;">
                                         {{ $article->title }}
                                     </h5>
                                     @php
                                         $preview = \App\Helpers\ContentHelper::excerpt($article->content, 120);
                                     @endphp
                                     <p class="card-text text-secondary"
-                                        {!! 'style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;"' !!}>
+                                        style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
                                         {!! $preview !!}
                                     </p>
                                     <span class="badge {{ $article->category->colorClass }}"
-                                        style="{{ $article->category->colorStyle }}">
+                                        style="{!! $article->category->colorStyle !!}">
                                         {{ $article->category->name }}
                                     </span>
                                 </div>
@@ -136,8 +135,7 @@
                                         wire:click="toggleLike({{ $article->id }})" wire:loading.attr="disabled"
                                         wire:target="toggleLike({{ $article->id }})">
                                         <span wire:loading.remove wire:target="toggleLike({{ $article->id }})">
-                                            <i
-                                                class="bi bi-heart{{ $article->isLiked ? '-fill text-danger' : ' text-secondary' }}"></i>
+                                            <i class="bi bi-heart{{ $article->is_liked ? '-fill text-danger' : ' text-secondary' }}"></i>
                                         </span>
                                         <span wire:loading wire:target="toggleLike({{ $article->id }})">
                                             <div class="spinner-border spinner-border-sm text-secondary" role="status">
@@ -165,5 +163,6 @@
             </div>
         </div>
         @endif
+    </div>
     </div>
 </section>

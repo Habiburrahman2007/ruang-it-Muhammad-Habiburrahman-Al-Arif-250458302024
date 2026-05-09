@@ -103,6 +103,24 @@ class Detail extends Component
         $this->loadArticles();
     }
 
+    public function toggleLike($articleId)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $article = \App\Models\Article::findOrFail($articleId);
+        $like = $article->likes()->where('user_id', Auth::id())->first();
+
+        if ($like) {
+            $like->delete();
+        } else {
+            $article->likes()->create(['user_id' => Auth::id()]);
+        }
+
+        $this->loadArticles();
+    }
+
     public function render()
     {
         return view('livewire.profile.detail');

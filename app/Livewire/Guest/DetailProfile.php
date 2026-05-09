@@ -7,6 +7,7 @@ use App\Models\Category;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Auth;
 
 class DetailProfile extends Component
 {
@@ -51,7 +52,16 @@ class DetailProfile extends Component
         }
 
         // hasilnya Collection, bukan array
-        $this->articles = $query->latest()->get();
+        $currentUserId = Auth::id();
+        $this->articles = $query->latest()
+            ->when($currentUserId, function ($q) use ($currentUserId) {
+                return $q->selectRaw('articles.*, EXISTS(
+                    SELECT 1 FROM likes 
+                    WHERE likes.article_id = articles.id 
+                    AND likes.user_id = ?
+                ) as is_liked', [$currentUserId]);
+            })
+            ->get();
 
         // bisa pakai count() dan sum()
         $this->articleCount = $this->articles->count();
@@ -70,6 +80,24 @@ class DetailProfile extends Component
     // 🔹 Ketika search berubah secara live
     public function updatedSearch()
     {
+        $this->loadArticles();
+    }
+
+    public function toggleLike($articleId)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        $article = \App\Models\Article::findOrFail($articleId);
+        $like = $article->likes()->where('user_id', Auth::id())->first();
+
+        if ($like) {
+            $like->delete();
+        } else {
+            $article->likes()->create(['user_id' => Auth::id()]);
+        }
+
         $this->loadArticles();
     }
 

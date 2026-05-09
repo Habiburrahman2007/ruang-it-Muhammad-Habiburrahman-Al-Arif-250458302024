@@ -21,12 +21,12 @@ Route::get('/articles/{articleId}/comments', [CommentController::class, 'index']
 Route::middleware('auth:sanctum')->group(function () {
     // Auth
     Route::get('/profile', [AuthController::class, 'profile']);
-    Route::post('/profile', [AuthController::class, 'updateProfile']);
+    Route::match(['post', 'put', 'patch'], '/profile', [AuthController::class, 'updateProfile']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // Articles
     Route::post('/articles', [ArticleController::class, 'store']);
-    Route::post('/articles/{id}', [ArticleController::class, 'update']);
+    Route::match(['post', 'put', 'patch'], '/articles/{id}', [ArticleController::class, 'update']);
     Route::delete('/articles/{id}', [ArticleController::class, 'destroy']);
 
     // Categories
