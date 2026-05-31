@@ -21,12 +21,16 @@ class ArticleController extends Controller
         $user = auth('sanctum')->user();
 
         // 2. Bangun Query Utama dengan Eager Loading untuk mencegah N+1 Query Problem
-        $query = Article::with(['user:id,name,slug,photo_profile', 'category:id,name,color'])
+        $query = Article::with(['user:id,name,slug,photo_profile,profession', 'category:id,name,color'])
             ->withCount(['comments', 'likes'])
             // SENIOR OPTIMIZATION: Subquery untuk mengecek status 'like' user saat ini langsung dari database
             ->withExists(['likes as is_liked' => function ($q) use ($user) {
                 $q->where('user_id', $user ? $user->id : null);
             }])
+            // BUG FIX #1: Exclude artikel milik user yang di-ban
+            ->whereHas('user', function ($q) {
+                $q->where('banned', false);
+            })
             ->latest();
 
         // 3. Jalankan Filter Kategori jika ada request
@@ -68,7 +72,7 @@ class ArticleController extends Controller
 
         // Refactor query detail dengan withExists agar seirama dengan method index
         $article = Article::with([
-            'user:id,name,slug,photo_profile,bio',
+            'user:id,name,slug,photo_profile,bio,profession,banned',
             'category:id,name,color',
             'comments.user:id,name,photo_profile',
         ])
@@ -76,8 +80,13 @@ class ArticleController extends Controller
         ->withExists(['likes as is_liked' => function ($q) use ($user) {
             $q->where('user_id', $user ? $user->id : null);
         }])
-        ->where('id', $identifier)
-        ->orWhere('slug', $identifier)
+        // BUG FIX #1: Exclude artikel milik user yang di-ban
+        ->whereHas('user', function ($q) {
+            $q->where('banned', false);
+        })
+        ->where(function ($q) use ($identifier) {
+            $q->where('id', $identifier)->orWhere('slug', $identifier);
+        })
         ->first();
 
         if (!$article) {

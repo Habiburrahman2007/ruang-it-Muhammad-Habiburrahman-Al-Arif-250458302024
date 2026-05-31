@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\LikeController;
+use App\Http\Controllers\Api\UserController;
 
 // Public routes
 Route::post('/login', [AuthController::class, 'login']);
@@ -16,6 +17,10 @@ Route::get('/articles', [ArticleController::class, 'index']);
 Route::get('/articles/{identifier}', [ArticleController::class, 'show']);
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/articles/{articleId}/comments', [CommentController::class, 'index']);
+
+// Bug Fix #2 & #3: Endpoint publik untuk pencarian user dan profil publik user lain
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/users/{slug}', [UserController::class, 'show']);
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {

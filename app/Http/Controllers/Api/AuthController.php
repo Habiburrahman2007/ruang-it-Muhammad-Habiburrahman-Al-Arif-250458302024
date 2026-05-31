@@ -87,8 +87,18 @@ class AuthController extends Controller
 
     public function profile(Request $request)
     {
+        $user = $request->user()->loadCount(['articles', 'comments']);
+
+        // Hitung total likes yang diterima dari semua artikel milik user
+        $totalLikesReceived = \App\Models\Like::whereIn(
+            'article_id',
+            \App\Models\Article::where('user_id', $user->id)->pluck('id')
+        )->count();
+
         return response()->json([
-            'data' => $request->user()
+            'data' => array_merge($user->toArray(), [
+                'total_likes_received' => $totalLikesReceived,
+            ])
         ]);
     }
 
