@@ -60,18 +60,18 @@ class UserController extends Controller
                   ->orWhere('slug', $identifier);
             })
             ->where('banned', false)
-            ->withCount(['articles', 'comments'])
+            ->withCount('articles')
             ->first();
 
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
         }
 
-        // Hitung total likes yang diterima oleh user ini
-        $totalLikesReceived = Like::whereIn(
-            'article_id',
-            Article::where('user_id', $user->id)->pluck('id')
-        )->count();
+        $articleIds = Article::where('user_id', $user->id)->pluck('id');
+
+        // Hitung total likes dan comments yang diterima oleh user ini
+        $totalLikesReceived = Like::whereIn('article_id', $articleIds)->count();
+        $totalCommentsReceived = \App\Models\Comment::whereIn('article_id', $articleIds)->count();
 
         // Ambil artikel terbaru milik user (hanya artikel aktif)
         $articles = Article::with(['category:id,name,color'])
@@ -90,7 +90,7 @@ class UserController extends Controller
                 'bio'                  => $user->bio,
                 'photo_profile_url'    => $user->photo_profile_url,
                 'articles_count'       => $user->articles_count,
-                'comments_count'       => $user->comments_count,
+                'comments_count'       => $totalCommentsReceived,
                 'total_likes'          => $totalLikesReceived,
                 'created_at'           => $user->created_at,
                 'articles'             => $articles,
