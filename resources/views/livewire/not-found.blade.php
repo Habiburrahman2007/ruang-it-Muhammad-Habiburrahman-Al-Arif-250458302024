@@ -12,7 +12,7 @@
 
 <body>
     <div class="grid min-h-screen grid-cols-1 lg:grid-cols-2">
-        <!-- Left Section: Text -->
+        
         <div class="px-4py-8 flex flex-col items-center justify-center justify-self-center text-center">
             <h1 class="text-base-content text-blue-700 mb-3 text-5xl font-semibold">Ups...</h1>
             <h3 class="text-base-content mb-3 text-xl font-semibold">Sepertinya ada yang tersesat</h3>
@@ -37,7 +37,7 @@
                     class="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-white"><a href="{{ route('dashboard') }}">Kembali ke dashboard</a></span>
             </button>
         </div>
-        <!-- Right Section: Illustration -->
+        
         <div class="relative max-h-screen w-full p-2 max-lg:hidden">
             <img src="https://cdn.flyonui.com/fy-assets/blocks/marketing-ui/404/error-5.png" alt="404 background"
                 class="h-full w-full rounded-2xl" />

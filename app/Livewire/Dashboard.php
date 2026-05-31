@@ -68,9 +68,9 @@ class Dashboard extends Component
         $userId = $this->user->id ?? null;
 
         $query = Article::with(['user', 'category'])
-            ->withCount(['likes', 'comments']) // ✅ Only count, not load all records
+            ->withCount(['likes', 'comments']) 
             ->when($userId, function ($q) use ($userId) {
-                // ✅ Add isLiked as computed column
+                
                 return $q->selectRaw('articles.*, EXISTS(
                     SELECT 1 FROM likes 
                     WHERE likes.article_id = articles.id 

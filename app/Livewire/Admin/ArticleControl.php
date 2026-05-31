@@ -84,7 +84,7 @@ class ArticleControl extends Component
             ->count();
 
         $this->articles = Article::with(['user', 'category'])
-            ->withCount(['likes', 'comments']) // ✅ Only count
+            ->withCount(['likes', 'comments']) 
             ->when($userId, function ($q) use ($userId) {
                 return $q->selectRaw('articles.*, EXISTS(
                     SELECT 1 FROM likes 

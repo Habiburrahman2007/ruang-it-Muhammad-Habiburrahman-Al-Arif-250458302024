@@ -145,34 +145,34 @@
         </section>
     </div>
 
-    <!-- ApexCharts Script -->
+    
     <script>
-        // Use window property to avoid duplicate declaration on livewire:navigated
+
         if (typeof window.pieChart === 'undefined') {
             window.pieChart = null;
         }
 
         function createPieChart() {
-            // A. Ambil Elemen Pie Chart
+
             const chartElement = document.querySelector("#categoryPieChart");
 
-            // B. SAFETY CHECK: Jika elemen tidak ditemukan, BERHENTI.
+
             if (!chartElement) {
                 return;
             }
 
-            // C. Bersihkan chart lama
+
             if (window.pieChart) {
                 window.pieChart.destroy();
                 window.pieChart = null;
             }
 
-            // D. Ambil data dari PHP
+
             const series = @json($categoryArticleCounts ?? []);
             const labels = @json($categoryNames ?? []);
             const colors = @json($categoryColors ?? []);
 
-            // E. Validasi data - cek jika kosong atau tidak valid
+
             if (!series || series.length === 0 || !labels || labels.length === 0) {
                 chartElement.innerHTML =
                     '<div class="text-center py-5 text-muted"><i class="fa-solid fa-chart-pie fa-3x mb-3"></i><p>Tidak ada data kategori untuk ditampilkan</p></div>';
@@ -204,13 +204,13 @@
                 }
             };
 
-            // F. Render Chart Baru
+
             window.pieChart = new ApexCharts(chartElement, pieOptions);
             window.pieChart.render();
         }
 
         function initCharts() {
-            // Jika ApexCharts belum dimuat, load dulu lalu render
+
             if (typeof ApexCharts === 'undefined') {
                 const script = document.createElement('script');
                 script.src = 'https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.45.1/apexcharts.min.js';
@@ -223,24 +223,24 @@
             }
         }
 
-        // --- EVENT LISTENERS ---
 
-        // 1. Jalankan saat halaman pertama kali dimuat (hard refresh & navigasi Livewire)
+
+
         document.addEventListener('livewire:init', () => {
             initCharts();
         });
 
-        // 2. Fallback: Jalankan saat DOMContentLoaded (jika livewire:init tidak terpanggil)
+
         document.addEventListener('DOMContentLoaded', () => {
             initCharts();
         });
 
-        // 3. Jalankan saat Navigasi Livewire selesai (pindah halaman lalu kembali)
+
         document.addEventListener('livewire:navigated', () => {
             initCharts();
         });
 
-        // 4. Jalankan langsung (untuk kasus script sudah ada saat ini dieksekusi)
+
         initCharts();
     </script>
 

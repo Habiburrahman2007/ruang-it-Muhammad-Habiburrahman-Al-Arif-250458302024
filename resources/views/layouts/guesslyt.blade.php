@@ -81,7 +81,7 @@
                             </h6>
                         </a>
                         <div class="header-top-right">
-                            <!-- Desktop Buttons -->
+                            
                             <div class="d-none d-md-flex gap-3">
                                 <a href="{{ route('login') }}" wire:navigate
                                     class="btn btn-primary hover:!bg-transparent hover:!border-[var(--bs-primary)]">Masuk</a>
@@ -89,7 +89,7 @@
                                     class="btn btn-outline-primary">Daftar</a>
                             </div>
 
-                            <!-- Mobile Dropdown -->
+                            
                             <div class="d-md-none dropdown">
                                 <button class="btn btn-link text-white p-0" type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">

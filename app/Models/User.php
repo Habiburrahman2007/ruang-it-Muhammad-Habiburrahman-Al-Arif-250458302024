@@ -29,7 +29,7 @@ class User extends Authenticatable
         return 'https://ui-avatars.com/api/?name=' . urlencode($this->name ?? 'User');
     }
 
-    // Prevent mass assignment for sensitive fields
+    
     protected $guarded = ['role', 'banned', 'id', 'created_at', 'updated_at'];
 
     protected $hidden = ['password'];

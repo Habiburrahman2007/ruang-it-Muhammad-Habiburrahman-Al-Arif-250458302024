@@ -186,7 +186,7 @@ class Detail extends Component
             return;
         }
 
-        // Authorization: Only article owner or admin can delete
+        
         $user = Auth::user();
         if (!$user || ($article->user_id !== $user->id && $user->role !== 'admin')) {
             $this->dispatch('showToast', message: 'Error: Anda tidak memiliki akses untuk menghapus artikel ini.', type: 'error');

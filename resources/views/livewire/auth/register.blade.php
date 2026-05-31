@@ -53,24 +53,24 @@
                     class="overflow-hidden w-32 h-10 bg-blue-700 text-white border-none rounded-md text-xl font-bold cursor-pointer relative flex justify-center items-center group"
                     wire:loading.attr="disabled">
 
-                    {{-- Text normal --}}
+                    
                     <span class="relative z-10 transition-opacity duration-300 group-hover:opacity-0"
                         wire:loading.remove wire:target="register">
                         Daftar
                     </span>
 
-                    {{-- Hover text --}}
+                    
                     <span class="absolute z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                         wire:loading.remove wire:target="register">
                         Tekan aku
                     </span>
 
-                    {{-- SPINNER --}}
+                    
                     <span class="absolute z-10" wire:loading wire:target="register">
                         <i class="fa-solid fa-spinner fa-spin text-lg"></i>
                     </span>
 
-                    {{-- Background animation --}}
+                    
                     <span
                         class="absolute w-36 h-32 -top-8 -left-2 bg-white rotate-12 transform scale-x-0 group-hover:scale-x-100 transition-transform group-hover:duration-500 duration-1000 origin-left z-0"></span>
                     <span

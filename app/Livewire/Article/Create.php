@@ -35,13 +35,13 @@ class Create extends Component
 
     public function updatedImage()
     {
-        // Step 1: Basic Laravel validation
+        
         $this->validate([
             'image' => 'image|max:2048',
         ]);
 
         if ($this->image) {
-            // Step 2: Validate server-detected MIME type
+            
             $mimeType = $this->image->getMimeType();
             $allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
 

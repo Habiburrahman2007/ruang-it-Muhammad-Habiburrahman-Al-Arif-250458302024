@@ -8,40 +8,38 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\JsonResponse; // Senior Standard: Import JsonResponse type hint
+use Illuminate\Http\JsonResponse; 
 
 class ArticleController extends Controller
 {
-    /**
-     * Menampilkan daftar artikel (Feed Dashboard)
-     */
+    
     public function index(Request $request): JsonResponse
     {
-        // 1. Ambil user dari token Sanctum secara opsional (bisa guest / logged-in user)
+        
         $user = auth('sanctum')->user();
 
-        // 2. Bangun Query Utama dengan Eager Loading untuk mencegah N+1 Query Problem
+        
         $query = Article::with(['user:id,name,slug,photo_profile,profession', 'category:id,name,color'])
             ->withCount(['comments', 'likes'])
-            // SENIOR OPTIMIZATION: Subquery untuk mengecek status 'like' user saat ini langsung dari database
+            
             ->withExists(['likes as is_liked' => function ($q) use ($user) {
                 $q->where('user_id', $user ? $user->id : null);
             }])
-            // BUG FIX #1: Exclude artikel milik user yang di-ban
+            
             ->whereHas('user', function ($q) {
                 $q->where('banned', false);
             })
             ->latest();
 
-        // 3. Jalankan Filter Kategori jika ada request
+        
         if ($request->filled('category')) {
             $query->whereHas('category', function ($q) use ($request) {
                 $q->where('slug', $request->category)->orWhere('id', $request->category);
             });
         }
 
-        // 4. CRITICAL SECURE FIX: Bungkus orWhere dalam Logical Grouping Closure
-        // Agar pencarian tidak merusak query filter kategori di atasnya.
+        
+        
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -50,11 +48,11 @@ class ArticleController extends Controller
             });
         }
 
-        // 5. Eksekusi Pagination data
+        
         $articles = $query->paginate((int) $request->get('per_page', 10));
 
-        // 6. SINKRONISASI FLUTTER: Transformasikan collection agar memiliki field 'isLiked' (camelCase)
-        // Agar klop dengan model data `.isLiked` yang diekspektasikan oleh GetX Controller di mobile.
+        
+        
         $articles->getCollection()->transform(function ($article) {
             $article->isLiked = (bool) $article->is_liked;
             return $article;
@@ -63,14 +61,12 @@ class ArticleController extends Controller
         return response()->json($articles);
     }
 
-    /**
-     * Menampilkan detail single artikel
-     */
+    
     public function show($identifier): JsonResponse
     {
         $user = auth('sanctum')->user();
 
-        // Refactor query detail dengan withExists agar seirama dengan method index
+        
         $article = Article::with([
             'user:id,name,slug,photo_profile,bio,profession,banned',
             'category:id,name,color',
@@ -80,7 +76,7 @@ class ArticleController extends Controller
         ->withExists(['likes as is_liked' => function ($q) use ($user) {
             $q->where('user_id', $user ? $user->id : null);
         }])
-        // BUG FIX #1: Exclude artikel milik user yang di-ban
+        
         ->whereHas('user', function ($q) {
             $q->where('banned', false);
         })
@@ -93,15 +89,13 @@ class ArticleController extends Controller
             return response()->json(['message' => 'Article not found'], 404);
         }
 
-        // Set properti isLiked agar bisa dibaca dua rute format json (snake & camel) di mobile
+        
         $article->isLiked = (bool) $article->is_liked;
 
         return response()->json(['data' => $article]);
     }
 
-    /**
-     * Membuat artikel baru
-     */
+    
     public function store(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
@@ -143,9 +137,7 @@ class ArticleController extends Controller
         ], 201);
     }
 
-    /**
-     * Memperbarui artikel
-     */
+    
     public function update(Request $request, $id): JsonResponse
     {
         $article = Article::find($id);
@@ -192,9 +184,7 @@ class ArticleController extends Controller
         ]);
     }
 
-    /**
-     * Menghapus artikel
-     */
+    
     public function destroy(Request $request, $id): JsonResponse
     {
         $article = Article::find($id);

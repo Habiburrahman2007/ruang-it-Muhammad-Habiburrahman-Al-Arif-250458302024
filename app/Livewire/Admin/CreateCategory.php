@@ -40,7 +40,7 @@ class CreateCategory extends Component
                 'color' => $this->color,
             ]);
 
-            // Clear category cache so new category appears immediately
+            
             \App\Helpers\CategoryCache::flush();
 
             session()->flash('category_created', true);

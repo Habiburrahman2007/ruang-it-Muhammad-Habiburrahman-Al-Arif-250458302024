@@ -42,21 +42,21 @@ class Edit extends Component
 
         $user = Auth::user();
 
-        // Update photo if new one uploaded
+        
         if ($this->new_photo) {
-            // Delete old photo if exists
+            
             if ($user->photo_profile) {
                 Storage::disk('public')->delete($user->photo_profile);
             }
 
-            // Store new photo
+            
             $extension = $this->new_photo->getClientOriginalExtension();
             $filename = uniqid('profile_', true) . '_' . bin2hex(random_bytes(8)) . '.' . $extension;
             $path = $this->new_photo->storeAs('profile-photos', $filename, 'public');
             $user->photo_profile = $path;
         }
 
-        // Update user data
+        
         $user->name = $this->name;
         $user->profession = $this->profession;
         $user->bio = $this->bio;

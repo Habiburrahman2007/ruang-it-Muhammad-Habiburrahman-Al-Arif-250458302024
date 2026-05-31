@@ -23,7 +23,7 @@
                                             wire:model="image"
                                             accept="image/png, image/jpeg, image/jpg, image/webp, image/gif">
 
-                                        {{-- Image Upload Loading State --}}
+                                        
                                         <div wire:loading wire:target="image" class="text-primary mt-2">
                                             <small><i class="fas fa-spinner fa-spin me-1"></i> Sedang mengupload
                                                 gambar...</small>

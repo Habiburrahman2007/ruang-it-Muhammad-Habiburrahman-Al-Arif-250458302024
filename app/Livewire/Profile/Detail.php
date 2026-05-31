@@ -32,7 +32,7 @@ class Detail extends Component
     {
         $this->user = User::where('slug', $slug)->firstOrFail();
 
-        // ambil semua kategori yang digunakan user ini
+        
         $this->categories = Category::whereHas('articles', function ($q) {
             $q->where('user_id', $this->user->id);
         })->get();
@@ -40,7 +40,7 @@ class Detail extends Component
         $this->loadArticles();
     }
 
-    // 🔹 Fungsi untuk memuat artikel berdasarkan kategori dan pencarian
+    
     public function loadArticles()
     {
         $query = $this->user->articles()
@@ -55,12 +55,12 @@ class Detail extends Component
             $query->where('title', 'like', '%' . $this->search . '%');
         }
 
-        // Hitung total artikel terfilter untuk kontrol Load More
+        
         $this->totalArticles = $query->count();
 
         $currentUserId = Auth::user()->id;
 
-        // hasilnya Collection, bukan array
+        
         $this->articles = $query->latest()
             ->when($currentUserId, function ($q) use ($currentUserId) {
                 return $q->selectRaw('articles.*, EXISTS(
@@ -72,9 +72,9 @@ class Detail extends Component
             ->take($this->perPage)
             ->get();
 
-        // Statistik menggunakan aggregate query yang efisien
+        
         $this->articleCount = $this->user->articles()->count();
-        // Gunakan query terpisah yang dikhususkan untuk count relasi
+        
         $this->likeCount = $this->user->articles()->withCount('likes')->get()->sum('likes_count');
         $this->commentCount = $this->user->articles()->withCount('comments')->get()->sum('comments_count');
     }
@@ -90,14 +90,14 @@ class Detail extends Component
     }
 
 
-    // 🔹 Ketika kategori diganti
+    
     public function setCategory($category)
     {
         $this->category = $category;
         $this->loadArticles();
     }
 
-    // 🔹 Ketika search berubah secara live
+    
     public function updatedSearch()
     {
         $this->loadArticles();

@@ -7,7 +7,7 @@
                 <span class="self-center text-3xl font-semibold whitespace-nowrap text-white">Ruang IT</span>
             </a>
 
-            <!-- Desktop Menu -->
+            
             <ul class="hidden md:flex space-x-8 font-medium text-white gap-10 mx-3" id="desktopMenu">
                 <li><a href="#about" data-section="about" class="nav-link hover:text-blue-500 transition">Tentang</a>
                 </li>
@@ -19,7 +19,7 @@
                 </li>
             </ul>
 
-            <!-- Hamburger untuk mobile -->
+            
             <div class="relative md:hidden">
                 <button type="button" @click="mobileMenuOpen = !mobileMenuOpen"
                     class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -31,7 +31,7 @@
                     </svg>
                 </button>
 
-                <!-- Dropdown Menu Mobile -->
+                
                 <ul x-show="mobileMenuOpen" @click.outside="mobileMenuOpen = false"
                     x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95"
                     x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-75"
@@ -246,7 +246,7 @@
                 </p>
             </div>
 
-            <!-- Container scroll horizontal -->
+            
             <div class="relative mt-10 overflow-hidden">
                 <div class="flex animate-scroll gap-x-8">
                     @foreach ($articles as $article)
@@ -284,7 +284,7 @@
                             </article>
                         </a>
                     @endforeach
-                    <!-- Duplicate untuk loop halus -->
+                    
                     @foreach ($articles as $article)
                         <a href="{{ auth()->check() ? route('detail-article', $article->slug) : route('detail-article-guest', $article->slug) }}"
                             class="block cursor-pointer">
@@ -320,7 +320,7 @@
                             </article>
                         </a>
                     @endforeach
-                    <!-- Duplicate ketiga untuk loop yang lebih smooth -->
+                    
                     @foreach ($articles as $article)
                         <a href="{{ auth()->check() ? route('detail-article', $article->slug) : route('detail-article-guest', $article->slug) }}"
                             class="block cursor-pointer">
@@ -466,15 +466,15 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Select all elements with id (section, div, footer, etc.)
+
             const sections = document.querySelectorAll('[id]');
             const navLinks = document.querySelectorAll('.nav-link');
 
             function setActiveLink() {
                 let currentSection = '';
-                const scrollPosition = window.scrollY + 150; // Offset untuk navbar
+                const scrollPosition = window.scrollY + 150; 
 
-                // Check if we're at the bottom of the page
+
                 const isBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight -
                     100;
 
@@ -483,19 +483,19 @@
                     const sectionHeight = section.offsetHeight;
                     const sectionId = section.getAttribute('id');
 
-                    // Skip elements without proper ids or that aren't navigation targets
+
                     if (!sectionId || !['home', 'about', 'categories', 'blogs', 'footer'].includes(
                             sectionId)) {
                         return;
                     }
 
-                    // If at bottom, highlight footer
+
                     if (isBottom && sectionId === 'footer') {
                         currentSection = 'footer';
                         return;
                     }
 
-                    // Normal scroll detection
+
                     if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
                         currentSection = sectionId;
                     }
@@ -511,13 +511,13 @@
                 });
             }
 
-            // Run on scroll
+
             window.addEventListener('scroll', setActiveLink);
 
-            // Run on page load
+
             setActiveLink();
 
-            // Hamburger menu toggle removed (replaced by Alpine.js)
+
         });
     </script>
 </div>

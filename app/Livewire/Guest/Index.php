@@ -47,7 +47,7 @@ class Index extends Component
     public function loadArticles()
     {
         $query = Article::with(['user', 'category'])
-            ->withCount(['likes', 'comments']) // Use withCount to prevent N+1 queries
+            ->withCount(['likes', 'comments']) 
             ->where('status', 'active')
             ->whereHas('user', fn($q) => $q->where('banned', false))
             ->when(
@@ -66,7 +66,7 @@ class Index extends Component
             )
             ->latest();
 
-        // total artikel untuk kontrol "Load More"
+        
         $this->totalArticles = $query->count();
 
         $this->articles = $query->take($this->perPage)->get();

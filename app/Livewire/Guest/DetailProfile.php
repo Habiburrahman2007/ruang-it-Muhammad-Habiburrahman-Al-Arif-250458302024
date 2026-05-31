@@ -30,7 +30,7 @@ class DetailProfile extends Component
             ->where('slug', $slug)
             ->firstOrFail();
 
-        // ambil semua kategori yang digunakan user ini
+        
         $this->categories = Category::whereHas('articles', function ($q) {
             $q->where('user_id', $this->user->id);
         })->get();
@@ -38,7 +38,7 @@ class DetailProfile extends Component
         $this->loadArticles();
     }
 
-    // 🔹 Fungsi untuk memuat artikel berdasarkan kategori dan pencarian
+    
     public function loadArticles()
     {
         $query = $this->user->articles()->with(['category', 'likes', 'comments']);
@@ -51,7 +51,7 @@ class DetailProfile extends Component
             $query->where('title', 'like', '%' . $this->search . '%');
         }
 
-        // hasilnya Collection, bukan array
+        
         $currentUserId = Auth::id();
         $this->articles = $query->latest()
             ->when($currentUserId, function ($q) use ($currentUserId) {
@@ -63,21 +63,21 @@ class DetailProfile extends Component
             })
             ->get();
 
-        // bisa pakai count() dan sum()
+        
         $this->articleCount = $this->articles->count();
         $this->likeCount = $this->articles->sum(fn($a) => $a->likes->count());
         $this->commentCount = $this->articles->sum(fn($a) => $a->comments->count());
     }
 
 
-    // 🔹 Ketika kategori diganti
+    
     public function setCategory($category)
     {
         $this->category = $category;
         $this->loadArticles();
     }
 
-    // 🔹 Ketika search berubah secara live
+    
     public function updatedSearch()
     {
         $this->loadArticles();

@@ -73,8 +73,8 @@ class DetailArticle extends Component
             'content' => $this->newComment,
         ]);
 
-        $this->newComment = ''; // reset input
-        $this->loadComments(); // refresh komentar
+        $this->newComment = ''; 
+        $this->loadComments(); 
     }
 
     public function deleteComment($id)

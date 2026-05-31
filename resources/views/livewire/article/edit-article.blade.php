@@ -22,7 +22,7 @@
                                         <input class="form-control form-control-sm" id="formFileSm" type="file"
                                             wire:model="image" accept="image/*">
 
-                                        {{-- Image Upload Loading State --}}
+                                        
                                         <div wire:loading wire:target="image" class="text-primary mt-2">
                                             <small><i class="fas fa-spinner fa-spin me-1"></i> Sedang mengupload
                                                 gambar...</small>
@@ -122,13 +122,13 @@
             return;
         }
 
-        // Remove existing listener to prevent duplicates
+
         trixEditor.removeEventListener('trix-change', handleTrixChange);
 
-        // Add new listener
+
         trixEditor.addEventListener('trix-change', handleTrixChange);
 
-        // Initial load
+
         trixEditor.editor.loadHTML(trixInput.value);
     }
 

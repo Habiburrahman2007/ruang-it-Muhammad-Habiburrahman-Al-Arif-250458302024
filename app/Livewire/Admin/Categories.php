@@ -19,7 +19,7 @@ class Categories extends Component
     public $name;
     public $categoryId;
     public $search = '';
-    //public $categories;
+    
 
     protected $listeners = ['deleteCategoryConfirmed' => 'deleteCategory'];
     protected $paginationTheme = 'bootstrap';

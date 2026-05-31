@@ -76,7 +76,7 @@
                 </div>
 
                 <ul class="pagination pagination-primary mb-0 justify-center mt-3">
-                    {{-- PREVIOUS --}}
+                    
                     <li class="page-item {{ $categories->onFirstPage() ? 'disabled' : '' }}">
                         <a class="page-link"
                             href="{{ $categories->onFirstPage() ? '#' : $categories->previousPageUrl() }}"
@@ -85,7 +85,7 @@
                         </a>
                     </li>
 
-                    {{-- NUMBERS --}}
+                    
                     @foreach ($categories->getUrlRange(1, $categories->lastPage()) as $page => $url)
                         <li class="page-item {{ $categories->currentPage() == $page ? 'active' : '' }}">
                             <a class="page-link" href="{{ $url }}"
@@ -95,7 +95,7 @@
                         </li>
                     @endforeach
 
-                    {{-- NEXT --}}
+                    
                     <li class="page-item {{ $categories->hasMorePages() ? '' : 'disabled' }}">
                         <a class="page-link"
                             href="{{ $categories->hasMorePages() ? $categories->nextPageUrl() : '#' }}"
@@ -160,10 +160,10 @@
         const colorSelect = document.getElementById('edit-category-color');
         const editModal = new bootstrap.Modal(editModalEl);
 
-        // === SHOW MODAL ===
+
         window.addEventListener('showEditCategoryModal', event => {
 
-            const data = event.detail[0]; // FORMAT SAMA SEPERTI KOMENTAR
+            const data = event.detail[0]; 
 
             if (data) {
                 if (nameInput) {
@@ -179,7 +179,7 @@
             editModal.show();
         });
 
-        // === CLOSE MODAL ===
+
         window.addEventListener('closeEditCategoryModal', () => {
             editModal.hide();
         });

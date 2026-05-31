@@ -2,16 +2,16 @@
     <div class="card position-relative">
         <div class="card-body position-relative">
 
-            {{-- Badge Kategori --}}
+            
             <span class="badge {{ $article->category->colorClass }} position-absolute top-0 end-0 mt-3 me-3"
                 style="{{ $article->category->colorStyle }}">
                 {{ $article->category->name }}
             </span>
 
-            {{-- Like, Comment, & Dropdown --}}
+            
             <div class="position-absolute top-0 end-0 d-flex flex-row align-items-center me-3" style="margin-top: 3rem;">
 
-                {{-- Like & Comment --}}
+                
                 <div class="btn-group me-2">
                     <button type="button" class="btn btn-link p-2 text-decoration-none" x-data="{ isProcessing: false }"
                         x-on:click.stop="if(isProcessing) return; isProcessing = true; $wire.isLiked = !$wire.isLiked; $wire.likesCount += $wire.isLiked ? 1 : -1; $wire.toggleLike({{ $article->id }}).then(() => { isProcessing = false; })">
@@ -28,7 +28,7 @@
 
 
 
-            {{-- Profil Penulis --}}
+            
             <div class="d-flex align-items-center">
                 <div class="avatar avatar-xl">
                     <img src="{{ $article->user->photo_profile ? asset('storage/' . $article->user->photo_profile) : asset('img/default-avatar.jpeg') }}"
@@ -144,7 +144,7 @@
                                         {{ $comment->created_at->diffForHumans() }}
                                     </small>
 
-                                    {{-- Cek status komentar --}}
+                                    
                                     @if ($comment->is_hidden)
                                         <p class="mb-0 fst-italic text-muted">Komentar disembunyikan</p>
                                     @else

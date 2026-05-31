@@ -6,13 +6,13 @@
         <span>Beranda</span>
     </a>
     <div class="w-full p-6">
-        <!-- Header -->
+        
         <div class="text-center mb-5">
             <img src="{{ asset('img/newlogo.png') }}" alt="Logo" class="mx-auto h-20 w-auto" />
             <h2 class="mt-3 text-2xl font-bold text-white">Silahkan masuk ke akun Anda</h2>
         </div>
 
-        <!-- Form -->
+        
         <form wire:submit.prevent="login" class="space-y-5">
             <div>
                 <label for="email" class="block mb-2 text-sm font-medium text-gray-200">Email</label>
@@ -45,24 +45,24 @@
                     class="overflow-hidden w-32 h-10 bg-blue-700 text-white border-none rounded-md text-xl font-bold cursor-pointer relative flex justify-center items-center group"
                     wire:loading.attr="disabled">
 
-                    {{-- Text default --}}
+                    
                     <span class="relative z-10 transition-opacity duration-300 group-hover:opacity-0"
                         wire:loading.remove wire:target="login">
                         Masuk
                     </span>
 
-                    {{-- Text hover --}}
+                    
                     <span class="absolute z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                         wire:loading.remove wire:target="login">
                         Tekan aku
                     </span>
 
-                    {{-- SPINNER FontAwesome --}}
+                    
                     <span class="absolute z-10 text-white" wire:loading wire:target="login">
                         <i class="fa-solid fa-spinner fa-spin text-lg"></i>
                     </span>
 
-                    {{-- Animation layers --}}
+                    
                     <span
                         class="absolute w-36 h-32 -top-8 -left-2 bg-white rotate-12 transform scale-x-0 group-hover:scale-x-100 transition-transform group-hover:duration-500 duration-1000 origin-left z-0"></span>
                     <span

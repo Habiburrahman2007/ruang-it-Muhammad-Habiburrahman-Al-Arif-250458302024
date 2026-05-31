@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CheckBanned
 {
-    /**
-     * Handle an incoming request.
-     */
+    
     public function handle(Request $request, Closure $next)
     {
         if (Auth::check() && (bool) Auth::user()->banned) {

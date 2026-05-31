@@ -91,7 +91,7 @@ class AuthController extends Controller
 
         $articleIds = \App\Models\Article::where('user_id', $user->id)->pluck('id');
 
-        // Hitung total likes dan comments yang diterima dari semua artikel milik user
+        
         $totalLikesReceived = \App\Models\Like::whereIn('article_id', $articleIds)->count();
         $totalCommentsReceived = \App\Models\Comment::whereIn('article_id', $articleIds)->count();
 
@@ -124,12 +124,12 @@ class AuthController extends Controller
         $data = $request->only('name', 'profession', 'bio');
 
         if ($request->hasFile('photo_profile')) {
-            // Delete old photo if exists
+            
             if ($user->photo_profile) {
                 Storage::disk('public')->delete($user->photo_profile);
             }
 
-            // Store new photo
+            
             $extension = $request->file('photo_profile')->getClientOriginalExtension();
             $filename = uniqid('profile_', true) . '_' . bin2hex(random_bytes(8)) . '.' . $extension;
             $data['photo_profile'] = $request->file('photo_profile')->storeAs('profile-photos', $filename, 'public');

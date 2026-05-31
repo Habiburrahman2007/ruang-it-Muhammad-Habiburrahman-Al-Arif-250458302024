@@ -30,7 +30,7 @@ class Index extends Component
     {
         $this->user = Auth::user();
         
-        // Get all categories used by this user
+        
         $this->categories = Category::whereHas('articles', function ($q) {
             $q->where('user_id', $this->user->id);
         })->get();
@@ -41,7 +41,7 @@ class Index extends Component
     public function loadArticles()
     {
         $query = $this->user->articles()
-            ->with(['category', 'user']) // Eager load user just in case, though it's auth user
+            ->with(['category', 'user']) 
             ->withCount(['likes', 'comments']);
 
         if ($this->category !== 'All') {
@@ -54,7 +54,7 @@ class Index extends Component
 
         $this->totalFiltered = $query->count();
 
-        // Optimized query with is_liked subquery
+        
         $this->articles = $query->latest()
             ->selectRaw('articles.*, EXISTS(
                 SELECT 1 FROM likes 
@@ -64,7 +64,7 @@ class Index extends Component
             ->take($this->perPage)
             ->get();
 
-        // Statistics using aggregate queries instead of fetching all models
+        
         $this->articleCount = $this->user->articles()->count();
         $this->likeCount = $this->user->articles()->withCount('likes')->get()->sum('likes_count');
         $this->commentCount = $this->user->articles()->withCount('comments')->get()->sum('comments_count');

@@ -87,9 +87,9 @@
                 </table>
             </div>
 
-            {{-- Pagination --}}
+            
             <ul class="pagination pagination-primary mb-0 justify-content-center mt-3">
-                {{-- PREVIOUS --}}
+                
                 <li class="page-item {{ $comments->onFirstPage() ? 'disabled' : '' }}">
                     <a class="page-link" href="{{ $comments->onFirstPage() ? '#' : $comments->previousPageUrl() }}"
                         @if (!$comments->onFirstPage()) wire:navigate @endif>
@@ -97,7 +97,7 @@
                     </a>
                 </li>
 
-                {{-- NUMBERS --}}
+                
                 @foreach ($comments->getUrlRange(1, $comments->lastPage()) as $page => $url)
                     <li class="page-item {{ $comments->currentPage() == $page ? 'active' : '' }}">
                         <a class="page-link" href="{{ $url }}"
@@ -107,7 +107,7 @@
                     </li>
                 @endforeach
 
-                {{-- NEXT --}}
+                
                 <li class="page-item {{ $comments->hasMorePages() ? '' : 'disabled' }}">
                     <a class="page-link" href="{{ $comments->hasMorePages() ? $comments->nextPageUrl() : '#' }}"
                         @if ($comments->hasMorePages()) wire:navigate @endif>

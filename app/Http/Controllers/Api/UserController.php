@@ -11,15 +11,13 @@ use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
-    /**
-     * Mencari daftar user (Bug Fix #3: search user yang belum pernah menulis artikel sekalipun)
-     */
+    
     public function index(Request $request): JsonResponse
     {
         $query = User::where('banned', false)
             ->withCount('articles');
 
-        // Filter by search query (name atau profession)
+        
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -32,7 +30,7 @@ class UserController extends Controller
             ->orderBy('name')
             ->paginate((int) $request->get('per_page', 15));
 
-        // Tambah photo_profile_url ke setiap user
+        
         $users->getCollection()->transform(function ($user) {
             return [
                 'id'                => $user->id,
@@ -49,10 +47,7 @@ class UserController extends Controller
         return response()->json($users);
     }
 
-    /**
-     * Menampilkan profil publik user lain berdasarkan slug
-     * (Bug Fix #2: endpoint profil publik + pekerjaan + statistik)
-     */
+    
     public function show($identifier): JsonResponse
     {
         $user = User::where(function ($q) use ($identifier) {
@@ -69,11 +64,11 @@ class UserController extends Controller
 
         $articleIds = Article::where('user_id', $user->id)->pluck('id');
 
-        // Hitung total likes dan comments yang diterima oleh user ini
+        
         $totalLikesReceived = Like::whereIn('article_id', $articleIds)->count();
         $totalCommentsReceived = \App\Models\Comment::whereIn('article_id', $articleIds)->count();
 
-        // Ambil artikel terbaru milik user (hanya artikel aktif)
+        
         $articles = Article::with(['category:id,name,color'])
             ->withCount(['comments', 'likes'])
             ->where('user_id', $user->id)

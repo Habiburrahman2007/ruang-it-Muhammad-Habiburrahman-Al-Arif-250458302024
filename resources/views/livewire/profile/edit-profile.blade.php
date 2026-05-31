@@ -9,7 +9,7 @@
         <div class="card-body">
             <form wire:submit.prevent="updateProfile" enctype="multipart/form-data">
                 <div class="row">
-                    <!-- Foto Profil -->
+                    
                     <div class="col-12 mb-4">
                         <div class="d-flex flex-column align-items-center">
                             <img src="{{ $new_photo ? $new_photo->temporaryUrl() : ($photo_profile ? asset('storage/' . $photo_profile) : asset('img/default-avatar.jpeg')) }}"
