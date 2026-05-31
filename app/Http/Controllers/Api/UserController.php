@@ -53,11 +53,14 @@ class UserController extends Controller
      * Menampilkan profil publik user lain berdasarkan slug
      * (Bug Fix #2: endpoint profil publik + pekerjaan + statistik)
      */
-    public function show(string $slug): JsonResponse
+    public function show($identifier): JsonResponse
     {
-        $user = User::where('slug', $slug)
+        $user = User::where(function ($q) use ($identifier) {
+                $q->where('id', $identifier)
+                  ->orWhere('slug', $identifier);
+            })
             ->where('banned', false)
-            ->withCount('articles')
+            ->withCount(['articles', 'comments'])
             ->first();
 
         if (!$user) {
@@ -87,7 +90,8 @@ class UserController extends Controller
                 'bio'                  => $user->bio,
                 'photo_profile_url'    => $user->photo_profile_url,
                 'articles_count'       => $user->articles_count,
-                'total_likes_received' => $totalLikesReceived,
+                'comments_count'       => $user->comments_count,
+                'total_likes'          => $totalLikesReceived,
                 'created_at'           => $user->created_at,
                 'articles'             => $articles,
             ]

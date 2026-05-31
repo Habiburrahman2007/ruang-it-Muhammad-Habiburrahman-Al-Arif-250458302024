@@ -97,7 +97,7 @@ class AuthController extends Controller
 
         return response()->json([
             'data' => array_merge($user->toArray(), [
-                'total_likes_received' => $totalLikesReceived,
+                'total_likes' => $totalLikesReceived,
             ])
         ]);
     }
