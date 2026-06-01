@@ -96,7 +96,7 @@ class Create extends Component
                 'error' => $e->getMessage()
             ]);
 
-            session()->flash('error', 'Terjadi kesalahan sistem. Silakan coba lagi.');
+            session()->flash('error', 'Terjadi kesalahan sistem: ' . $e->getMessage() . ' in ' . basename($e->getFile()) . ':' . $e->getLine());
         }
     }
 
