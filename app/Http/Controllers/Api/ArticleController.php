@@ -27,8 +27,16 @@ class ArticleController extends Controller
             ->whereHas('user', function ($q) {
                 $q->where('banned', false);
             })
-            ->where('status', 'active')
             ->latest();
+
+        if ($request->filled('user_id')) {
+            $query->where('user_id', $request->user_id);
+            if (!$user || $user->id != $request->user_id) {
+                $query->where('status', 'active');
+            }
+        } else {
+            $query->where('status', 'active');
+        }
 
         if ($request->filled('category')) {
             $query->whereHas('category', function ($q) use ($request) {
