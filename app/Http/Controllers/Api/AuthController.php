@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Traits\UploadsFiles;
 
@@ -32,22 +31,24 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'profession' => $request->profession,
-            'password' => Hash::make($request->password),
-            'slug' => Str::slug($request->name) . '-' . uniqid(),
-        ]);
+        return DB::transaction(function () use ($request) {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'profession' => $request->profession,
+                'password' => Hash::make($request->password),
+                'slug' => Str::slug($request->name) . '-' . uniqid(),
+            ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+            $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
-            'message' => 'User registered successfully',
-            'user' => $user,
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ], 201);
+            return response()->json([
+                'message' => 'User registered successfully',
+                'user' => $user,
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+            ], 201);
+        });
     }
 
     public function login(Request $request)
