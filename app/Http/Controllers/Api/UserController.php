@@ -51,7 +51,7 @@ class UserController extends Controller
         $articles = Article::with(['category:id,name,color'])
             ->withCount(['comments', 'likes'])
             ->where('user_id', $user->id)
-            ->where('status', 'active')
+            ->whereIn('status', ['active', 'banned'])
             ->latest()
             ->paginate(10);
 
