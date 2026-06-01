@@ -85,7 +85,7 @@ class Edit extends Component
 
             $article->update([
                 'title'       => $this->title,
-                'content'     => $this->content,
+                'content'     => clean($this->content),
                 'category_id' => $this->category_id,
                 'slug'        => $slug,
                 'image'       => $imagePath,

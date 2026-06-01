@@ -35,7 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/articles/{id}', [ArticleController::class, 'destroy']);
 
     
-    Route::post('/categories', [CategoryController::class, 'store']);
+    Route::post('/categories', [CategoryController::class, 'store'])->middleware('is_admin');
 
     
     Route::post('/articles/{articleId}/comments', [CommentController::class, 'store']);
