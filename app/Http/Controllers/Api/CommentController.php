@@ -6,38 +6,26 @@ use App\Models\Article;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\StoreCommentRequest;
+use App\Http\Resources\CommentResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CommentController extends Controller
 {
-    public function index($articleId)
+    public function index($articleId): AnonymousResourceCollection
     {
         $comments = Comment::with('user:id,name,photo_profile')
             ->where('article_id', $articleId)
             ->latest()
             ->paginate(10);
 
-        return response()->json($comments);
+        return CommentResource::collection($comments);
     }
 
-    public function store(Request $request, $articleId)
+    public function store(StoreCommentRequest $request, $articleId): JsonResponse
     {
-        $article = Article::find($articleId);
-
-        if (!$article) {
-            return response()->json(['message' => 'Article not found'], 404);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'content' => 'required|string|min:2|max:500',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validation error',
-                'errors' => $validator->errors()
-            ], 422);
-        }
+        $article = Article::findOrFail($articleId);
 
         $comment = Comment::create([
             'article_id' => $article->id,
@@ -47,31 +35,16 @@ class CommentController extends Controller
 
         return response()->json([
             'message' => 'Comment posted successfully',
-            'data' => $comment->load('user:id,name,photo_profile')
+            'data' => new CommentResource($comment->load('user:id,name,photo_profile'))
         ], 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(StoreCommentRequest $request, $id): JsonResponse
     {
-        $comment = Comment::find($id);
-
-        if (!$comment) {
-            return response()->json(['message' => 'Comment not found'], 404);
-        }
+        $comment = Comment::findOrFail($id);
 
         if ($comment->user_id !== $request->user()->id) {
             return response()->json(['message' => 'Unauthorized'], 403);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'content' => 'required|string|min:3|max:500',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validation error',
-                'errors' => $validator->errors()
-            ], 422);
         }
 
         $comment->update([
@@ -80,17 +53,13 @@ class CommentController extends Controller
 
         return response()->json([
             'message' => 'Comment updated successfully',
-            'data' => $comment->load('user:id,name,photo_profile')
+            'data' => new CommentResource($comment->load('user:id,name,photo_profile'))
         ]);
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, $id): JsonResponse
     {
-        $comment = Comment::find($id);
-
-        if (!$comment) {
-            return response()->json(['message' => 'Comment not found'], 404);
-        }
+        $comment = Comment::findOrFail($id);
 
         if ($comment->user_id !== $request->user()->id && $request->user()->role !== 'admin') {
             return response()->json(['message' => 'Unauthorized'], 403);

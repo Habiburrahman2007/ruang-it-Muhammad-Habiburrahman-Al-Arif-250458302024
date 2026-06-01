@@ -8,16 +8,16 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use App\Http\Resources\UserResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserController extends Controller
 {
-    
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): AnonymousResourceCollection
     {
         $query = User::where('banned', false)
             ->withCount('articles');
 
-        
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -30,24 +30,9 @@ class UserController extends Controller
             ->orderBy('name')
             ->paginate((int) $request->get('per_page', 15));
 
-        
-        $users->getCollection()->transform(function ($user) {
-            return [
-                'id'                => $user->id,
-                'name'              => $user->name,
-                'slug'              => $user->slug,
-                'profession'        => $user->profession,
-                'bio'               => $user->bio,
-                'photo_profile_url' => $user->photo_profile_url,
-                'articles_count'    => $user->articles_count,
-                'created_at'        => $user->created_at,
-            ];
-        });
-
-        return response()->json($users);
+        return UserResource::collection($users);
     }
 
-    
     public function show($identifier): JsonResponse
     {
         $user = User::where(function ($q) use ($identifier) {
@@ -56,19 +41,13 @@ class UserController extends Controller
             })
             ->where('banned', false)
             ->withCount('articles')
-            ->first();
-
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
+            ->firstOrFail();
 
         $articleIds = Article::where('user_id', $user->id)->pluck('id');
 
-        
         $totalLikesReceived = Like::whereIn('article_id', $articleIds)->count();
         $totalCommentsReceived = \App\Models\Comment::whereIn('article_id', $articleIds)->count();
 
-        
         $articles = Article::with(['category:id,name,color'])
             ->withCount(['comments', 'likes'])
             ->where('user_id', $user->id)
