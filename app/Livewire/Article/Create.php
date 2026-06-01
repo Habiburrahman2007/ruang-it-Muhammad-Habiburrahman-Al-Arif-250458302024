@@ -75,7 +75,7 @@ class Create extends Component
                 'user_id' => Auth::id(),
                 'title' => $this->title,
                 'slug' => Str::slug($this->title) . '-' . uniqid(),
-                'content' => \Mews\Purifier\Facades\Purifier::clean($this->content),
+                'content' => app('purifier')->clean($this->content),
                 'status' => 'active',
                 'image' => $imagePath,
                 'category_id' => $this->category_id,
