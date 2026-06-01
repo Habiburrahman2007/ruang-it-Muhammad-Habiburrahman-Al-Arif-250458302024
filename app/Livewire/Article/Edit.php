@@ -85,7 +85,7 @@ class Edit extends Component
 
             $article->update([
                 'title'       => $this->title,
-                'content'     => clean($this->content),
+                'content'     => \Mews\Purifier\Facades\Purifier::clean($this->content),
                 'category_id' => $this->category_id,
                 'slug'        => $slug,
                 'image'       => $imagePath,
