@@ -10,9 +10,12 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
+use App\Traits\UploadsFiles;
 
 class AuthController extends Controller
 {
+    use UploadsFiles;
+
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -124,15 +127,8 @@ class AuthController extends Controller
         $data = $request->only('name', 'profession', 'bio');
 
         if ($request->hasFile('photo_profile')) {
-            
-            if ($user->photo_profile) {
-                Storage::disk('public')->delete($user->photo_profile);
-            }
-
-            
-            $extension = $request->file('photo_profile')->getClientOriginalExtension();
-            $filename = uniqid('profile_', true) . '_' . bin2hex(random_bytes(8)) . '.' . $extension;
-            $data['photo_profile'] = $request->file('photo_profile')->storeAs('profile-photos', $filename, 'public');
+            $this->deleteFile($user->photo_profile);
+            $data['photo_profile'] = $this->uploadFile($request->file('photo_profile'), User::PROFILE_PHOTO_PATH);
         }
 
         $user->update($data);

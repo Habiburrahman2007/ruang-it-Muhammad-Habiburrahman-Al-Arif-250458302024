@@ -12,6 +12,7 @@ use Livewire\Attributes\Title;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use App\Services\ArticleService;
 
 class Create extends Component
 {
@@ -58,28 +59,18 @@ class Create extends Component
         $this->categories = CategoryCache::all();
     }
 
-    public function save()
+    public function save(ArticleService $articleService)
     {
         $this->validate();
 
         try {
-            if ($this->image) {
-                $extension = $this->image->getClientOriginalExtension();
-                $filename = uniqid('article_', true) . '_' . bin2hex(random_bytes(8)) . '.' . $extension;
-                $imagePath = $this->image->storeAs('articles', $filename, 'public');
-            } else {
-                $imagePath = null;
-            }
-
-            Article::create([
-                'user_id' => Auth::id(),
+            $data = [
                 'title' => $this->title,
-                'slug' => Str::slug($this->title) . '-' . uniqid(),
                 'content' => clean($this->content),
-                'status' => 'active',
-                'image' => $imagePath,
                 'category_id' => $this->category_id,
-            ]);
+            ];
+
+            $articleService->createArticle($data, $this->image, Auth::user());
 
             session()->flash('article_created', true);
             return redirect()->route('dashboard');

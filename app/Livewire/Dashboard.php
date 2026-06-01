@@ -65,20 +65,8 @@ class Dashboard extends Component
 
     public function loadArticles()
     {
-        $userId = $this->user->id ?? null;
-
-        $query = Article::with(['user', 'category'])
-            ->withCount(['likes', 'comments']) 
-            ->when($userId, function ($q) use ($userId) {
-                
-                return $q->selectRaw('articles.*, EXISTS(
-                    SELECT 1 FROM likes 
-                    WHERE likes.article_id = articles.id 
-                    AND likes.user_id = ?
-                ) as is_liked', [$userId]);
-            })
-            ->where('status', 'active')
-            ->whereHas('user', fn($q) => $q->where('banned', false))
+        $query = Article::withFullDetails($this->user)
+            ->where('status', Article::STATUS_ACTIVE)
             ->when(
                 $this->category !== 'All',
                 fn($q) => $q->whereHas('category', fn($q2) => $q2->where('name', $this->category))

@@ -13,6 +13,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public const PROFILE_PHOTO_PATH = 'profile-photos';
+
     protected $fillable = ['name', 'slug', 'email', 'password', 'profession', 'photo_profile', 'bio'];
 
     protected $appends = ['photo_profile_url'];
