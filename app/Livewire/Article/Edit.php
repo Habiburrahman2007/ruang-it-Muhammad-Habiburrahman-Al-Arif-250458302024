@@ -85,7 +85,7 @@ class Edit extends Component
 
             $article->update([
                 'title'       => $this->title,
-                'content'     => app('purifier')->clean($this->content),
+                'content'     => strip_tags($this->content, '<div><p><br><strong><em><del><a><ul><ol><li><blockquote><pre><h1><h2><h3><h4><h5><h6><img><figure><figcaption>'),
                 'category_id' => $this->category_id,
                 'slug'        => $slug,
                 'image'       => $imagePath,

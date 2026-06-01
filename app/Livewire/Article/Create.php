@@ -75,7 +75,7 @@ class Create extends Component
                 'user_id' => Auth::id(),
                 'title' => $this->title,
                 'slug' => Str::slug($this->title) . '-' . uniqid(),
-                'content' => app('purifier')->clean($this->content),
+                'content' => strip_tags($this->content, '<div><p><br><strong><em><del><a><ul><ol><li><blockquote><pre><h1><h2><h3><h4><h5><h6><img><figure><figcaption>'),
                 'status' => 'active',
                 'image' => $imagePath,
                 'category_id' => $this->category_id,
