@@ -90,13 +90,13 @@ class Create extends Component
             ]);
 
             session()->flash('error', 'Gagal menyimpan artikel. Silakan coba lagi.');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error('Unexpected error in CreateArticle', [
                 'user_id' => Auth::id(),
                 'error' => $e->getMessage()
             ]);
 
-            session()->flash('error', 'Terjadi kesalahan. Silakan hubungi administrator.');
+            session()->flash('error', 'Terjadi kesalahan sistem. Silakan coba lagi.');
         }
     }
 

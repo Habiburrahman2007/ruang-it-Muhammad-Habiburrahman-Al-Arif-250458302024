@@ -93,18 +93,13 @@ class Edit extends Component
 
             session()->flash('article_updated', true);
             return redirect()->route('dashboard');
-        } catch (\Exception $e) {
-            $type = $e instanceof QueryException
-                ? 'DB Error'
-                : 'General Error';
-
-            Log::error("$type saat update article", [
-                'article_id' => $this->articleId,
-                'user_id'    => Auth::id(),
-                'error'      => $e->getMessage(),
+        } catch (\Throwable $e) {
+            Log::error('Unexpected error in EditArticle', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage()
             ]);
 
-            session()->flash('error', 'Terjadi kesalahan. Silakan coba lagi.');
+            session()->flash('error', 'Terjadi kesalahan sistem. Silakan coba lagi.');
         }
     }
 
