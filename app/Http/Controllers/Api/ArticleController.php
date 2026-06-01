@@ -27,6 +27,7 @@ class ArticleController extends Controller
             ->whereHas('user', function ($q) {
                 $q->where('banned', false);
             })
+            ->where('status', 'active')
             ->latest();
 
         if ($request->filled('category')) {
@@ -69,6 +70,7 @@ class ArticleController extends Controller
         ->whereHas('user', function ($q) {
             $q->where('banned', false);
         })
+        ->where('status', 'active')
         ->where(function ($q) use ($identifier) {
             $q->where('id', $identifier)->orWhere('slug', $identifier);
         })
