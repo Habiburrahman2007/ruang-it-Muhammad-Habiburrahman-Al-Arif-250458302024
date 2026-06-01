@@ -46,8 +46,10 @@ class Index extends Component
 
     public function loadArticles()
     {
-        $query = Article::withFullDetails($this->user)
-            ->where('status', Article::STATUS_ACTIVE)
+        $query = Article::with(['user', 'category'])
+            ->withCount(['likes', 'comments']) 
+            ->where('status', 'active')
+            ->whereHas('user', fn($q) => $q->where('banned', false))
             ->when(
                 $this->category !== 'All',
                 fn($query) =>

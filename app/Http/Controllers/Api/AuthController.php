@@ -7,14 +7,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
-use App\Traits\UploadsFiles;
 
 class AuthController extends Controller
 {
-    use UploadsFiles;
-
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -31,24 +29,22 @@ class AuthController extends Controller
             ], 422);
         }
 
-        return DB::transaction(function () use ($request) {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'profession' => $request->profession,
-                'password' => Hash::make($request->password),
-                'slug' => Str::slug($request->name) . '-' . uniqid(),
-            ]);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'profession' => $request->profession,
+            'password' => Hash::make($request->password),
+            'slug' => Str::slug($request->name) . '-' . uniqid(),
+        ]);
 
-            $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-            return response()->json([
-                'message' => 'User registered successfully',
-                'user' => $user,
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-            ], 201);
-        });
+        return response()->json([
+            'message' => 'User registered successfully',
+            'user' => $user,
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+        ], 201);
     }
 
     public function login(Request $request)
@@ -128,8 +124,15 @@ class AuthController extends Controller
         $data = $request->only('name', 'profession', 'bio');
 
         if ($request->hasFile('photo_profile')) {
-            $this->deleteFile($user->photo_profile);
-            $data['photo_profile'] = $this->uploadFile($request->file('photo_profile'), User::PROFILE_PHOTO_PATH);
+            
+            if ($user->photo_profile) {
+                Storage::disk('public')->delete($user->photo_profile);
+            }
+
+            
+            $extension = $request->file('photo_profile')->getClientOriginalExtension();
+            $filename = uniqid('profile_', true) . '_' . bin2hex(random_bytes(8)) . '.' . $extension;
+            $data['photo_profile'] = $request->file('photo_profile')->storeAs('profile-photos', $filename, 'public');
         }
 
         $user->update($data);

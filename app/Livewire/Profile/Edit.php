@@ -8,11 +8,10 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
-use App\Traits\UploadsFiles;
 
 class Edit extends Component
 {
-    use WithFileUploads, UploadsFiles;
+    use WithFileUploads;
 
     #[Layout('layouts.app')]
     #[Title('Edit Profil')]
@@ -45,8 +44,16 @@ class Edit extends Component
 
         
         if ($this->new_photo) {
-            $this->deleteFile($user->photo_profile);
-            $user->photo_profile = $this->uploadFile($this->new_photo, \App\Models\User::PROFILE_PHOTO_PATH);
+            
+            if ($user->photo_profile) {
+                Storage::disk('public')->delete($user->photo_profile);
+            }
+
+            
+            $extension = $this->new_photo->getClientOriginalExtension();
+            $filename = uniqid('profile_', true) . '_' . bin2hex(random_bytes(8)) . '.' . $extension;
+            $path = $this->new_photo->storeAs('profile-photos', $filename, 'public');
+            $user->photo_profile = $path;
         }
 
         

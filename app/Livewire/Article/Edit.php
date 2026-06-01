@@ -10,9 +10,9 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use App\Services\ArticleService;
 
 class Edit extends Component
 {
@@ -53,7 +53,7 @@ class Edit extends Component
     }
 
 
-    public function update(ArticleService $articleService)
+    public function update()
     {
         $this->validate([
             'title'        => 'required|string|max:255',
@@ -68,23 +68,28 @@ class Edit extends Component
             if ($article->user_id !== Auth::id()) {
                 abort(403, 'Anda tidak memiliki akses untuk mengedit artikel ini.');
             }
+            $slug = Str::slug($this->title);
+            if (Article::where('slug', $slug)->where('id', '!=', $this->articleId)->exists()) {
+                $slug .= '-' . time();
+            }
 
-            $data = [
+            $imagePath = $this->oldImage;
+            if ($this->image) {
+                $filename  = uniqid('article_', true) . '.' . $this->image->getClientOriginalExtension();
+                $imagePath = $this->image->storeAs('articles', $filename, 'public');
+
+                if ($this->oldImage) {
+                    Storage::disk('public')->delete($this->oldImage);
+                }
+            }
+
+            $article->update([
                 'title'       => $this->title,
                 'content'     => clean($this->content),
                 'category_id' => $this->category_id,
-            ];
-
-            // Only update slug if title changed, to avoid unnecessary changes
-            if ($article->title !== $this->title) {
-                $slug = Str::slug($this->title);
-                if (Article::where('slug', $slug)->where('id', '!=', $this->articleId)->exists()) {
-                    $slug .= '-' . time();
-                }
-                $data['slug'] = $slug;
-            }
-
-            $articleService->updateArticle($article, $data, $this->image);
+                'slug'        => $slug,
+                'image'       => $imagePath,
+            ]);
 
             session()->flash('article_updated', true);
             return redirect()->route('dashboard');

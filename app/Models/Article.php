@@ -11,10 +11,6 @@ class Article extends Model
 {
     use HasFactory;
 
-    public const STATUS_ACTIVE = 'active';
-    public const STATUS_DRAFT = 'draft';
-    public const IMAGE_PATH = 'articles';
-
     protected $fillable = [
         'user_id',
         'category_id',
@@ -71,17 +67,5 @@ class Article extends Model
     public function isLikedBy($user)
     {
         return $this->likes()->where('user_id', $user->id)->exists();
-    }
-
-    public function scopeWithFullDetails($query, $user = null)
-    {
-        return $query->with(['user:id,name,slug,photo_profile,profession', 'category:id,name,color'])
-            ->withCount(['comments', 'likes'])
-            ->withExists(['likes as is_liked' => function ($q) use ($user) {
-                $q->where('user_id', $user ? $user->id : null);
-            }])
-            ->whereHas('user', function ($q) {
-                $q->where('banned', false);
-            });
     }
 }
