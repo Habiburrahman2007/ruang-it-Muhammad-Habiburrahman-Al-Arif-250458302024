@@ -91,12 +91,15 @@ class AuthController extends Controller
 
         $articleIds = \App\Models\Article::where('user_id', $user->id)->pluck('id');
 
-        
         $totalLikesReceived = \App\Models\Like::whereIn('article_id', $articleIds)->count();
         $totalCommentsReceived = \App\Models\Comment::whereIn('article_id', $articleIds)->count();
 
+        // Gunakan toArray() dengan append agar photo_profile_url ikut terkirim
+        $userData = $user->toArray();
+        $userData['photo_profile_url'] = $user->photo_profile_url;
+
         return response()->json([
-            'data' => array_merge($user->toArray(), [
+            'data' => array_merge($userData, [
                 'total_likes'    => $totalLikesReceived,
                 'comments_count' => $totalCommentsReceived,
             ])
@@ -124,22 +127,24 @@ class AuthController extends Controller
         $data = $request->only('name', 'profession', 'bio');
 
         if ($request->hasFile('photo_profile')) {
-            
-            if ($user->photo_profile) {
+            // Hapus foto lama jika ada
+            if ($user->photo_profile && !filter_var($user->photo_profile, FILTER_VALIDATE_URL)) {
                 Storage::disk('public')->delete($user->photo_profile);
             }
 
-            
             $extension = $request->file('photo_profile')->getClientOriginalExtension();
             $filename = uniqid('profile_', true) . '_' . bin2hex(random_bytes(8)) . '.' . $extension;
             $data['photo_profile'] = $request->file('photo_profile')->storeAs('profile-photos', $filename, 'public');
         }
 
         $user->update($data);
+        $user->refresh(); // reload agar photo_profile_url ter-generate ulang
 
         return response()->json([
             'message' => 'Profile updated successfully',
-            'data' => $user
+            'data'    => array_merge($user->toArray(), [
+                'photo_profile_url' => $user->photo_profile_url,
+            ]),
         ]);
     }
 
