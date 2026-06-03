@@ -98,11 +98,14 @@ class ArticleController extends Controller
             $imagePath = $request->file('image')->storeAs('articles', $filename, 'public');
         }
 
+        $content = html_entity_decode($request->content, ENT_QUOTES, 'UTF-8');
+        $content = strip_tags($content, '<div><p><br><strong><em><del><a><ul><ol><li><blockquote><pre><h1><h2><h3><h4><h5><h6><img><figure><figcaption>');
+
         $article = Article::create([
             'user_id' => $request->user()->id,
             'title' => $request->title,
             'slug' => Str::slug($request->title) . '-' . uniqid(),
-            'content' => $request->content,
+            'content' => $content,
             'status' => 'active',
             'image' => $imagePath,
             'category_id' => $request->category_id,
@@ -125,6 +128,11 @@ class ArticleController extends Controller
         }
 
         $data = $request->only(['title', 'content', 'category_id', 'status']);
+
+        if (isset($data['content'])) {
+            $content = html_entity_decode($data['content'], ENT_QUOTES, 'UTF-8');
+            $data['content'] = strip_tags($content, '<div><p><br><strong><em><del><a><ul><ol><li><blockquote><pre><h1><h2><h3><h4><h5><h6><img><figure><figcaption>');
+        }
 
         if ($request->hasFile('image')) {
             if ($article->image) {

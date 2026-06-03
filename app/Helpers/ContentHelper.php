@@ -9,7 +9,7 @@ class ContentHelper
     
     public static function preview(string $content, int $limit = 120): string
     {
-        $clean = $content;
+        $clean = html_entity_decode($content, ENT_QUOTES, 'UTF-8');
         $clean = preg_replace_callback(
             '/<ol>(.*?)<\/ol>/s',
             function ($matches) {
@@ -31,13 +31,13 @@ class ContentHelper
     
     public static function stripTags(string $content): string
     {
-        return strip_tags($content);
+        return strip_tags(html_entity_decode($content, ENT_QUOTES, 'UTF-8'));
     }
 
     
     public static function excerpt(string $content, int $length = 150): string
     {
         
-        return strip_tags($content, '<b><strong><i><em><s><strike><del><u><mark><sub><sup><span><br>');
+        return strip_tags(html_entity_decode($content, ENT_QUOTES, 'UTF-8'), '<b><strong><i><em><s><strike><del><u><mark><sub><sup><span><br>');
     }
 }

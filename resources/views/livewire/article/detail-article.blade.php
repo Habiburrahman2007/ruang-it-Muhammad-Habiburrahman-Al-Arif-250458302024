@@ -122,7 +122,7 @@
             @endif
 
             <div class="card-text mt-4" style="font-size: 1.1rem; line-height: 1.8;">
-                {!! $article->content !!}
+                {!! html_entity_decode($article->content, ENT_QUOTES, 'UTF-8') !!}
             </div>
         </div>
     </div>
