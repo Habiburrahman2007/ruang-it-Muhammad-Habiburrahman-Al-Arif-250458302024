@@ -55,7 +55,7 @@
                     </div>
                 @endif
                 <div class="card-text mt-3">
-                    {!! html_entity_decode($article->content, ENT_QUOTES, 'UTF-8') !!}
+                    {!! \App\Helpers\ContentHelper::decodeRecursively($article->content) !!}
                 </div>
             </div>
         </div>

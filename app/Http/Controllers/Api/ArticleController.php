@@ -98,7 +98,7 @@ class ArticleController extends Controller
             $imagePath = $request->file('image')->storeAs('articles', $filename, 'public');
         }
 
-        $content = html_entity_decode($request->content, ENT_QUOTES, 'UTF-8');
+        $content = \App\Helpers\ContentHelper::decodeRecursively($request->content);
         $content = strip_tags($content, '<div><p><br><strong><em><del><a><ul><ol><li><blockquote><pre><h1><h2><h3><h4><h5><h6><img><figure><figcaption>');
 
         $article = Article::create([
@@ -130,7 +130,7 @@ class ArticleController extends Controller
         $data = $request->only(['title', 'content', 'category_id', 'status']);
 
         if (isset($data['content'])) {
-            $content = html_entity_decode($data['content'], ENT_QUOTES, 'UTF-8');
+            $content = \App\Helpers\ContentHelper::decodeRecursively($data['content']);
             $data['content'] = strip_tags($content, '<div><p><br><strong><em><del><a><ul><ol><li><blockquote><pre><h1><h2><h3><h4><h5><h6><img><figure><figcaption>');
         }
 

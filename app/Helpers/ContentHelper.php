@@ -7,9 +7,26 @@ use Illuminate\Support\Str;
 class ContentHelper
 {
     
+    public static function decodeRecursively(?string $content): string
+    {
+        if (is_null($content)) {
+            return '';
+        }
+        $prev = '';
+        $curr = $content;
+        $depth = 0;
+        // Decode recursively up to 5 times or until the string stops changing
+        while ($curr !== $prev && $depth < 5) {
+            $prev = $curr;
+            $curr = html_entity_decode($prev, ENT_QUOTES, 'UTF-8');
+            $depth++;
+        }
+        return $curr;
+    }
+
     public static function preview(string $content, int $limit = 120): string
     {
-        $clean = html_entity_decode($content, ENT_QUOTES, 'UTF-8');
+        $clean = self::decodeRecursively($content);
         $clean = preg_replace_callback(
             '/<ol>(.*?)<\/ol>/s',
             function ($matches) {
@@ -31,13 +48,13 @@ class ContentHelper
     
     public static function stripTags(string $content): string
     {
-        return strip_tags(html_entity_decode($content, ENT_QUOTES, 'UTF-8'));
+        return strip_tags(self::decodeRecursively($content));
     }
 
     
     public static function excerpt(string $content, int $length = 150): string
     {
         
-        return strip_tags(html_entity_decode($content, ENT_QUOTES, 'UTF-8'), '<b><strong><i><em><s><strike><del><u><mark><sub><sup><span><br>');
+        return strip_tags(self::decodeRecursively($content), '<b><strong><i><em><s><strike><del><u><mark><sub><sup><span><br>');
     }
 }

@@ -13,7 +13,7 @@ class ArticleResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'slug' => $this->slug,
-            'content' => $this->content,
+            'content' => \App\Helpers\ContentHelper::decodeRecursively($this->content),
             'status' => $this->status,
             'image' => $this->image_url,
             'is_liked' => (bool) $this->is_liked,

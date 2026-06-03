@@ -39,7 +39,7 @@ class Edit extends Component
 
         $this->articleId = $article->id;
         $this->title = $article->title;
-        $this->content = $article->content ?? '';
+        $this->content = \App\Helpers\ContentHelper::decodeRecursively($article->content ?? '');
         $this->category_id = $article->category_id;
         $this->oldImage = $article->image;
         $this->categories = CategoryCache::all();
