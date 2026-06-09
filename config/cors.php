@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['https://hanifun2310.github.io'],
 
     'allowed_origins_patterns' => [],
 
