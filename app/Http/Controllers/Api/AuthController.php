@@ -114,7 +114,7 @@ class AuthController extends Controller
             'name' => 'sometimes|string|max:255',
             'profession' => 'nullable|string|max:255',
             'bio' => 'nullable|string',
-            'photo_profile' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'photo_profile' => $request->hasFile('photo_profile') ? 'image|mimes:jpg,jpeg,png,webp|max:2048' : 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -126,7 +126,17 @@ class AuthController extends Controller
 
         $data = $request->only('name', 'profession', 'bio');
 
-        if ($request->hasFile('photo_profile')) {
+        $shouldRemovePhoto = $request->input('remove_photo') === '1' 
+            || $request->input('delete_photo') === '1' 
+            || $request->input('remove_photo_profile') === '1';
+
+        if ($shouldRemovePhoto) {
+            // Hapus foto lama jika ada
+            if ($user->photo_profile && !filter_var($user->photo_profile, FILTER_VALIDATE_URL)) {
+                Storage::disk('public')->delete($user->photo_profile);
+            }
+            $data['photo_profile'] = null;
+        } elseif ($request->hasFile('photo_profile')) {
             // Hapus foto lama jika ada
             if ($user->photo_profile && !filter_var($user->photo_profile, FILTER_VALIDATE_URL)) {
                 Storage::disk('public')->delete($user->photo_profile);
